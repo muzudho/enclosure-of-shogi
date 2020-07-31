@@ -15,6 +15,7 @@
             height: 64px;
         }
 
+        /* Arrow from king */
         img.k84 {
             object-fit: none;
             object-position: 0px 0px;
@@ -43,6 +44,127 @@
             height: 64px;
         }
 
+        img.k51 {
+            object-fit: none;
+            object-position: -128px -64px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.k27 {
+            object-fit: none;
+            object-position: 0px -128px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.k38 {
+            object-fit: none;
+            object-position: -64px -128px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.k49 {
+            object-fit: none;
+            object-position: -128px -128px;
+            width: 64px;
+            height: 64px;
+        }
+
+        /* Arrow */
+        img.a1 {
+            object-fit: none;
+            object-position: -256px -64px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.a84 {
+            object-fit: none;
+            object-position: -192px 0px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.a73 {
+            object-fit: none;
+            object-position: -256px 0px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.a62 {
+            object-fit: none;
+            object-position: -320px 0px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.a15 {
+            object-fit: none;
+            object-position: -192px -64px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.a51 {
+            object-fit: none;
+            object-position: -320px -64px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.a27 {
+            object-fit: none;
+            object-position: -192px -128px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.a38 {
+            object-fit: none;
+            object-position: -256px -128px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.a49 {
+            object-fit: none;
+            object-position: -320px -128px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.a8448 {
+            object-fit: none;
+            object-position: -0px -192px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.a3773 {
+            object-fit: none;
+            object-position: -64px -192px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.a2662 {
+            object-fit: none;
+            object-position: -128px -192px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.a1551 {
+            object-fit: none;
+            object-position: -128px -256px;
+            width: 64px;
+            height: 64px;
+        }
+
+        /* Square */
         img.sq {
             object-fit: none;
             object-position: -64px -256px;
@@ -78,45 +200,42 @@
             height: 64px;
         }
     </style>
+    <script>
+        function on_load() {
+            for (file = 9; 0 < file; file--) {
+                for (rank = 1; rank < 10; rank++) {
+                    document.getElementById(`sq${file}${rank}`).setAttribute('src', 'img/map.png');
+                    document.getElementById(`sq${file}${rank}`).setAttribute('class', 'sq');
+                }
+            }
+            document.getElementById('sq91').setAttribute('class', 'pc_k');
+        }
+    </script>
 </head>
 
-<body>
+<body onload="on_load();">
     <h1>将棋の囲い</h1>
 
     <div style="position:relative; top:0px; left:0px; width:576px; height:576px;">
-        <div style="position:absolute; top:0px; left:0px; width:576px; height:576px;">
-            <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
-            <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
-            <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
-            <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
-            <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
-            <img src="img/map.png" class="pc_0"><img src="img/map.png" class="sq"><img src="img/map.png"
-                class="pc_0"><img src="img/map.png" class="pc_0"><img src="img/map.png" class="sq"><img
-                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-                src="img/map.png" class="sq"><br>
-            <img src="img/map.png" class="sq"><img src="img/map.png" class="pc_0"><img src="img/map.png"
-                class="pc_s"><img src="img/map.png" class="pc_0"><img src="img/map.png" class="pc_0"><img
-                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-                src="img/map.png" class="sq"><br>
-            <img src="img/map.png" class="sq"><img src="img/map.png" class="pc_k"><img src="img/map.png"
-                class="pc_g"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png"
-                class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png"
-                class="sq"><br>
-            <img src="img/map.png" class="pc_0"><img src="img/map.png" class="pc_0"><img src="img/map.png"
-                class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png"
-                class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png"
-                class="sq"><br>
-        </div>
+        <div style="position:absolute; top:0px; left:0px; width:576px; height:576px; font-size:0;">
+            <img id="sq91"><img id="sq92"><img id="sq93"><img id="sq94"><img id="sq95"><img id="sq96"><img
+                id="sq97"><img id="sq98"><img id="sq99"><br>
+            <img id="sq81"><img id="sq82"><img id="sq83"><img id="sq84"><img id="sq85"><img id="sq86"><img
+                id="sq87"><img id="sq88"><img id="sq89"><br>
+            <img id="sq71"><img id="sq72"><img id="sq73"><img id="sq74"><img id="sq75"><img id="sq76"><img
+                id="sq77"><img id="sq78"><img id="sq79"><br>
+            <img id="sq61"><img id="sq62"><img id="sq63"><img id="sq64"><img id="sq65"><img id="sq66"><img
+                id="sq67"><img id="sq68"><img id="sq69"><br>
+            <img id="sq51"><img id="sq52"><img id="sq53"><img id="sq54"><img id="sq55"><img id="sq56"><img
+                id="sq57"><img id="sq58"><img id="sq59"><br>
+            <img id="sq41"><img id="sq42"><img id="sq43"><img id="sq44"><img id="sq45"><img id="sq46"><img
+                id="sq47"><img id="sq48"><img id="sq49"><br>
+            <img id="sq31"><img id="sq32"><img id="sq33"><img id="sq34"><img id="sq35"><img id="sq36"><img
+                id="sq37"><img id="sq38"><img id="sq39"><br>
+            <img id="sq21"><img id="sq22"><img id="sq23"><img id="sq24"><img id="sq25"><img id="sq26"><img
+                id="sq27"><img id="sq28"><img id="sq29"><br>
+            <img id="sq11"><img id="sq12"><img id="sq13"><img id="sq14"><img id="sq15"><img id="sq16"><img
+                id="sq17"><img id="sq18"><img id="sq19"><br> </div>
         <!-- ヨコ -->
         <div style="position:absolute; top:0px; left:32px; width:576px; height:576px;">
             <img src="img/map.png" class="k15"><img src="img/map.png" class="k15">
