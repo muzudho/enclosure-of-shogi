@@ -7,9 +7,73 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css">
     <style>
+        /* Space */
+        img.s {
+            object-fit: none;
+            object-position: -64px -64px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.k84 {
+            object-fit: none;
+            object-position: 0px 0px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.k73 {
+            object-fit: none;
+            object-position: -64px 0px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.k62 {
+            object-fit: none;
+            object-position: -128px 0px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.k15 {
+            object-fit: none;
+            object-position: 0px -64px;
+            width: 64px;
+            height: 64px;
+        }
+
         img.sq {
             object-fit: none;
             object-position: -64px -256px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.pc_0 {
+            object-fit: none;
+            object-position: 0px -256px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.pc_k {
+            object-fit: none;
+            object-position: 0px -320px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.pc_g {
+            object-fit: none;
+            object-position: -64px -320px;
+            width: 64px;
+            height: 64px;
+        }
+
+        img.pc_s {
+            object-fit: none;
+            object-position: -128px -320px;
             width: 64px;
             height: 64px;
         }
@@ -19,32 +83,53 @@
 <body>
     <h1>将棋の囲い</h1>
 
-    <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
-    <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
-    <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
-    <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
-    <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
-    <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
-    <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
-    <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
-    <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
-        src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
+    <div style="position:relative; top:0px; left:0px; width:576px; height:576px;">
+        <div style="position:absolute; top:0px; left:0px; width:576px; height:576px;">
+            <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
+                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
+                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
+            <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
+                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
+                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
+            <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
+                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
+                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
+            <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
+                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
+                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
+            <img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
+                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
+                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><br>
+            <img src="img/map.png" class="pc_0"><img src="img/map.png" class="sq"><img src="img/map.png"
+                class="pc_0"><img src="img/map.png" class="pc_0"><img src="img/map.png" class="sq"><img
+                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
+                src="img/map.png" class="sq"><br>
+            <img src="img/map.png" class="sq"><img src="img/map.png" class="pc_0"><img src="img/map.png"
+                class="pc_s"><img src="img/map.png" class="pc_0"><img src="img/map.png" class="pc_0"><img
+                src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img
+                src="img/map.png" class="sq"><br>
+            <img src="img/map.png" class="sq"><img src="img/map.png" class="pc_k"><img src="img/map.png"
+                class="pc_g"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png"
+                class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png"
+                class="sq"><br>
+            <img src="img/map.png" class="pc_0"><img src="img/map.png" class="pc_0"><img src="img/map.png"
+                class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png"
+                class="sq"><img src="img/map.png" class="sq"><img src="img/map.png" class="sq"><img src="img/map.png"
+                class="sq"><br>
+        </div>
+        <!-- ヨコ -->
+        <div style="position:absolute; top:0px; left:32px; width:576px; height:576px;">
+            <img src="img/map.png" class="k15"><img src="img/map.png" class="k15">
+        </div>
+        <!-- タテ -->
+        <div style="position:absolute; top:32px; left:0px; width:576px; height:576px;">
+            <img src="img/map.png" class="k73"><img src="img/map.png" class="k73">
+        </div>
+        <!-- ナナメ -->
+        <div style="position:absolute; top:32px; left:32px; width:576px; height:576px;">
+            <img src="img/map.png" class="k84"><img src="img/map.png" class="k62">
+        </div>
+    </div>
+
 
 </html>
