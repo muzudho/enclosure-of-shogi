@@ -269,6 +269,22 @@
             for (entry of input.arrow) {
                 document.getElementById(entry[0]).setAttribute('class', entry[1]);
             }
+
+            /*
+            // 得点計算表示
+            let reversed = Array.from(input.arrow);
+            reversed.reverse();
+            for (entry of reversed) {
+            }
+            */
+
+            document.getElementById("sc3_im").setAttribute('class', "k51");
+            document.getElementById("sc3_tx").innerHTML = "0 点";
+            document.getElementById("sc2_im").setAttribute('class', "a73");
+            document.getElementById("sc2_tx").innerHTML = "2 点";
+            document.getElementById("sc1_im").setAttribute('class', "a1");
+            document.getElementById("sc1_tx").innerHTML = "1 点";
+            document.getElementById("sc0_tx").innerHTML = "3 点";
         }
     </script>
 </head>
@@ -380,27 +396,28 @@
         </div>
     </div>
     <!-- 得点計算 -->
-    <div style="position:absolute; top:146px; left:640px;">
-        <span style="margin-left:77px;"></span><img src="img/map.png" class="s"><span
+    <div style="position:absolute; top:175px; left:640px;">
+        <span style="margin-left:77px;"></span><img id="sc8_im" src="img/map.png" class="s"><span id="sc8_tx"
             style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img src="img/map.png" class="s"><span
+        <span style="margin-left:77px;"></span><img id="sc7_im" src="img/map.png" class="s"><span id="sc7_tx"
             style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img src="img/map.png" class="s"><span
+        <span style="margin-left:77px;"></span><img id="sc6_im" src="img/map.png" class="s"><span id="sc6_tx"
             style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img src="img/map.png" class="s"><span
+        <span style="margin-left:77px;"></span><img id="sc5_im" src="img/map.png" class="s"><span id="sc5_tx"
             style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img src="img/map.png" class="s"><span
+        <span style="margin-left:77px;"></span><img id="sc4_im" src="img/map.png" class="s"><span id="sc4_tx"
             style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img src="img/map.png" class="k51"><span style="font-size:24px;">0
-            点</span><br>
-        <span style="margin-left:77px;"></span><img src="img/map.png" class="a73"><span style="font-size:24px;">2
-            点</span><br>
-        <span style="font-size:48px; margin-right:29px;">＋</span><img src="img/map.png" class="a1"><span
-            style="font-size:24px;">1
-            点</span><br>
-        <span style="font-size:24px; font-weight:bold;">━━━━━━━━</span><br>
-        <span style="font-size:24px; font-weight:bold;">囲いっぽさ</span><span style="font-size:24px; margin-left:20px;">3
-            点</span><br>
+        <span style="margin-left:77px;"></span><img id="sc3_im" src="img/map.png" class="s"><span id="sc3_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="sc2_im" src="img/map.png" class="s"><span id="sc2_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="sc1_im" src="img/map.png" class="s"><span id="sc1_tx"
+            style="font-size:24px;"></span><br>
+        <br>
+        <span style="font-size:24px; font-weight:bold;">囲いっぽさ</span><span id="sc0_tx"
+            style="font-size:24px; margin-left:20px;"></span><br>
+        <span style="position:absolute; top:440px; font-size:48px; font-weight:bold;">＋</span><br>
+        <span style="position:absolute; top:501px; font-size:24px; font-weight:bold;">━━━━━━━━</span><br>
     </div>
 
 </html>
