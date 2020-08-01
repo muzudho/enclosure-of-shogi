@@ -1,7 +1,9 @@
 let nodesCount;
+let allVariations = [];
+let allVariationValues = [];
 let bestValue;
-let all_variations = [];
-let all_variation_values = [];
+let bestVariation;
+let bestVariationValues;
 
 function search(input) {
     nodesCount = 0;
@@ -35,10 +37,12 @@ function node(preSq, currSq, state) {
         }
         if (bestValue < state.value) {
             bestValue = state.value;
+            bestVariation = Array.from(state.pv);
+            bestVariationValue = Array.from(state.pv_value);
         }
         // Record pv.
-        all_variations.push(Array.from(state.pv));
-        all_variation_values.push(Array.from(state.pv_value));
+        allVariations.push(Array.from(state.pv));
+        allVariationValues.push(Array.from(state.pv_value));
     }
     for (nextSq of ways) {
         switch (state.board[nextSq]) {
@@ -208,7 +212,7 @@ function letDiffValue(currSq, nextSq, state) {
 function existsPv(newSq, state) {
     state.pv.push(newSq);
     let exists = false;
-    for (exist_var in all_variations) {
+    for (exist_var in allVariations) {
         if (exist_var.length < state.pv.length) {
             // 一致しない
             continue;
