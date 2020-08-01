@@ -9,16 +9,22 @@ function search(input) {
         checkBoard: createFalseBoard(input),
         value: 0,
     };
-    node(find('K', board), state);
+    node(0, find('K', board), state);
 }
 
-function node(currSq, state) {
+function node(preSq, currSq, state) {
     nodesCount++;
     state.checkBoard[currSq] = true;
     let ways = genMove(currSq, state);
-    alert(`ways.length=${ways.length}`);
+    // alert(`ways.length=${ways.length}`);
     if (ways.length === 0) {
-        // TODO Evaluation.
+        // Leaf
+        // 直前の点数計算
+        let diffValue = letDiffValue(preSq, currSq, state);
+        if (diffValue != 4) {
+            // 行き止まり
+            state.value += 1;
+        }
         if (bestValue < state.value) {
             bestValue = state.value;
         }
@@ -26,10 +32,10 @@ function node(currSq, state) {
     for (nextSq of ways) {
         switch (state.board[nextSq]) {
             case 'G':
-                node(nextSq, state);
+                node(currSq, nextSq, state);
                 break;
             case 'S':
-                node(nextSq, state);
+                node(currSq, nextSq, state);
                 break;
             default:
                 break;
@@ -81,12 +87,10 @@ function pushWay(offset, ways, currSq, state) {
     if (!state.checkBoard[nextSq] && (dstPc === 'G' || dstPc === 'S')) {
         let srcPc = state.board[currSq];
         if (srcPc === 'G' || srcPc === 'S') {
-            /*
             // 点数計算
-            let diffValue = letDiffValue(nextSq, currSq, state);
-            alert(`nextSq=${nextSq} state.checkBoard[nextSq]=${state.checkBoard[nextSq]} dstPc=${dstPc} diffValue=${diffValue}`);
+            let diffValue = letDiffValue(currSq, nextSq, state);
+            // alert(`nextSq=${nextSq} state.checkBoard[nextSq]=${state.checkBoard[nextSq]} dstPc=${dstPc} diffValue=${diffValue}`);
             state.value += diffValue;
-            */
         }
         ways.push(nextSq);
     }
@@ -95,11 +99,11 @@ function pushWay(offset, ways, currSq, state) {
  * 局面差分評価値算出
  * @param {*} state 
  */
-function letDiffValue(nextSq, currSq, state) {
+function letDiffValue(currSq, nextSq, state) {
     let srcPc = state.board[currSq];
     let dstPc = state.board[nextSq];
     let diff = nextSq - currSq;
-    alert(`letDiffValue: srcPc=${srcPc} dstPc=${dstPc} diff=${diff}`);
+    // alert(`letDiffValue: srcPc=${srcPc} dstPc=${dstPc} diff=${diff}`);
     switch (srcPc) {
         case 'G':
             switch (dstPc) {
