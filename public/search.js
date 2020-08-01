@@ -1,74 +1,84 @@
-let nodes_count;
+let nodesCount;
+let bestValue;
 function search(input) {
-    nodes_count = 0;
+    nodesCount = 0;
+    bestValue = 0;
     let board = createBoard(input);
-    let checkBoard = createFalseBoard(input);
-    let curSq = find('K', board);
-    node(curSq, board, checkBoard);
+    let state = {
+        curSq: find('K', board),
+        board: board,
+        checkBoard: createFalseBoard(input),
+        value: 0,
+    };
+    node(state);
 }
 
-function node(curSq, board, checkBoard) {
-    checkBoard[curSq] = true;
-    let ways = genMove(curSq, board, checkBoard);
-    alert(`ways.length=${ways.length}`);
+function node(state) {
+    state.checkBoard[state.curSq] = true;
+    let ways = genMove(state);
+    // alert(`ways.length=${ways.length}`);
     if (ways.length === 0) {
         // TODO Evaluation.
-        nodes_count++;
+        nodesCount++;
+        if (bestValue < state.value) {
+            bestValue = state.value;
+        }
     }
     for (nextSq of ways) {
-        switch (board[nextSq]) {
+        switch (state.board[nextSq]) {
             case 'G':
-                node(nextSq, board, checkBoard);
+                node(state);
                 break;
             case 'S':
-                node(nextSq, board, checkBoard);
+                node(state);
                 break;
             default:
                 break;
         }
     }
-    checkBoard[curSq] = false;
+    state.checkBoard[state.curSq] = false;
 }
 
 /**
  * Generation move.
  */
-function genMove(sq, board, checkBoard) {
+function genMove(state) {
     let ways = [];
 
-    switch (board[sq]) {
+    switch (state.board[state.sq]) {
         case 'K':
-            pushWay(sq - 10, ways, board, checkBoard);
-            pushWay(sq - 11, ways, board, checkBoard);
-            pushWay(sq - 1, ways, board, checkBoard);
-            pushWay(sq + 9, ways, board, checkBoard);
-            pushWay(sq + 10, ways, board, checkBoard);
-            pushWay(sq + 11, ways, board, checkBoard);
-            pushWay(sq + 1, ways, board, checkBoard);
-            pushWay(sq - 9, ways, board, checkBoard);
+            pushWay(- 10, ways, state);
+            pushWay(- 11, ways, state);
+            pushWay(- 1, ways, state);
+            pushWay(9, ways, state);
+            pushWay(10, ways, state);
+            pushWay(11, ways, state);
+            pushWay(1, ways, state);
+            pushWay(- 9, ways, state);
             break;
         case 'G':
-            pushWay(sq - 10, ways, board, checkBoard);
-            pushWay(sq - 11, ways, board, checkBoard);
-            pushWay(sq - 1, ways, board, checkBoard);
-            pushWay(sq + 9, ways, board, checkBoard);
-            pushWay(sq + 10, ways, board, checkBoard);
-            pushWay(sq + 1, ways, board, checkBoard);
+            pushWay(- 10, ways, state);
+            pushWay(- 11, ways, state);
+            pushWay(- 1, ways, state);
+            pushWay(9, ways, state);
+            pushWay(10, ways, state);
+            pushWay(1, ways, state);
             break;
         case 'S':
-            pushWay(sq - 11, ways, board, checkBoard);
-            pushWay(sq - 1, ways, board, checkBoard);
-            pushWay(sq + 9, ways, board, checkBoard);
-            pushWay(sq + 11, ways, board, checkBoard);
-            pushWay(sq - 9, ways, board, checkBoard);
+            pushWay(- 11, ways, state);
+            pushWay(- 1, ways, state);
+            pushWay(9, ways, state);
+            pushWay(11, ways, state);
+            pushWay(- 9, ways, state);
             break;
         default:
             break;
     }
     return ways;
 }
-function pushWay(nextSq, ways, board, checkBoard) {
-    if (!checkBoard[nextSq] && (board[nextSq] === 'G' || board[nextSq] === 'S')) {
+function pushWay(offset, ways, state) {
+    nextSq = state.curSq + offset;
+    if (!state.checkBoard[nextSq] && (state.board[nextSq] === 'G' || state.board[nextSq] === 'S')) {
         ways.push(nextSq);
     }
 }
