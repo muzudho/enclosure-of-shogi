@@ -1,3 +1,5 @@
+const INTERVAL_MSEC = 1000;
+
 let nodesCount;
 let allVariations = [];
 let allVariationValues = [];
@@ -5,7 +7,7 @@ let bestValue;
 let bestVariation;
 let bestVariationValues;
 
-function search(input) {
+async function search(input, isBoard) {
     nodesCount = 0;
     bestValue = 0;
     let board = createBoard(input);
@@ -16,14 +18,20 @@ function search(input) {
         // Principal variations.
         pv: [],
         pv_value: [],
+        isBoard: isBoard,
     };
-    node(0, find('K', board), state);
+
+    await node(0, find('K', board), state);
 
     // alert(`search.js nodesCount=${nodesCount} allVariations=${JSON.stringify(allVariations, null, '\t')}  allVariationValues=${JSON.stringify(allVariationValues, null, '\t')}`);
     // alert(`search.js bestValue=${bestValue} bestVariation=${JSON.stringify(bestVariation, null, '\t')}  bestVariationValues=${JSON.stringify(bestVariationValue, null, '\t')}`);
     // 矢印に変換。
     let arrows = [];
-    for (i = 1; i < bestVariation.length; i++) {
+    let bestVarLen = 0;
+    if (bestVariation) {
+        bestVarLen = bestVariation.length;
+    }
+    for (i = 1; i < bestVarLen; i++) {
         let bestSq = bestVariation[i - 1];
         let bestVarVal = bestVariationValue[i];
         let diff = bestVariation[i] - bestVariation[i - 1];
@@ -166,8 +174,14 @@ function search(input) {
     return arrows;
 }
 
-function node(preSq, currSq, state) {
-    document.getElementById(`ui${currSq}`).setAttribute('class', 'red_cursor');
+async function node(preSq, currSq, state) {
+    // Animation
+    if (state.isBoard) {
+        const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+        await _sleep(INTERVAL_MSEC);
+        // alert(`search.js/node/start currSq=${currSq}`);
+        document.getElementById(`ui${currSq}`).setAttribute('class', 'red_cursor');
+    }
 
     // 直前の点数計算
     let diffValue = letDiffValue(preSq, currSq, state);
@@ -197,10 +211,12 @@ function node(preSq, currSq, state) {
     for (nextSq of ways) {
         switch (state.board[nextSq]) {
             case 'G':
-                node(currSq, nextSq, state);
+                // alert(`search.js/node/G/setInterval currSq=${currSq} nextSq=${nextSq}`);
+                await node(currSq, nextSq, state);
                 break;
             case 'S':
-                node(currSq, nextSq, state);
+                // alert(`search.js/node/S/setInterval currSq=${currSq} nextSq=${nextSq}`);
+                await node(currSq, nextSq, state);
                 break;
             default:
                 break;
