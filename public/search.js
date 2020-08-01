@@ -1,5 +1,7 @@
 let nodesCount;
 let bestValue;
+let all_variations = [];
+
 function search(input) {
     nodesCount = 0;
     bestValue = 0;
@@ -8,6 +10,8 @@ function search(input) {
         board: board,
         checkBoard: createFalseBoard(input),
         value: 0,
+        // Principal variations.
+        pv: [],
     };
     node(0, find('K', board), state);
 }
@@ -15,6 +19,7 @@ function search(input) {
 function node(preSq, currSq, state) {
     nodesCount++;
     state.checkBoard[currSq] = true;
+    state.pv.push(currSq);
     let ways = genMove(currSq, state);
     // alert(`ways.length=${ways.length}`);
     if (ways.length === 0) {
@@ -28,6 +33,8 @@ function node(preSq, currSq, state) {
         if (bestValue < state.value) {
             bestValue = state.value;
         }
+        // Record pv.
+        all_variations.push(Array.from(state.pv));
     }
     for (nextSq of ways) {
         switch (state.board[nextSq]) {
@@ -41,6 +48,7 @@ function node(preSq, currSq, state) {
                 break;
         }
     }
+    state.pv.pop();
     state.checkBoard[currSq] = false;
 }
 
@@ -84,6 +92,10 @@ function genMove(currSq, state) {
 function pushWay(offset, ways, currSq, state) {
     nextSq = currSq + offset;
     let dstPc = state.board[nextSq];
+    if (existsPv(nextSq, state)) {
+        // 既存の枝は作らない。
+        return;
+    }
     if (!state.checkBoard[nextSq] && (dstPc === 'G' || dstPc === 'S')) {
         let srcPc = state.board[currSq];
         if (srcPc === 'G' || srcPc === 'S') {
@@ -187,6 +199,27 @@ function letDiffValue(currSq, nextSq, state) {
 
     // Error.
     return 0;
+}
+function existsPv(newSq, state) {
+    state.pv.push(newSq);
+    let exists = false;
+    for (exist_var in all_variations) {
+        if (exist_var.length < state.pv.length) {
+            // 一致しない
+            continue;
+        }
+        for (i = 0; i < state.pv.length; i++) {
+            if (exist_var[i] !== state.pv[i]) {
+                // 一致しない
+                continue;
+            }
+        }
+        // 一致した
+        exists = true;
+        break;
+    }
+    state.pv.pop();
+    return exists;
 }
 function find(piece, board) {
     for (const [i, sq] of board.entries()) {

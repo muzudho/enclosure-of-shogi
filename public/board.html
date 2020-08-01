@@ -64,7 +64,7 @@
 
             // 探索開始
             search(input);
-            alert(`nodesCount=${nodesCount} bestValue=${bestValue}`);
+            alert(`nodesCount=${nodesCount} bestValue=${bestValue} all_variations=${JSON.stringify(all_variations, null, '\t')}`);
 
             // 矢印
             for (entry of input.arrow) {
