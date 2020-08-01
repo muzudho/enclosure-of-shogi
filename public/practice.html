@@ -238,27 +238,35 @@
                 }
             }
 
-            let input = [
+            let input = {
                 // 盤面
-                ['sq96', 'pc_0'],
-                ['sq76', 'pc_0'],
-                ['sq66', 'pc_0'],
-                ['sq87', 'pc_0'],
-                ['sq77', 'pc_s'],
-                ['sq67', 'pc_0'],
-                ['sq57', 'pc_0'],
-                ['sq88', 'pc_k'],
-                ['sq78', 'pc_g'],
-                ['sq99', 'pc_0'],
-                ['sq89', 'pc_0'],
+                board: [
+                    ['sq96', 'pc_0'],
+                    ['sq76', 'pc_0'],
+                    ['sq66', 'pc_0'],
+                    ['sq87', 'pc_0'],
+                    ['sq77', 'pc_s'],
+                    ['sq67', 'pc_0'],
+                    ['sq57', 'pc_0'],
+                    ['sq88', 'pc_k'],
+                    ['sq78', 'pc_g'],
+                    ['sq99', 'pc_0'],
+                    ['sq89', 'pc_0'],
+                ],
                 // 矢印
-                ['w88', 'k51'],
-                ['h78', 'a73'],
-                ['c77', 'a1'],
-            ];
+                arrow: [
+                    ['w88', 'k51'],
+                    ['h78', 'a73'],
+                    ['c77', 'a1'],
+                ]
+            };
 
             // 盤面 (Webブラウザーで 80%に縮小して見るとちょうどいいかも)
-            for (entry of input) {
+            for (entry of input.board) {
+                document.getElementById(entry[0]).setAttribute('class', entry[1]);
+            }
+            // 矢印
+            for (entry of input.arrow) {
                 document.getElementById(entry[0]).setAttribute('class', entry[1]);
             }
         }
