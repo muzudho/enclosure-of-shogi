@@ -5,21 +5,20 @@ function search(input) {
     bestValue = 0;
     let board = createBoard(input);
     let state = {
-        curSq: find('K', board),
         board: board,
         checkBoard: createFalseBoard(input),
         value: 0,
     };
-    node(state);
+    node(find('K', board), state);
 }
 
-function node(state) {
-    state.checkBoard[state.curSq] = true;
-    let ways = genMove(state);
-    // alert(`ways.length=${ways.length}`);
+function node(currSq, state) {
+    nodesCount++;
+    state.checkBoard[currSq] = true;
+    let ways = genMove(currSq, state);
+    alert(`ways.length=${ways.length}`);
     if (ways.length === 0) {
         // TODO Evaluation.
-        nodesCount++;
         if (bestValue < state.value) {
             bestValue = state.value;
         }
@@ -27,60 +26,163 @@ function node(state) {
     for (nextSq of ways) {
         switch (state.board[nextSq]) {
             case 'G':
-                node(state);
+                node(nextSq, state);
                 break;
             case 'S':
-                node(state);
+                node(nextSq, state);
                 break;
             default:
                 break;
         }
     }
-    state.checkBoard[state.curSq] = false;
+    state.checkBoard[currSq] = false;
 }
 
 /**
  * Generation move.
  */
-function genMove(state) {
+function genMove(currSq, state) {
     let ways = [];
 
-    switch (state.board[state.sq]) {
+    switch (state.board[currSq]) {
         case 'K':
-            pushWay(- 10, ways, state);
-            pushWay(- 11, ways, state);
-            pushWay(- 1, ways, state);
-            pushWay(9, ways, state);
-            pushWay(10, ways, state);
-            pushWay(11, ways, state);
-            pushWay(1, ways, state);
-            pushWay(- 9, ways, state);
+            pushWay(- 10, ways, currSq, state);
+            pushWay(- 11, ways, currSq, state);
+            pushWay(- 1, ways, currSq, state);
+            pushWay(9, ways, currSq, state);
+            pushWay(10, ways, currSq, state);
+            pushWay(11, ways, currSq, state);
+            pushWay(1, ways, currSq, state);
+            pushWay(- 9, ways, currSq, state);
             break;
         case 'G':
-            pushWay(- 10, ways, state);
-            pushWay(- 11, ways, state);
-            pushWay(- 1, ways, state);
-            pushWay(9, ways, state);
-            pushWay(10, ways, state);
-            pushWay(1, ways, state);
+            pushWay(- 10, ways, currSq, state);
+            pushWay(- 11, ways, currSq, state);
+            pushWay(- 1, ways, currSq, state);
+            pushWay(9, ways, currSq, state);
+            pushWay(10, ways, currSq, state);
+            pushWay(1, ways, currSq, state);
             break;
         case 'S':
-            pushWay(- 11, ways, state);
-            pushWay(- 1, ways, state);
-            pushWay(9, ways, state);
-            pushWay(11, ways, state);
-            pushWay(- 9, ways, state);
+            pushWay(- 11, ways, currSq, state);
+            pushWay(- 1, ways, currSq, state);
+            pushWay(9, ways, currSq, state);
+            pushWay(11, ways, currSq, state);
+            pushWay(- 9, ways, currSq, state);
             break;
         default:
             break;
     }
     return ways;
 }
-function pushWay(offset, ways, state) {
-    nextSq = state.curSq + offset;
-    if (!state.checkBoard[nextSq] && (state.board[nextSq] === 'G' || state.board[nextSq] === 'S')) {
+function pushWay(offset, ways, currSq, state) {
+    nextSq = currSq + offset;
+    let dstPc = state.board[nextSq];
+    if (!state.checkBoard[nextSq] && (dstPc === 'G' || dstPc === 'S')) {
+        let srcPc = state.board[currSq];
+        if (srcPc === 'G' || srcPc === 'S') {
+            /*
+            // 点数計算
+            let diffValue = letDiffValue(nextSq, currSq, state);
+            alert(`nextSq=${nextSq} state.checkBoard[nextSq]=${state.checkBoard[nextSq]} dstPc=${dstPc} diffValue=${diffValue}`);
+            state.value += diffValue;
+            */
+        }
         ways.push(nextSq);
     }
+}
+/**
+ * 局面差分評価値算出
+ * @param {*} state 
+ */
+function letDiffValue(nextSq, currSq, state) {
+    let srcPc = state.board[currSq];
+    let dstPc = state.board[nextSq];
+    let diff = nextSq - currSq;
+    alert(`letDiffValue: srcPc=${srcPc} dstPc=${dstPc} diff=${diff}`);
+    switch (srcPc) {
+        case 'G':
+            switch (dstPc) {
+                case 'G':
+                    switch (diff) {
+                        case 1: //thru
+                        case -1: // thru
+                        case 10: // thru
+                        case -10:
+                            // 金 金
+                            // ↓  ↑
+                            // 金 金
+                            // 金←金, 金→金
+                            return 4;
+                        case 9: // thuru
+                        case -11:
+                            // 金ナナメ上
+                            return 2;
+                        default:
+                            break;
+                    }
+                    break;
+                case 'S':
+                    switch (diff) {
+                        case -11: // thru
+                        case 9:
+                            // ナナメ上
+                            return 4;
+                        case 1: //thru
+                        case -1: // thru
+                        case 10: // thru
+                        case -10:
+                            return 2;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case 'S':
+            switch (dstPc) {
+                case 'G':
+                    switch (diff) {
+                        case 11: // thru
+                        case -9: // thru
+                        case -1:
+                            // ナナメ下, 真上
+                            return 4;
+                        case -11: // thru
+                        case 9: // thru
+                            // ナナメ上
+                            return 2;
+                        default:
+                            break;
+                    }
+                    break;
+                case 'S':
+                    switch (diff) {
+                        case -11: // thru
+                        case 9: // thru
+                        case 11: // thru
+                        case -9: // thru
+                            // ナナメ
+                            return 4;
+                        case -1:
+                            // 真上
+                            return 2;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
+
+    // Error.
+    return 0;
 }
 function find(piece, board) {
     for (const [i, sq] of board.entries()) {
