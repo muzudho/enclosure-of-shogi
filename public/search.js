@@ -229,6 +229,17 @@ async function node(preSq, currSq, state) {
     state.pv_value.pop();
     state.pv.pop();
     state.checkBoard[currSq] = false;
+
+    // Animation
+    if (ANIMATION_FLAG && state.isBoard) {
+        const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+        await _sleep(INTERVAL_MSEC);
+        // alert(`search.js/node/start currSq=${currSq}`);
+        if (preSq) {
+            document.getElementById(`ui${preSq}`).setAttribute('class', 'red_cursor');
+        }
+        document.getElementById(`ui${currSq}`).setAttribute('class', 's');
+    }
 }
 
 /**
