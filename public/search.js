@@ -274,37 +274,41 @@ function letDiffValue(currSq, nextSq, state) {
     let diff = nextSq - currSq;
     // alert(`letDiffValue: srcPc=${srcPc} dstPc=${dstPc} diff=${diff}`);
     switch (srcPc) {
-        case 'G':
+        case 'G': // Gold
             switch (dstPc) {
-                case 'G':
+                case 'G': // Gold
                     switch (diff) {
                         case 1: //thru
                         case -1: // thru
                         case 10: // thru
                         case -10:
-                            // 金 金
-                            // ↓  ↑
-                            // 金 金
-                            // 金←金, 金→金
+                            //        金(-1)
+                            // 金(10) 金     金(-10)
+                            //        金(1)
                             return 4;
                         case 9: // thuru
                         case -11:
-                            // 金ナナメ上
+                            // 金(9)    金(-11)
+                            //      金
                             return 2;
                         default:
                             break;
                     }
                     break;
-                case 'S':
+                case 'S': // Silver
                     switch (diff) {
                         case -11: // thru
                         case 9:
-                            // ナナメ上
+                            // 銀(9)　銀(-11)
+                            // 　   金
                             return 4;
                         case 1: //thru
                         case -1: // thru
                         case 10: // thru
                         case -10:
+                            //        銀(-1)
+                            // 銀(10) 金    銀(-10)
+                            //        銀(1)
                             return 2;
                         default:
                             break;
@@ -314,33 +318,39 @@ function letDiffValue(currSq, nextSq, state) {
                     break;
             }
             break;
-        case 'S':
+        case 'S': // Silver
             switch (dstPc) {
-                case 'G':
+                case 'G': // Gold
                     switch (diff) {
-                        case 11: // thru
                         case -9: // thru
-                        case -1:
-                            // ナナメ下, 真上
+                        case -1: // thru
+                        case 11:
+                            //     金(-1)
+                            //     銀
+                            // 金(11)  金(-9)
                             return 4;
                         case -11: // thru
-                        case 9: // thru
-                            // ナナメ上
+                        case 9:
+                            // 金(9)  金(-11)
+                            //     銀
                             return 2;
                         default:
                             break;
                     }
                     break;
-                case 'S':
+                case 'S': // Silver
                     switch (diff) {
                         case -11: // thru
                         case 9: // thru
                         case 11: // thru
                         case -9: // thru
-                            // ナナメ
+                            // 銀(9)    銀(-11)
+                            //      銀
+                            // 銀(11)   銀(-9)
                             return 4;
                         case -1:
-                            // 真上
+                            // 銀(-1)
+                            // 銀
                             return 2;
                         default:
                             break;

@@ -54,7 +54,7 @@
             let total = 0;
             let i = 1;
             for (entry of reversed) {
-                alert(`entry=${JSON.stringify(entry, null, `  `)}`)
+                // alert(`entry=${JSON.stringify(entry, null, `  `)}`)
                 // let angle = whichAngle(entry[1]);
                 document.getElementById(`sc${i}_im`).setAttribute('class', entry[1]);
                 document.getElementById(`sc${i}_tx`).innerHTML = `${table[entry[1]]} 点`;

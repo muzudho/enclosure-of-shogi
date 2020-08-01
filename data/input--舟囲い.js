@@ -1,32 +1,26 @@
 function get_data() {
     return {
         "enclosureName": [
-            "左美濃囲い", "天守閣美濃", "Hidari Mino Gakoi", "Tensyukaku Mino"
+            "舟囲い", "舟囲い", "Funa Gakoi", "Funa Gakoi"
         ],
         "board": [
             [96, "pc_0"],
-            [86, "pc_0"],
             [76, "pc_0"],
             [56, "pc_0"],
 
-            [87, "pc_k"],
+            [87, "pc_0"],
             [67, "pc_0"],
+            [47, "pc_0"],
 
             [88, "pc_0"],
-            [78, "pc_s"],
+            [78, "pc_k"],
             [58, "pc_g"],
+            [48, "pc_s"],
 
             [99, "pc_0"],
             [89, "pc_0"],
+            [79, "pc_s"],
             [69, "pc_g"]
         ],
-        /*
-        "arrow": [
-            [87, "k48"],
-            [78, "a4884"],
-            [68, "a62"],
-            [58, "a1"]
-        ]
-        */
     };
 }
