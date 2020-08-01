@@ -62,10 +62,9 @@
                 document.getElementById(`sq${entry[0]}`).setAttribute('class', entry[1]);
             }
 
-            let board = create_board(input);
-            // alert(`board=${JSON.stringify(board, null, '\t')}`);
-            let king_pos = find('K', board);
-            // alert(`king_pos=${king_pos}`);
+            // 探索開始
+            search(input);
+            // alert(`B nodes_count=${nodes_count}`);
 
             // 矢印
             for (entry of input.arrow) {
