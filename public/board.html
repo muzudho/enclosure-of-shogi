@@ -6,207 +6,14 @@
     <title>将棋の囲い</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css">
-    <style>
-        /* Space */
-        img.s {
-            object-fit: none;
-            object-position: -64px -64px;
-            width: 64px;
-            height: 64px;
-        }
-
-        /* Arrow from king */
-        img.k84 {
-            object-fit: none;
-            object-position: 0px 0px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.k73 {
-            object-fit: none;
-            object-position: -64px 0px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.k62 {
-            object-fit: none;
-            object-position: -128px 0px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.k15 {
-            object-fit: none;
-            object-position: 0px -64px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.k51 {
-            object-fit: none;
-            object-position: -128px -64px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.k27 {
-            object-fit: none;
-            object-position: 0px -128px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.k38 {
-            object-fit: none;
-            object-position: -64px -128px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.k49 {
-            object-fit: none;
-            object-position: -128px -128px;
-            width: 64px;
-            height: 64px;
-        }
-
-        /* Arrow */
-        img.a1 {
-            object-fit: none;
-            object-position: -256px -64px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.a84 {
-            object-fit: none;
-            object-position: -192px 0px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.a73 {
-            object-fit: none;
-            object-position: -256px 0px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.a62 {
-            object-fit: none;
-            object-position: -320px 0px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.a15 {
-            object-fit: none;
-            object-position: -192px -64px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.a51 {
-            object-fit: none;
-            object-position: -320px -64px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.a27 {
-            object-fit: none;
-            object-position: -192px -128px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.a38 {
-            object-fit: none;
-            object-position: -256px -128px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.a49 {
-            object-fit: none;
-            object-position: -320px -128px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.a4884 {
-            object-fit: none;
-            object-position: -0px -192px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.a3773 {
-            object-fit: none;
-            object-position: -64px -192px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.a2662 {
-            object-fit: none;
-            object-position: -128px -192px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.a1551 {
-            object-fit: none;
-            object-position: -128px -256px;
-            width: 64px;
-            height: 64px;
-        }
-
-        /* Square */
-        img.sq {
-            object-fit: none;
-            object-position: -64px -256px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.pc_0 {
-            object-fit: none;
-            object-position: 0px -256px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.pc_k {
-            object-fit: none;
-            object-position: 0px -320px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.pc_g {
-            object-fit: none;
-            object-position: -64px -320px;
-            width: 64px;
-            height: 64px;
-        }
-
-        img.pc_s {
-            object-fit: none;
-            object-position: -128px -320px;
-            width: 64px;
-            height: 64px;
-        }
-    </style>
+    <link rel="stylesheet" href="board.css">
+    <script src="./input.js"></script>
     <script>
         function on_load() {
             let file = parseFloat(findGetParameter('file'));
             let rank = parseFloat(findGetParameter('rank'));
             let x = 64 * (9 - file);
             let y = 64 * (rank - 1);
-            alert(`x=${x} y=${y}`);
             // 表示位置調整
             window.scrollTo(x, y);
 
@@ -246,28 +53,8 @@
                 }
             }
 
-            let input = {
-                // 盤面
-                board: [
-                    ['sq96', 'pc_0'],
-                    ['sq76', 'pc_0'],
-                    ['sq66', 'pc_0'],
-                    ['sq87', 'pc_0'],
-                    ['sq77', 'pc_s'],
-                    ['sq67', 'pc_0'],
-                    ['sq57', 'pc_0'],
-                    ['sq88', 'pc_k'],
-                    ['sq78', 'pc_g'],
-                    ['sq99', 'pc_0'],
-                    ['sq89', 'pc_0'],
-                ],
-                // 矢印
-                arrow: [
-                    ['w88', 'k51'],
-                    ['h78', 'a73'],
-                    ['c77', 'a1'],
-                ]
-            };
+            // データ読み取り
+            let input = get_data();
 
             // 盤面 (Webブラウザーで 80%に縮小して見るとちょうどいいかも)
             for (entry of input.board) {
@@ -277,43 +64,6 @@
             for (entry of input.arrow) {
                 document.getElementById(entry[0]).setAttribute('class', entry[1]);
             }
-
-            // 得点計算表示
-            let table = {
-                "k84": 0,
-                "k73": 0,
-                "k62": 0,
-                "k15": 0,
-                "k51": 0,
-                "k26": 0,
-                "k37": 0,
-                "k48": 0,
-                "a1": 1,
-                "a84": 2,
-                "a73": 2,
-                "a62": 2,
-                "a15": 2,
-                "a51": 2,
-                "a26": 2,
-                "a37": 2,
-                "a48": 2,
-                "a4884": 4,
-                "a3773": 4,
-                "a2662": 4,
-                "a1551": 4,
-            };
-            let reversed = Array.from(input.arrow);
-            reversed.reverse();
-            let total = 0;
-            let i = 1;
-            for (entry of reversed) {
-                document.getElementById(`sc${i}_im`).setAttribute('class', entry[1]);
-                document.getElementById(`sc${i}_tx`).innerHTML = `${table[entry[1]]} 点`;
-                total += parseInt(table[entry[1]]);
-                i++;
-            }
-
-            document.getElementById("sc0_tx").innerHTML = `${total} 点`;
         }
 
         function findGetParameter(parameterName) {
@@ -434,30 +184,6 @@
             <img id="c99"><img id="c89"><img id="c79"><img id="c69"><img id="c59"><img id="c49"><img id="c39"><img
                 id="c29"><img id="c19"><br>
         </div>
-    </div>
-    <!-- 得点計算 -->
-    <div style="position:absolute; top:175px; left:640px;">
-        <span style="margin-left:77px;"></span><img id="sc8_im" src="img/map.png" class="s"><span id="sc8_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="sc7_im" src="img/map.png" class="s"><span id="sc7_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="sc6_im" src="img/map.png" class="s"><span id="sc6_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="sc5_im" src="img/map.png" class="s"><span id="sc5_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="sc4_im" src="img/map.png" class="s"><span id="sc4_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="sc3_im" src="img/map.png" class="s"><span id="sc3_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="sc2_im" src="img/map.png" class="s"><span id="sc2_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="sc1_im" src="img/map.png" class="s"><span id="sc1_tx"
-            style="font-size:24px;"></span><br>
-        <br>
-        <span style="font-size:24px; font-weight:bold;">囲いっぽさ</span><span id="sc0_tx"
-            style="font-size:24px; margin-left:20px;"></span><br>
-        <span style="position:absolute; top:440px; font-size:48px; font-weight:bold;">＋</span><br>
-        <span style="position:absolute; top:501px; font-size:24px; font-weight:bold;">━━━━━━━━</span><br>
     </div>
 
 </html>

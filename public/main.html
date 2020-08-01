@@ -6,8 +6,50 @@
     <title>将棋の囲い</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css">
+    <link rel="stylesheet" href="board.css">
+    <script src="./input.js"></script>
     <script>
         function on_load() {
+            // 得点計算表示
+            let table = {
+                "k84": 0,
+                "k73": 0,
+                "k62": 0,
+                "k15": 0,
+                "k51": 0,
+                "k26": 0,
+                "k37": 0,
+                "k48": 0,
+                "a1": 1,
+                "a84": 2,
+                "a73": 2,
+                "a62": 2,
+                "a15": 2,
+                "a51": 2,
+                "a26": 2,
+                "a37": 2,
+                "a48": 2,
+                "a4884": 4,
+                "a3773": 4,
+                "a2662": 4,
+                "a1551": 4,
+            };
+
+            // データ読み取り
+            let input = get_data();
+
+            let reversed = Array.from(input.arrow);
+            reversed.reverse();
+            let total = 0;
+            let i = 1;
+            for (entry of reversed) {
+                document.getElementById(`sc${i}_im`).setAttribute('class', entry[1]);
+                document.getElementById(`sc${i}_tx`).innerHTML = `${table[entry[1]]} 点`;
+                total += parseInt(table[entry[1]]);
+                i++;
+            }
+
+            document.getElementById("sc0_tx").innerHTML = `${total} 点`;
         }
     </script>
 </head>
@@ -16,8 +58,32 @@
     <h1>将棋の囲い</h1>
 
     <!-- 将棋盤 -->
-    <iframe id="iframe1" src="./practice.html?file=9&rank=5.5" style="width:364px; height:308px;border:none;"
-        scrolling="no">
+    <iframe id="iframe1" src="./board.html?file=9&rank=5.5"
+        style="position:absolute; top:175px; width:364px; height:308px;border:none;" scrolling="no">
     </iframe>
+    <!-- 得点計算 -->
+    <div style="position:absolute; top:-40px; left:430px;">
+        <span style="margin-left:77px;"></span><img id="sc8_im" src="img/map.png" class="s"><span id="sc8_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="sc7_im" src="img/map.png" class="s"><span id="sc7_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="sc6_im" src="img/map.png" class="s"><span id="sc6_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="sc5_im" src="img/map.png" class="s"><span id="sc5_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="sc4_im" src="img/map.png" class="s"><span id="sc4_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="sc3_im" src="img/map.png" class="s"><span id="sc3_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="sc2_im" src="img/map.png" class="s"><span id="sc2_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="sc1_im" src="img/map.png" class="s"><span id="sc1_tx"
+            style="font-size:24px;"></span><br>
+        <br>
+        <span style="font-size:24px; font-weight:bold;">囲いっぽさ</span><span id="sc0_tx"
+            style="font-size:24px; margin-left:20px;"></span><br>
+        <span style="position:absolute; top:440px; font-size:48px; font-weight:bold;">＋</span><br>
+        <span style="position:absolute; top:501px; font-size:24px; font-weight:bold;">━━━━━━━━</span><br>
+    </div>
 
 </html>
