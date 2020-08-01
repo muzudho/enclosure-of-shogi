@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css">
     <link rel="stylesheet" href="board.css">
     <script src="./input.js"></script>
+    <script src="./search.js"></script>
     <script>
         function on_load() {
             // 得点計算表示
@@ -44,12 +45,17 @@
             document.getElementById("enclosureNameEn").innerHTML = `${input.enclosureName[3]}`;
             document.getElementById("enclosureNameJp").innerHTML = `${input.enclosureName[1]}`;
 
+            // 探索開始
+            let arrows = search(input);
+
             // 計算結果
-            let reversed = Array.from(input.arrow);
+            let reversed = Array.from(arrows);
             reversed.reverse();
             let total = 0;
             let i = 1;
             for (entry of reversed) {
+                alert(`entry=${JSON.stringify(entry, null, `  `)}`)
+                // let angle = whichAngle(entry[1]);
                 document.getElementById(`sc${i}_im`).setAttribute('class', entry[1]);
                 document.getElementById(`sc${i}_tx`).innerHTML = `${table[entry[1]]} 点`;
                 total += parseInt(table[entry[1]]);
