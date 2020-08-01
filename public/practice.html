@@ -136,7 +136,7 @@
             height: 64px;
         }
 
-        img.a8448 {
+        img.a4884 {
             object-fit: none;
             object-position: -0px -192px;
             width: 64px;
@@ -270,21 +270,42 @@
                 document.getElementById(entry[0]).setAttribute('class', entry[1]);
             }
 
-            /*
             // 得点計算表示
+            let table = {
+                "k84": 0,
+                "k73": 0,
+                "k62": 0,
+                "k15": 0,
+                "k51": 0,
+                "k26": 0,
+                "k37": 0,
+                "k48": 0,
+                "a1": 1,
+                "a84": 2,
+                "a73": 2,
+                "a62": 2,
+                "a15": 2,
+                "a51": 2,
+                "a26": 2,
+                "a37": 2,
+                "a48": 2,
+                "a4884": 4,
+                "a3773": 4,
+                "a2662": 4,
+                "a1551": 4,
+            };
             let reversed = Array.from(input.arrow);
             reversed.reverse();
+            let total = 0;
+            let i = 1;
             for (entry of reversed) {
+                document.getElementById(`sc${i}_im`).setAttribute('class', entry[1]);
+                document.getElementById(`sc${i}_tx`).innerHTML = `${table[entry[1]]} 点`;
+                total += parseInt(table[entry[1]]);
+                i++;
             }
-            */
 
-            document.getElementById("sc3_im").setAttribute('class', "k51");
-            document.getElementById("sc3_tx").innerHTML = "0 点";
-            document.getElementById("sc2_im").setAttribute('class', "a73");
-            document.getElementById("sc2_tx").innerHTML = "2 点";
-            document.getElementById("sc1_im").setAttribute('class', "a1");
-            document.getElementById("sc1_tx").innerHTML = "1 点";
-            document.getElementById("sc0_tx").innerHTML = "3 点";
+            document.getElementById("sc0_tx").innerHTML = `${total} 点`;
         }
     </script>
 </head>
