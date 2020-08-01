@@ -53,6 +53,13 @@
                     document.getElementById(`c${file}${rank}`).setAttribute('class', 's');
                 }
             }
+            // UI
+            for (file = 9; 0 < file; file--) {
+                for (rank = 1; rank < 10; rank++) {
+                    document.getElementById(`ui${file}${rank}`).setAttribute('src', 'img/map.png');
+                    document.getElementById(`ui${file}${rank}`).setAttribute('class', 's');
+                }
+            }
 
             // データ読み取り
             let input = get_data();
@@ -60,7 +67,7 @@
             // 盤面 (Webブラウザーで 80%に縮小して見るとちょうどいいかも)
             for (entry of input.board) {
                 // alert(`board.html input.board entry=${JSON.stringify(entry, null, '  ')}`);
-                document.getElementById(`sq${entry[0]}`).setAttribute('class', entry[1]);
+                document.getElementById(`sq${entry[0]}`).setAttribute('class', `pc_${entry[1].toLowerCase()}`);
             }
 
             // 探索開始
@@ -129,6 +136,7 @@
 <body onload="on_load();">
     <!-- 将棋盤 -->
     <div style="position:relative; top:0px; left:0px; width:592px; height:592px; border:double 8px black;">
+        <!-- 盤 -->
         <div style="position:absolute; top:0px; left:0px; width:576px; height:576px; font-size:0;">
             <img id="sq91"><img id="sq81"><img id="sq71"><img id="sq61"><img id="sq51"><img id="sq41"><img
                 id="sq31"><img id="sq21"><img id="sq11"><br>
@@ -228,6 +236,27 @@
                 id="c28"><img id="c18"><br>
             <img id="c99"><img id="c89"><img id="c79"><img id="c69"><img id="c59"><img id="c49"><img id="c39"><img
                 id="c29"><img id="c19"><br>
+        </div>
+        <!-- カーソル -->
+        <div style="position:absolute; top:0px; left:0px; width:576px; height:576px; font-size:0;">
+            <img id="ui91"><img id="ui81"><img id="ui71"><img id="ui61"><img id="ui51"><img id="ui41"><img
+                id="ui31"><img id="ui21"><img id="ui11"><br>
+            <img id="ui92"><img id="ui82"><img id="ui72"><img id="ui62"><img id="ui52"><img id="ui42"><img
+                id="ui32"><img id="ui22"><img id="ui12"><br>
+            <img id="ui93"><img id="ui83"><img id="ui73"><img id="ui63"><img id="ui53"><img id="ui43"><img
+                id="ui33"><img id="ui23"><img id="ui13"><br>
+            <img id="ui94"><img id="ui84"><img id="ui74"><img id="ui64"><img id="ui54"><img id="ui44"><img
+                id="ui34"><img id="ui24"><img id="ui14"><br>
+            <img id="ui95"><img id="ui85"><img id="ui75"><img id="ui65"><img id="ui55"><img id="ui45"><img
+                id="ui35"><img id="ui25"><img id="ui15"><br>
+            <img id="ui96"><img id="ui86"><img id="ui76"><img id="ui66"><img id="ui56"><img id="ui46"><img
+                id="ui36"><img id="ui26"><img id="ui16"><br>
+            <img id="ui97"><img id="ui87"><img id="ui77"><img id="ui67"><img id="ui57"><img id="ui47"><img
+                id="ui37"><img id="ui27"><img id="ui17"><br>
+            <img id="ui98"><img id="ui88"><img id="ui78"><img id="ui68"><img id="ui58"><img id="ui48"><img
+                id="ui38"><img id="ui28"><img id="ui18"><br>
+            <img id="ui99"><img id="ui89"><img id="ui79"><img id="ui69"><img id="ui59"><img id="ui49"><img
+                id="ui39"><img id="ui29"><img id="ui19"><br>
         </div>
     </div>
 

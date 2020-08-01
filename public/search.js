@@ -167,6 +167,8 @@ function search(input) {
 }
 
 function node(preSq, currSq, state) {
+    document.getElementById(`ui${currSq}`).setAttribute('class', 'red_cursor');
+
     // 直前の点数計算
     let diffValue = letDiffValue(preSq, currSq, state);
     nodesCount++;
@@ -413,14 +415,10 @@ function createBoard(input) {
     for (entry of input.board) {
         // alert(`entry[${entry[0]}][${entry[1]}]`);
         switch (entry[1]) {
-            case 'pc_k':
-                board[entry[0]] = 'K';
-                break;
-            case 'pc_g':
-                board[entry[0]] = 'G';
-                break;
-            case 'pc_s':
-                board[entry[0]] = 'S';
+            case 'K': // thru
+            case 'G': // thru
+            case 'S':
+                board[entry[0]] = entry[1];
                 break;
             default:
                 // alert(`default entry[${entry[0]}][${entry[1]}]`);

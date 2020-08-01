@@ -6,6 +6,21 @@ img.s {
     height: 64px;
 }
 
+/* UI */
+img.red_cursor {
+    object-fit: none;
+    object-position: -448px 0px;
+    width: 64px;
+    height: 64px;
+}
+
+img.green_cursor {
+    object-fit: none;
+    object-position: -448px -64px;
+    width: 64px;
+    height: 64px;
+}
+
 /* Arrow from king */
 img.k84 {
     object-fit: none;
