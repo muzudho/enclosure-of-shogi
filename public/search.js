@@ -1,6 +1,7 @@
 let nodesCount;
 let bestValue;
 let all_variations = [];
+let all_variation_values = [];
 
 function search(input) {
     nodesCount = 0;
@@ -12,20 +13,22 @@ function search(input) {
         value: 0,
         // Principal variations.
         pv: [],
+        pv_value: [],
     };
     node(0, find('K', board), state);
 }
 
 function node(preSq, currSq, state) {
+    // 直前の点数計算
+    let diffValue = letDiffValue(preSq, currSq, state);
     nodesCount++;
     state.checkBoard[currSq] = true;
     state.pv.push(currSq);
+    state.pv_value.push(diffValue);
     let ways = genMove(currSq, state);
     // alert(`ways.length=${ways.length}`);
     if (ways.length === 0) {
         // Leaf
-        // 直前の点数計算
-        let diffValue = letDiffValue(preSq, currSq, state);
         if (diffValue != 4) {
             // 行き止まり
             state.value += 1;
@@ -35,6 +38,7 @@ function node(preSq, currSq, state) {
         }
         // Record pv.
         all_variations.push(Array.from(state.pv));
+        all_variation_values.push(Array.from(state.pv_value));
     }
     for (nextSq of ways) {
         switch (state.board[nextSq]) {
@@ -48,6 +52,7 @@ function node(preSq, currSq, state) {
                 break;
         }
     }
+    state.pv_value.pop();
     state.pv.pop();
     state.checkBoard[currSq] = false;
 }
