@@ -238,32 +238,37 @@
                 }
             }
 
-            // 盤面
-            document.getElementById('sq96').setAttribute('class', 'pc_0');
-            document.getElementById('sq76').setAttribute('class', 'pc_0');
-            document.getElementById('sq66').setAttribute('class', 'pc_0');
-            document.getElementById('sq87').setAttribute('class', 'pc_0');
-            document.getElementById('sq77').setAttribute('class', 'pc_s');
-            document.getElementById('sq67').setAttribute('class', 'pc_0');
-            document.getElementById('sq57').setAttribute('class', 'pc_0');
-            document.getElementById('sq88').setAttribute('class', 'pc_k');
-            document.getElementById('sq78').setAttribute('class', 'pc_g');
-            document.getElementById('sq99').setAttribute('class', 'pc_0');
-            document.getElementById('sq89').setAttribute('class', 'pc_0');
-            // ヨコ
-            document.getElementById('w88').setAttribute('class', 'k51');
-            // タテ
-            document.getElementById('h78').setAttribute('class', 'a73');
-            // ナカ
-            document.getElementById('c77').setAttribute('class', 'a1');
+            let input = [
+                // 盤面
+                ['sq96', 'pc_0'],
+                ['sq76', 'pc_0'],
+                ['sq66', 'pc_0'],
+                ['sq87', 'pc_0'],
+                ['sq77', 'pc_s'],
+                ['sq67', 'pc_0'],
+                ['sq57', 'pc_0'],
+                ['sq88', 'pc_k'],
+                ['sq78', 'pc_g'],
+                ['sq99', 'pc_0'],
+                ['sq89', 'pc_0'],
+                // 矢印
+                ['w88', 'k51'],
+                ['h78', 'a73'],
+                ['c77', 'a1'],
+            ];
+
+            // 盤面 (Webブラウザーで 80%に縮小して見るとちょうどいいかも)
+            for (entry of input) {
+                document.getElementById(entry[0]).setAttribute('class', entry[1]);
+            }
         }
     </script>
 </head>
 
-<body onload="on_load();">
+<body onload="on_load();" style="margin:40px;">
     <h1>将棋の囲い</h1>
 
-    <div style="position:relative; top:0px; left:0px; width:576px; height:576px;">
+    <div style="position:relative; top:0px; left:0px; width:592px; height:592px; border:double 8px black;">
         <div style="position:absolute; top:0px; left:0px; width:576px; height:576px; font-size:0;">
             <img id="sq91"><img id="sq81"><img id="sq71"><img id="sq61"><img id="sq51"><img id="sq41"><img
                 id="sq31"><img id="sq21"><img id="sq11"><br>
