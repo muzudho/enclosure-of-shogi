@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css">
     <link rel="stylesheet" href="board.css">
     <script src="./input.js"></script>
+    <script src="./search.js"></script>
     <script>
         function on_load() {
             let file = parseFloat(findGetParameter('file'));
@@ -58,8 +59,14 @@
 
             // 盤面 (Webブラウザーで 80%に縮小して見るとちょうどいいかも)
             for (entry of input.board) {
-                document.getElementById(entry[0]).setAttribute('class', entry[1]);
+                document.getElementById(`sq${entry[0]}`).setAttribute('class', entry[1]);
             }
+
+            let board = create_board(input);
+            // alert(`board=${JSON.stringify(board, null, '\t')}`);
+            let king_pos = find('K', board);
+            // alert(`king_pos=${king_pos}`);
+
             // 矢印
             for (entry of input.arrow) {
                 document.getElementById(entry[0]).setAttribute('class', entry[1]);
