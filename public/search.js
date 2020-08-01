@@ -19,8 +19,8 @@ function search(input) {
     };
     node(0, find('K', board), state);
 
-    // alert(`nodesCount=${nodesCount} allVariations=${JSON.stringify(allVariations, null, '\t')}  allVariationValues=${JSON.stringify(allVariationValues, null, '\t')}`);
-    // alert(`bestValue=${bestValue} bestVariation=${JSON.stringify(bestVariation, null, '\t')}  bestVariationValues=${JSON.stringify(bestVariationValue, null, '\t')}`);
+    // alert(`search.js nodesCount=${nodesCount} allVariations=${JSON.stringify(allVariations, null, '\t')}  allVariationValues=${JSON.stringify(allVariationValues, null, '\t')}`);
+    // alert(`search.js bestValue=${bestValue} bestVariation=${JSON.stringify(bestVariation, null, '\t')}  bestVariationValues=${JSON.stringify(bestVariationValue, null, '\t')}`);
     // 矢印に変換。
     let arrows = [];
     for (i = 1; i < bestVariation.length; i++) {
