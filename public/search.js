@@ -1,4 +1,5 @@
 const INTERVAL_MSEC = 1000;
+const ANIMATION_FLAG = true;
 
 let nodesCount;
 let allVariations = [];
@@ -21,7 +22,7 @@ async function search(input, isBoard) {
         isBoard: isBoard,
     };
 
-    await node(0, find('K', board), state);
+    await node(undefined, find('K', board), state);
 
     // alert(`search.js nodesCount=${nodesCount} allVariations=${JSON.stringify(allVariations, null, '\t')}  allVariationValues=${JSON.stringify(allVariationValues, null, '\t')}`);
     // alert(`search.js bestValue=${bestValue} bestVariation=${JSON.stringify(bestVariation, null, '\t')}  bestVariationValues=${JSON.stringify(bestVariationValue, null, '\t')}`);
@@ -176,11 +177,14 @@ async function search(input, isBoard) {
 
 async function node(preSq, currSq, state) {
     // Animation
-    if (state.isBoard) {
+    if (ANIMATION_FLAG && state.isBoard) {
         const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
         await _sleep(INTERVAL_MSEC);
         // alert(`search.js/node/start currSq=${currSq}`);
-        document.getElementById(`ui${currSq}`).setAttribute('class', 'red_cursor');
+        if (preSq) {
+            document.getElementById(`ui${preSq}`).setAttribute('class', 's');
+        }
+        document.getElementById(`ui${currSq}`).setAttribute('class', 'green_cursor');
     }
 
     // 直前の点数計算
