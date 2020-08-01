@@ -202,17 +202,60 @@
     </style>
     <script>
         function on_load() {
+            // 盤面
             for (file = 9; 0 < file; file--) {
                 for (rank = 1; rank < 10; rank++) {
                     document.getElementById(`sq${file}${rank}`).setAttribute('src', 'img/map.png');
                     document.getElementById(`sq${file}${rank}`).setAttribute('class', 'sq');
                 }
             }
+            // ヨコ
+            for (file = 9; 1 < file; file--) {
+                for (rank = 1; rank < 10; rank++) {
+                    document.getElementById(`w${file}${rank}`).setAttribute('src', 'img/map.png');
+                    document.getElementById(`w${file}${rank}`).setAttribute('class', 's');
+                }
+            }
+            // タテ
+            for (file = 9; 0 < file; file--) {
+                for (rank = 2; rank < 10; rank++) {
+                    document.getElementById(`h${file}${rank}`).setAttribute('src', 'img/map.png');
+                    document.getElementById(`h${file}${rank}`).setAttribute('class', 's');
+                }
+            }
+            // ナナメ
+            for (file = 9; 1 < file; file--) {
+                for (rank = 2; rank < 10; rank++) {
+                    document.getElementById(`d${file}${rank}`).setAttribute('src', 'img/map.png');
+                    document.getElementById(`d${file}${rank}`).setAttribute('class', 's');
+                }
+            }
+            // ナカ
+            for (file = 9; 0 < file; file--) {
+                for (rank = 1; rank < 10; rank++) {
+                    document.getElementById(`c${file}${rank}`).setAttribute('src', 'img/map.png');
+                    document.getElementById(`c${file}${rank}`).setAttribute('class', 's');
+                }
+            }
 
             // 盤面
+            document.getElementById('sq96').setAttribute('class', 'pc_0');
+            document.getElementById('sq76').setAttribute('class', 'pc_0');
+            document.getElementById('sq66').setAttribute('class', 'pc_0');
+            document.getElementById('sq87').setAttribute('class', 'pc_0');
+            document.getElementById('sq77').setAttribute('class', 'pc_s');
+            document.getElementById('sq67').setAttribute('class', 'pc_0');
+            document.getElementById('sq57').setAttribute('class', 'pc_0');
             document.getElementById('sq88').setAttribute('class', 'pc_k');
             document.getElementById('sq78').setAttribute('class', 'pc_g');
-            document.getElementById('sq77').setAttribute('class', 'pc_s');
+            document.getElementById('sq99').setAttribute('class', 'pc_0');
+            document.getElementById('sq89').setAttribute('class', 'pc_0');
+            // ヨコ
+            document.getElementById('w88').setAttribute('class', 'k51');
+            // タテ
+            document.getElementById('h78').setAttribute('class', 'a73');
+            // ナカ
+            document.getElementById('c77').setAttribute('class', 'a1');
         }
     </script>
 </head>
@@ -299,6 +342,27 @@
                 id="d28"><br>
             <img id="d99"><img id="d89"><img id="d79"><img id="d69"><img id="d59"><img id="d49"><img id="d39"><img
                 id="d29"><br>
+        </div>
+        <!-- ナカ -->
+        <div style="position:absolute; top:0px; left:0px; width:576px; height:576px;">
+            <img id="c91"><img id="c81"><img id="c71"><img id="c61"><img id="c51"><img id="c41"><img id="c31"><img
+                id="c21"><img id="c11"><br>
+            <img id="c92"><img id="c82"><img id="c72"><img id="c62"><img id="c52"><img id="c42"><img id="c32"><img
+                id="c22"><img id="c12"><br>
+            <img id="c93"><img id="c83"><img id="c73"><img id="c63"><img id="c53"><img id="c43"><img id="c33"><img
+                id="c23"><img id="c13"><br>
+            <img id="c94"><img id="c84"><img id="c74"><img id="c64"><img id="c54"><img id="c44"><img id="c34"><img
+                id="c24"><img id="c14"><br>
+            <img id="c95"><img id="c85"><img id="c75"><img id="c65"><img id="c55"><img id="c45"><img id="c35"><img
+                id="c25"><img id="c15"><br>
+            <img id="c96"><img id="c86"><img id="c76"><img id="c66"><img id="c56"><img id="c46"><img id="c36"><img
+                id="c26"><img id="c16"><br>
+            <img id="c97"><img id="c87"><img id="c77"><img id="c67"><img id="c57"><img id="c47"><img id="c37"><img
+                id="c27"><img id="c17"><br>
+            <img id="c98"><img id="c88"><img id="c78"><img id="c68"><img id="c58"><img id="c48"><img id="c38"><img
+                id="c28"><img id="c18"><br>
+            <img id="c99"><img id="c89"><img id="c79"><img id="c69"><img id="c59"><img id="c49"><img id="c39"><img
+                id="c29"><img id="c19"><br>
         </div>
     </div>
 
