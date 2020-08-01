@@ -64,8 +64,52 @@
 
             // 探索開始
             search(input);
-            alert(`nodesCount=${nodesCount} allVariations=${JSON.stringify(allVariations, null, '\t')}  allVariationValues=${JSON.stringify(allVariationValues, null, '\t')}`);
+            // alert(`nodesCount=${nodesCount} allVariations=${JSON.stringify(allVariations, null, '\t')}  allVariationValues=${JSON.stringify(allVariationValues, null, '\t')}`);
             alert(`bestValue=${bestValue} bestVariation=${JSON.stringify(bestVariation, null, '\t')}  bestVariationValues=${JSON.stringify(bestVariationValue, null, '\t')}`);
+            // 矢印に変換。
+            let arrows = [];
+            for (i = 1; i < bestVariation.length; i++) {
+                let bestSq = bestVariation[i - 1];
+                let bestVarVal = bestVariationValue[i];
+                let diff = bestVariation[i] - bestVariation[i - 1];
+                let angle;
+                switch (diff) {
+                    case -10: // thru
+                    case 10:
+                        angle = 'w';
+                        break;
+                    case -1: // thru
+                    case 1:
+                        angle = 'h';
+                        break;
+                    case -11: // thru
+                    case -9: // thru
+                    case 9: // thru
+                    case 11:
+                        angle = 'd';
+                        break;
+                    case 0:
+                        angle = 'c';
+                        break;
+                }
+                switch (diff) {
+                    case 9:
+                        bestSq += 9;
+                        break;
+                    case -1: // thru
+                    case -11: // thru
+                        bestSq += -1;
+                        break;
+                    case 10:
+                    case 11:
+                        bestSq += 10;
+                        break;
+                    default:
+                        break;
+                }
+                arrows.push([bestSq, bestVarVal, diff, angle]);
+            }
+            alert(`arrows=${JSON.stringify(arrows, null, '\t')}`);
 
             // 矢印
             for (entry of input.arrow) {

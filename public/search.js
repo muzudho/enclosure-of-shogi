@@ -32,8 +32,10 @@ function node(preSq, currSq, state) {
     if (ways.length === 0) {
         // Leaf
         if (diffValue != 4) {
-            // 行き止まり
+            // 「行き止まり」を追加。
             state.value += 1;
+            state.pv.push(currSq);
+            state.pv_value.push(1);
         }
         if (bestValue < state.value) {
             bestValue = state.value;
