@@ -38,6 +38,13 @@
             // データ読み取り
             let input = get_data();
 
+            // 囲いの名前
+            document.getElementById("enclosureCategoryEn").innerHTML = `${input.enclosureName[2]}`;
+            document.getElementById("enclosureCategoryJp").innerHTML = `${input.enclosureName[0]}`;
+            document.getElementById("enclosureNameEn").innerHTML = `${input.enclosureName[3]}`;
+            document.getElementById("enclosureNameJp").innerHTML = `${input.enclosureName[1]}`;
+
+            // 計算結果
             let reversed = Array.from(input.arrow);
             reversed.reverse();
             let total = 0;
@@ -55,14 +62,25 @@
 </head>
 
 <body onload="on_load();" style="margin:40px;">
-    <h1>将棋の囲い</h1>
-
+    <!-- 囲いの名前 -->
+    <div>
+        <ruby><span id="enclosureCategoryJp" style="font-size:36px; color:rgb(51, 153, 204); line-height:90%;"></span>
+            <rt><span id="enclosureCategoryEn" style="font-size:20px; color:rgb(51, 153, 204); line-height:90%;"></span>
+            </rt>
+        </ruby>
+        <span style="font-size:36px; color:rgb(51, 153, 204); line-height:90%;">（</span>
+        <ruby><span id="enclosureNameJp" style="font-size:36px; color:rgb(51, 153, 204); line-height:90%;"></span>
+            <rt><span id="enclosureNameEn" style="font-size:20px; color:rgb(51, 153, 204); line-height:90%;"></span>
+            </rt>
+        </ruby>
+        <span style="font-size:36px; color:rgb(51, 153, 204); line-height:90%;">）</span>
+    </div>
     <!-- 将棋盤 -->
     <iframe id="iframe1" src="./board.html?file=9&rank=5.5"
-        style="position:absolute; top:175px; width:364px; height:308px;border:none;" scrolling="no">
+        style="position:absolute; top:110px; width:364px; height:308px;border:none;" scrolling="no">
     </iframe>
     <!-- 得点計算 -->
-    <div style="position:absolute; top:-40px; left:430px;">
+    <div style="position:absolute; top:-105px; left:430px;">
         <span style="margin-left:77px;"></span><img id="sc8_im" src="img/map.png" class="s"><span id="sc8_tx"
             style="font-size:24px;"></span><br>
         <span style="margin-left:77px;"></span><img id="sc7_im" src="img/map.png" class="s"><span id="sc7_tx"
