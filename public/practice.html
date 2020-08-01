@@ -202,10 +202,10 @@
     </style>
     <script>
         function on_load() {
-            let file = parseInt(findGetParameter('file'));
-            let rank = parseInt(findGetParameter('rank'));
-            let x = 64 * file + 40;
-            let y = 64 * rank + 40;
+            let file = parseFloat(findGetParameter('file'));
+            let rank = parseFloat(findGetParameter('rank'));
+            let x = 64 * (9 - file);
+            let y = 64 * (rank - 1);
             alert(`x=${x} y=${y}`);
             // 表示位置調整
             window.scrollTo(x, y);
@@ -319,9 +319,6 @@
         function findGetParameter(parameterName) {
             let result = null;
             let tmp = [];
-            alert(`window.location=${window.location}`);
-            alert(`window.location.search=${window.location.search}`);
-            alert(`window.location.search.substr(1)=${window.location.search.substr(1)}`);
             window.location.search
                 .substr(1)
                 .split("&")
@@ -334,9 +331,7 @@
     </script>
 </head>
 
-<body onload="on_load();" style="margin:40px;">
-    <h1>将棋の囲い</h1>
-
+<body onload="on_load();">
     <!-- 将棋盤 -->
     <div style="position:relative; top:0px; left:0px; width:592px; height:592px; border:double 8px black;">
         <div style="position:absolute; top:0px; left:0px; width:576px; height:576px; font-size:0;">
