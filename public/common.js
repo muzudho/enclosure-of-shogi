@@ -49,3 +49,16 @@ function whichAngle(classText) {
             return '';
     }
 }
+
+/**
+ * Dustenfeld shuffle.
+ * [JavaScript で シャッフルする](https://qiita.com/pure-adachi/items/77fdf665ff6e5ea22128)
+ * 
+ * @param {*} array 
+ */
+function shuffle_array(array) {
+    for (i = array.length; 1 < i; i--) {
+        k = Math.floor(Math.random() * i);
+        [array[k], array[i - 1]] = [array[i - 1], array[k]];
+    }
+}

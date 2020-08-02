@@ -1,4 +1,4 @@
-const INTERVAL_MSEC = 250;
+const INTERVAL_MSEC = 17;
 const ANIMATION_FLAG = true;
 
 /**
@@ -9,11 +9,9 @@ const ANIMATION_FLAG = true;
 async function playoutAll(input, isBoard) {
     let bestPath = new BestPath();
 
-    let nodesCount = 999;
-    while (1 < nodesCount) {
+    for (let i = 0; i < 100; i++) {
         let search = new Search();
         await search.search(input, isBoard, bestPath);
-        nodesCount = search.nodesCount;
     }
 
     return bestPath.createArrows();
@@ -26,6 +24,18 @@ class BestPath {
         this.graphValues = undefined;
         this.allGraphSq = [];
         this.arrows = [];
+    }
+
+    update(value, graphSq, graphValues, arrows) {
+        if (this.value < value) {
+            // alert(`search.js: ベスト更新。 bestPath.value=${this.value} value=${value}`);
+            this.value = value;
+            this.graphSq = Array.from(graphSq);
+            this.graphValues = Array.from(graphValues);
+            this.arrows = Array.from(arrows);
+        } else {
+            // alert(`search.js: ベスト更新ならず。 bestPath.value=${this.value} value=${value}`);
+        }
     }
 
     createArrows() {
@@ -167,7 +177,7 @@ class Search {
         this.isBoard = undefined;
         // Graph.
         this.graphSq = undefined;
-        this.graphValue = undefined;
+        this.graphValues = undefined;
         // Search round trip path.
         this.pathSq = undefined;
         this.arrows = undefined;
@@ -176,25 +186,28 @@ class Search {
     async search(input, isBoard, bestPath) {
         this.nodesCount = 0;
         this.board = this.createBoard(input);
-        this.checkBoard = this.createFalseBoard(input);
+        this.checkBoard = this.createFalseBoard();
         this.value = 0;
         this.isBoard = isBoard;
         // Graph.
         this.graphSq = [];
-        this.graphValue = [];
+        this.graphValues = [];
         // Search round trip path.
         this.pathSq = [];
         this.arrows = [];
         await this.node(0, undefined, this.find('K'), bestPath);
 
+        // ベスト更新
+        bestPath.update(this.value, this.graphSq, this.graphValues, this.arrows);
         // 後処理。
         if (this.isBoard) {
+            // ベスト更新をしばらく見せる。
+            // await sleep(1000);
+
             clearArrowLayer();
             clearUiLayer();
             await sleep(INTERVAL_MSEC);
         }
-        // ベスト更新
-        this.updateBest(bestPath);
     }
 
     async node(depth, prevSq, currSq, bestPath) {
@@ -203,8 +216,10 @@ class Search {
         this.nodesCount++;
         this.checkBoard[currSq] = true;
         this.graphSq.push(currSq);
-        this.graphValue.push(diffValue);
+        this.graphValues.push(diffValue);
         this.pathSq.push(currSq);
+
+        // alert(`search.js/node: depth=${depth} `);
 
         // Animation
         if (ANIMATION_FLAG) {
@@ -224,6 +239,7 @@ class Search {
         }
 
         let ways = this.genMove(currSq, bestPath);
+        shuffle_array(ways);
         // alert(`ways.length=${ways.length}`);
         if (ways.length === 0) {
             // Leaf
@@ -233,7 +249,7 @@ class Search {
                 let leafValue = 1;
                 this.addValue(leafValue);
                 this.graphSq.push(currSq);
-                this.graphValue.push(1);
+                this.graphValues.push(1);
                 this.pathSq.push(currSq);
 
                 let classText = createClassText(leafValue, 0);
@@ -243,8 +259,43 @@ class Search {
             bestPath.allGraphSq.push(Array.from(this.graphSq));
         }
         for (let nextSq of ways) {
+            /* TODO ダメ
+            // 後処理。
+            if (depth == 0) {
+                // 玉から移動するタイミングで、塗りつぶしをクリアー。
+                this.checkBoard = this.createFalseBoard();
+                // ベスト更新
+                bestPath.update(this.value, this.graphSq, this.graphValues, this.arrows);
+                if (this.isBoard) {
+                    clearArrowLayer();
+                    await sleep(INTERVAL_MSEC);
+                    alert(`search.js: 玉から移動するタイミングで、塗りつぶしをクリアー。`);
+                }
+                // クリアー
+                this.value = 0;
+                // Graph.
+                this.graphSq = [];
+                this.graphValues = [];
+                // Search round trip path.
+                this.pathSq = [];
+                // this.arrows = [];
+                // リセット
+                this.graphSq.push(currSq);
+                this.graphValues.push(diffValue);
+                this.pathSq.push(currSq);
+            }
+            */
+
             // ループ中に状態が変わってるので再チェック
             if (!this.checkBoard[nextSq]) {
+                // 点数加算
+                let srcPc = this.board[currSq];
+                // キングを除く
+                if (srcPc !== 'K') {
+                    let diffValue = this.letDiffValue(currSq, nextSq);
+                    this.addValue(diffValue);
+                }
+
                 switch (this.board[nextSq]) {
                     case 'G':
                         await this.node(depth + 1, currSq, nextSq, bestPath);
@@ -256,6 +307,7 @@ class Search {
                         break;
                 }
             }
+
         }
 
         // Animation
@@ -269,17 +321,19 @@ class Search {
         }
     }
 
+    /*
     updateBest(bestPath) {
         if (bestPath.value < this.value) {
-            // alert(`search.js: ベスト更新。 bestPath.value=${bestPath.value} this.value=${this.value}`);
+            alert(`search.js: ベスト更新。 bestPath.value=${bestPath.value} this.value=${this.value}`);
             bestPath.value = this.value;
             bestPath.graphSq = Array.from(this.graphSq);
-            bestPath.graphValues = Array.from(this.graphValue);
+            bestPath.graphValues = Array.from(this.graphValues);
             bestPath.arrows = Array.from(this.arrows);
             //} else {
             //    alert(`search.js: ベスト更新ならず。`);
         }
     }
+    */
 
     async recordArrow(srcSq, classText) {
         this.arrows.push([srcSq, classText]);
@@ -330,17 +384,14 @@ class Search {
     pushWay(offset, ways, currSq, bestPath) {
         let nextSq = currSq + offset;
         let dstPc = this.board[nextSq];
+        /*
         if (this.existsPath(nextSq, bestPath)) {
             // 既存の枝は作らない。
+            // alert(`search.js: pushWay 既存の枝は作らない。`);
             return;
         }
+        */
         if (!this.checkBoard[nextSq] && (dstPc === 'G' || dstPc === 'S')) {
-            let srcPc = this.board[currSq];
-            if (srcPc === 'G' || srcPc === 'S') {
-                // 点数加算
-                let diffValue = this.letDiffValue(currSq, nextSq);
-                this.addValue(diffValue);
-            }
             ways.push(nextSq);
         }
     }
@@ -453,6 +504,7 @@ class Search {
         return 0;
     }
 
+    /*
     existsPath(newSq, bestPath) {
         this.pathSq.push(newSq);
         let exists = false;
@@ -475,6 +527,7 @@ class Search {
         this.pathSq.pop();
         return exists;
     }
+    */
 
     find(piece) {
         for (const [i, sq] of this.board.entries()) {
