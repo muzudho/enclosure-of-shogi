@@ -32,9 +32,12 @@ class BestPath {
         this.graphSq = undefined;
         this.graphValues = undefined;
         this.allGraphSq = [];
+        this.arrows = [];
     }
 
     createArrows() {
+        return this.arrows;
+        /*
         // 矢印に変換。
         let arrows = [];
         let bestVarLen = 0;
@@ -47,9 +50,9 @@ class BestPath {
             let sqDiff = this.graphSq[i] - this.graphSq[i - 1];
             arrows.push([adjustSrcSq(srcSq, sqDiff), createClassText(edgeValueFromDst, sqDiff)]);
         }
-        // alert(`arrows=${JSON.stringify(arrows, null, '\t')}`);
 
         return arrows;
+        */
     }
 }
 
@@ -190,6 +193,7 @@ class Search {
         this.graphValue = undefined;
         // Search round trip path.
         this.pathSq = undefined;
+        this.arrows = undefined;
     }
 
     async search(input, isBoard, bestPath) {
@@ -203,6 +207,7 @@ class Search {
         this.graphValue = [];
         // Search round trip path.
         this.pathSq = [];
+        this.arrows = [];
         await this.node(undefined, this.find('K'), bestPath);
     }
 
@@ -227,7 +232,9 @@ class Search {
             let sqDiff = currSq - prevSq;
             let srcSq = adjustSrcSq(prevSq, sqDiff);
             let classText = createClassText(diffValue, sqDiff);
+            this.arrows.push([srcSq, classText]);
             drawArrow(srcSq, classText);
+            sleep(INTERVAL_MSEC);
             // alert(`search.js/node/start diffValue=${diffValue} prevSq=${prevSq} currSq=${currSq} sqDiff=${sqDiff} classText=${classText}`);
         }
 
@@ -235,17 +242,25 @@ class Search {
         // alert(`ways.length=${ways.length}`);
         if (ways.length === 0) {
             // Leaf
+            // alert(`search.js: 行き止まり。 currSq=${currSq} ways.length=${ways.length}`);
             if (diffValue != 4) {
                 // 「行き止まり」を追加。
-                this.value += 1;
+                let leafValue = 1;
+                this.value += leafValue;
                 this.graphSq.push(currSq);
                 this.graphValue.push(1);
                 this.pathSq.push(currSq);
+
+                let classText = createClassText(leafValue, 0);
+                this.arrows.push([currSq, classText]);
+                drawArrow(currSq, classText);
+                sleep(INTERVAL_MSEC);
             }
             if (bestPath.value < this.value) {
                 bestPath.value = this.value;
                 bestPath.graphSq = Array.from(this.graphSq);
                 bestPath.graphValues = Array.from(this.graphValue);
+                bestPath.arrows = Array.from(this.arrows);
             }
             // Record graph.
             bestPath.allGraphSq.push(Array.from(this.graphSq));
@@ -265,7 +280,7 @@ class Search {
         // 後ろ向きパス
         // this.graphValue.push(0);
         // this.graphSq.push(0);
-        this.checkBoard[currSq] = false;
+        // this.checkBoard[currSq] = false;
 
         // Animation
         if (ANIMATION_FLAG && this.isBoard) {

@@ -45,8 +45,7 @@
             // 矢印
             for (entry of bestArrows) {
                 drawArrow(entry[0], entry[1]);
-                const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-                await _sleep(INTERVAL_MSEC / 10);
+                sleep(INTERVAL_MSEC);
             }
         }
 
