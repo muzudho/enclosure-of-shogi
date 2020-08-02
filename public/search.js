@@ -4,12 +4,12 @@ const ANIMATION_FLAG = true;
 let nodesCount;
 let allVariations = [];
 let allVariationValues = [];
-let bestVariation;
-let bestVariationValues;
 
 class BestPath {
     constructor() {
-        this.bestValue = 0;
+        this.value = 0;
+        this.variation = undefined;
+        this.variationValues = undefined;
     }
 }
 
@@ -34,17 +34,16 @@ async function search(input, isBoard, bestPath) {
     await node(undefined, find('K', board), state, bestPath);
 
     // alert(`search.js nodesCount=${nodesCount} allVariations=${JSON.stringify(allVariations, null, '\t')}  allVariationValues=${JSON.stringify(allVariationValues, null, '\t')}`);
-    // alert(`search.js bestVariation=${JSON.stringify(bestVariation, null, '\t')}  bestVariationValues=${JSON.stringify(bestVariationValue, null, '\t')}`);
     // 矢印に変換。
     let arrows = [];
     let bestVarLen = 0;
-    if (bestVariation) {
-        bestVarLen = bestVariation.length;
+    if (bestPath.variation) {
+        bestVarLen = bestPath.variation.length;
     }
     for (i = 1; i < bestVarLen; i++) {
-        let bestSq = bestVariation[i - 1];
-        let bestVarVal = bestVariationValue[i];
-        let diff = bestVariation[i] - bestVariation[i - 1];
+        let bestSq = bestPath.variation[i - 1];
+        let bestVarVal = bestPath.variationValues[i];
+        let diff = bestPath.variation[i] - bestPath.variation[i - 1];
         let angle;
         let classText;
         // Angle 算出
@@ -212,10 +211,10 @@ async function node(preSq, currSq, state, bestPath) {
             state.pv.push(currSq);
             state.pv_value.push(1);
         }
-        if (bestPath.bestValue < state.value) {
-            bestPath.bestValue = state.value;
-            bestVariation = Array.from(state.pv);
-            bestVariationValue = Array.from(state.pv_value);
+        if (bestPath.value < state.value) {
+            bestPath.value = state.value;
+            bestPath.variation = Array.from(state.pv);
+            bestPath.variationValues = Array.from(state.pv_value);
         }
         // Record pv.
         allVariations.push(Array.from(state.pv));
