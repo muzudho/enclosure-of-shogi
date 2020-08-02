@@ -1,7 +1,7 @@
 function get_data() {
     return {
         "enclosureName": [
-            "左美濃囲い", "四枚美濃", "Hidari Mino Gakoi", "Yonmai Mino"
+            "その他", "中住まい", "Sonota", "Nakazumai"
         ],
         "board": [
             ".........",
@@ -9,10 +9,10 @@ function get_data() {
             ".........",
             ".........",
             ".........",
-            "00000....",
-            ".KSG.....",
-            "..S......",
-            "000G.....",
+            "..0....0.",
+            "00.0000.0",
+            ".0G.KSG..",
+            "00S....00",
         ]
     };
 }
