@@ -1,4 +1,4 @@
-const INTERVAL_MSEC = 1000;
+const INTERVAL_MSEC = 500;
 const ANIMATION_FLAG = true;
 
 /**
@@ -187,9 +187,11 @@ class Search {
         this.checkBoard = undefined;
         this.value = undefined;
         this.isBoard = undefined;
-        // Principal variations.
+        // Principal variation.
         this.pv = undefined;
         this.pv_value = undefined;
+        // Search round trip path.
+        this.path_sq = undefined;
     }
 
     async search(input, isBoard, bestPath) {
@@ -198,9 +200,11 @@ class Search {
         this.checkBoard = this.createFalseBoard(input);
         this.value = 0;
         this.isBoard = isBoard;
-        // Principal variations.
+        // Principal variation.
         this.pv = [];
         this.pv_value = [];
+        // Search round trip path.
+        this.path_sq = [];
         await this.node(undefined, this.find('K'), bestPath);
     }
 
@@ -222,6 +226,7 @@ class Search {
         this.checkBoard[currSq] = true;
         this.pv.push(currSq);
         this.pv_value.push(diffValue);
+        this.path_sq.push(currSq);
         let ways = this.genMove(currSq, bestPath);
         // alert(`ways.length=${ways.length}`);
         if (ways.length === 0) {
@@ -231,6 +236,7 @@ class Search {
                 this.value += 1;
                 this.pv.push(currSq);
                 this.pv_value.push(1);
+                this.path_sq.push(currSq);
             }
             if (bestPath.value < this.value) {
                 bestPath.value = this.value;
@@ -310,7 +316,7 @@ class Search {
     pushWay(offset, ways, currSq, bestPath) {
         let nextSq = currSq + offset;
         let dstPc = this.board[nextSq];
-        if (this.existsPv(nextSq, bestPath)) {
+        if (this.existsPath(nextSq, bestPath)) {
             // 既存の枝は作らない。
             return;
         }
@@ -429,18 +435,18 @@ class Search {
         return 0;
     }
 
-    existsPv(newSq, bestPath) {
-        this.pv.push(newSq);
+    existsPath(newSq, bestPath) {
+        this.path_sq.push(newSq);
         let exists = false;
-        // alert(`existsPv: bestPath.allVariations=${JSON.stringify(bestPath.allVariations, null, '  ')}`);
+        // alert(`existsPath: bestPath.allVariations=${JSON.stringify(bestPath.allVariations, null, '  ')}`);
         for (let exist_var of bestPath.allVariations) {
-            // alert(`existsPv: exist_var=${JSON.stringify(exist_var, null, '  ')}`);
-            if (exist_var.length < this.pv.length) {
+            // alert(`existsPath: exist_var=${JSON.stringify(exist_var, null, '  ')}`);
+            if (exist_var.length < this.path_sq.length) {
                 // 一致しない
                 continue;
             }
-            for (let i = 0; i < this.pv.length; i++) {
-                if (exist_var[i] !== this.pv[i]) {
+            for (let i = 0; i < this.path_sq.length; i++) {
+                if (exist_var[i] !== this.path_sq[i]) {
                     // 一致しない
                     continue;
                 }
@@ -449,7 +455,7 @@ class Search {
             exists = true;
             break;
         }
-        this.pv.pop();
+        this.path_sq.pop();
         return exists;
     }
 
