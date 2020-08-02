@@ -243,15 +243,18 @@ class Search {
             bestPath.allGraphSq.push(Array.from(this.graphSq));
         }
         for (let nextSq of ways) {
-            switch (this.board[nextSq]) {
-                case 'G':
-                    await this.node(depth + 1, currSq, nextSq, bestPath);
-                    break;
-                case 'S':
-                    await this.node(depth + 1, currSq, nextSq, bestPath);
-                    break;
-                default:
-                    break;
+            // ループ中に状態が変わってるので再チェック
+            if (!this.checkBoard[nextSq]) {
+                switch (this.board[nextSq]) {
+                    case 'G':
+                        await this.node(depth + 1, currSq, nextSq, bestPath);
+                        break;
+                    case 'S':
+                        await this.node(depth + 1, currSq, nextSq, bestPath);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
