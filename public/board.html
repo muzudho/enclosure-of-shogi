@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css">
     <link rel="stylesheet" href="board.css">
+    <script src="./common.js"></script>
     <script src="./input.js"></script>
     <script src="./search.js"></script>
     <script>
@@ -25,6 +26,31 @@
                     document.getElementById(`sq${file}${rank}`).setAttribute('class', 'sq');
                 }
             }
+            clearArrowLayer();
+            // UI
+            clearUiLayer();
+
+            // データ読み取り
+            let input = get_data();
+
+            // 盤面 (Webブラウザーで 80%に縮小して見るとちょうどいいかも)
+            for (entry of input.board) {
+                // alert(`board.html input.board entry=${JSON.stringify(entry, null, '  ')}`);
+                document.getElementById(`sq${entry[0]}`).setAttribute('class', `pc_${entry[1].toLowerCase()}`);
+            }
+
+            // 探索開始
+            let bestArrows = await playoutAll(input, true);
+
+            // 矢印
+            for (entry of bestArrows) {
+                drawArrow(entry[0], entry[1]);
+                const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+                await _sleep(INTERVAL_MSEC / 10);
+            }
+        }
+
+        function clearArrowLayer() {
             // ヨコ
             for (file = 9; 1 < file; file--) {
                 for (rank = 1; rank < 10; rank++) {
@@ -53,38 +79,20 @@
                     document.getElementById(`c${file}${rank}`).setAttribute('class', 's');
                 }
             }
-            // UI
+        }
+        function clearUiLayer() {
             for (file = 9; 0 < file; file--) {
                 for (rank = 1; rank < 10; rank++) {
                     document.getElementById(`ui${file}${rank}`).setAttribute('src', 'img/map.png');
                     document.getElementById(`ui${file}${rank}`).setAttribute('class', 's');
                 }
             }
-
-            // データ読み取り
-            let input = get_data();
-
-            // 盤面 (Webブラウザーで 80%に縮小して見るとちょうどいいかも)
-            for (entry of input.board) {
-                // alert(`board.html input.board entry=${JSON.stringify(entry, null, '  ')}`);
-                document.getElementById(`sq${entry[0]}`).setAttribute('class', `pc_${entry[1].toLowerCase()}`);
-            }
-
-            // 探索開始
-            let bestArrows = await playoutAll(input, true);
-
-            // 矢印
-            for (entry of bestArrows) {
-                drawArrow(entry[0], entry[1]);
-                const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-                await _sleep(INTERVAL_MSEC / 10);
-            }
         }
 
         function drawArrow(srcSq, classOfArrow) {
             let angle = whichAngle(classOfArrow);
             let id = `${angle}${srcSq}`;
-            alert(`board.html: id=${id} class=${classOfArrow}`);
+            // alert(`board.html: id=${id} class=${classOfArrow}`);
             if (srcSq && classOfArrow) {
                 document.getElementById(id).setAttribute('class', classOfArrow);
             }

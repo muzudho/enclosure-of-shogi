@@ -11,10 +11,17 @@ async function playoutAll(input, isBoard) {
 
     let search = new Search();
     await search.search(input, isBoard, bestPath);
+    clearArrowLayer();
+    clearUiLayer();
     // alert(`search.js/playoutAll: [1] search.nodesCount=${search.nodesCount}`);
+    sleep(INTERVAL_MSEC);
+
     search = new Search();
     await search.search(input, isBoard, bestPath);
+    clearArrowLayer();
+    clearUiLayer();
     // alert(`search.js/playoutAll: [2] search.nodesCount=${search.nodesCount}`);
+    sleep(INTERVAL_MSEC);
 
     return bestPath.createArrows();
 }
@@ -221,7 +228,7 @@ class Search {
             let srcSq = adjustSrcSq(prevSq, sqDiff);
             let classText = createClassText(diffValue, sqDiff);
             drawArrow(srcSq, classText);
-            alert(`search.js/node/start diffValue=${diffValue} prevSq=${prevSq} currSq=${currSq} sqDiff=${sqDiff} classText=${classText}`);
+            // alert(`search.js/node/start diffValue=${diffValue} prevSq=${prevSq} currSq=${currSq} sqDiff=${sqDiff} classText=${classText}`);
         }
 
         let ways = this.genMove(currSq, bestPath);
