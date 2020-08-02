@@ -186,6 +186,10 @@ class Search {
         this.board = undefined;
         this.checkBoard = undefined;
         this.value = undefined;
+        this.isBoard = undefined;
+        // Principal variations.
+        this.pv = undefined;
+        this.pv_value = undefined;
     }
 
     async search(input, isBoard, bestPath) {
@@ -193,19 +197,16 @@ class Search {
         this.board = this.createBoard(input);
         this.checkBoard = this.createFalseBoard(input);
         this.value = 0;
-        let state = {
-            // Principal variations.
-            pv: [],
-            pv_value: [],
-            isBoard: isBoard,
-        };
-
-        await this.node(undefined, this.find('K'), state, bestPath);
+        this.isBoard = isBoard;
+        // Principal variations.
+        this.pv = [];
+        this.pv_value = [];
+        await this.node(undefined, this.find('K'), bestPath);
     }
 
-    async node(preSq, currSq, state, bestPath) {
+    async node(preSq, currSq, bestPath) {
         // Animation
-        if (ANIMATION_FLAG && state.isBoard) {
+        if (ANIMATION_FLAG && this.isBoard) {
             const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
             await _sleep(INTERVAL_MSEC);
             // alert(`search.js/node/start currSq=${currSq}`);
@@ -216,48 +217,48 @@ class Search {
         }
 
         // 直前の点数計算
-        let diffValue = this.letDiffValue(preSq, currSq, state);
+        let diffValue = this.letDiffValue(preSq, currSq);
         this.nodesCount++;
         this.checkBoard[currSq] = true;
-        state.pv.push(currSq);
-        state.pv_value.push(diffValue);
-        let ways = this.genMove(currSq, state, bestPath);
+        this.pv.push(currSq);
+        this.pv_value.push(diffValue);
+        let ways = this.genMove(currSq, bestPath);
         // alert(`ways.length=${ways.length}`);
         if (ways.length === 0) {
             // Leaf
             if (diffValue != 4) {
                 // 「行き止まり」を追加。
                 this.value += 1;
-                state.pv.push(currSq);
-                state.pv_value.push(1);
+                this.pv.push(currSq);
+                this.pv_value.push(1);
             }
             if (bestPath.value < this.value) {
                 bestPath.value = this.value;
-                bestPath.variation = Array.from(state.pv);
-                bestPath.variationValues = Array.from(state.pv_value);
+                bestPath.variation = Array.from(this.pv);
+                bestPath.variationValues = Array.from(this.pv_value);
             }
             // Record pv.
-            bestPath.allVariations.push(Array.from(state.pv));
-            bestPath.allVariationValues.push(Array.from(state.pv_value));
+            bestPath.allVariations.push(Array.from(this.pv));
+            bestPath.allVariationValues.push(Array.from(this.pv_value));
         }
         for (let nextSq of ways) {
             switch (this.board[nextSq]) {
                 case 'G':
-                    await this.node(currSq, nextSq, state, bestPath);
+                    await this.node(currSq, nextSq, bestPath);
                     break;
                 case 'S':
-                    await this.node(currSq, nextSq, state, bestPath);
+                    await this.node(currSq, nextSq, bestPath);
                     break;
                 default:
                     break;
             }
         }
-        state.pv_value.pop();
-        state.pv.pop();
+        this.pv_value.pop();
+        this.pv.pop();
         this.checkBoard[currSq] = false;
 
         // Animation
-        if (ANIMATION_FLAG && state.isBoard) {
+        if (ANIMATION_FLAG && this.isBoard) {
             const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
             await _sleep(INTERVAL_MSEC);
             // alert(`search.js/node/start currSq=${currSq}`);
@@ -271,34 +272,34 @@ class Search {
     /**
      * Generation move.
      */
-    genMove(currSq, state, bestPath) {
+    genMove(currSq, bestPath) {
         let ways = [];
 
         switch (this.board[currSq]) {
             case 'K':
-                this.pushWay(- 10, ways, currSq, state, bestPath);
-                this.pushWay(- 11, ways, currSq, state, bestPath);
-                this.pushWay(- 1, ways, currSq, state, bestPath);
-                this.pushWay(9, ways, currSq, state, bestPath);
-                this.pushWay(10, ways, currSq, state, bestPath);
-                this.pushWay(11, ways, currSq, state, bestPath);
-                this.pushWay(1, ways, currSq, state, bestPath);
-                this.pushWay(- 9, ways, currSq, state, bestPath);
+                this.pushWay(- 10, ways, currSq, bestPath);
+                this.pushWay(- 11, ways, currSq, bestPath);
+                this.pushWay(- 1, ways, currSq, bestPath);
+                this.pushWay(9, ways, currSq, bestPath);
+                this.pushWay(10, ways, currSq, bestPath);
+                this.pushWay(11, ways, currSq, bestPath);
+                this.pushWay(1, ways, currSq, bestPath);
+                this.pushWay(- 9, ways, currSq, bestPath);
                 break;
             case 'G':
-                this.pushWay(- 10, ways, currSq, state, bestPath);
-                this.pushWay(- 11, ways, currSq, state, bestPath);
-                this.pushWay(- 1, ways, currSq, state, bestPath);
-                this.pushWay(9, ways, currSq, state, bestPath);
-                this.pushWay(10, ways, currSq, state, bestPath);
-                this.pushWay(1, ways, currSq, state, bestPath);
+                this.pushWay(- 10, ways, currSq, bestPath);
+                this.pushWay(- 11, ways, currSq, bestPath);
+                this.pushWay(- 1, ways, currSq, bestPath);
+                this.pushWay(9, ways, currSq, bestPath);
+                this.pushWay(10, ways, currSq, bestPath);
+                this.pushWay(1, ways, currSq, bestPath);
                 break;
             case 'S':
-                this.pushWay(- 11, ways, currSq, state, bestPath);
-                this.pushWay(- 1, ways, currSq, state, bestPath);
-                this.pushWay(9, ways, currSq, state, bestPath);
-                this.pushWay(11, ways, currSq, state, bestPath);
-                this.pushWay(- 9, ways, currSq, state, bestPath);
+                this.pushWay(- 11, ways, currSq, bestPath);
+                this.pushWay(- 1, ways, currSq, bestPath);
+                this.pushWay(9, ways, currSq, bestPath);
+                this.pushWay(11, ways, currSq, bestPath);
+                this.pushWay(- 9, ways, currSq, bestPath);
                 break;
             default:
                 break;
@@ -306,10 +307,10 @@ class Search {
         return ways;
     }
 
-    pushWay(offset, ways, currSq, state, bestPath) {
+    pushWay(offset, ways, currSq, bestPath) {
         let nextSq = currSq + offset;
         let dstPc = this.board[nextSq];
-        if (this.existsPv(nextSq, state, bestPath)) {
+        if (this.existsPv(nextSq, bestPath)) {
             // 既存の枝は作らない。
             return;
         }
@@ -317,7 +318,7 @@ class Search {
             let srcPc = this.board[currSq];
             if (srcPc === 'G' || srcPc === 'S') {
                 // 点数計算
-                let diffValue = this.letDiffValue(currSq, nextSq, state);
+                let diffValue = this.letDiffValue(currSq, nextSq);
                 // alert(`nextSq=${nextSq} dstPc=${dstPc} diffValue=${diffValue}`);
                 this.value += diffValue;
             }
@@ -327,9 +328,8 @@ class Search {
 
     /**
      * 局面差分評価値算出
-     * @param {*} state 
      */
-    letDiffValue(currSq, nextSq, state) {
+    letDiffValue(currSq, nextSq) {
         let srcPc = this.board[currSq];
         let dstPc = this.board[nextSq];
         let diff = nextSq - currSq;
@@ -429,18 +429,18 @@ class Search {
         return 0;
     }
 
-    existsPv(newSq, state, bestPath) {
-        state.pv.push(newSq);
+    existsPv(newSq, bestPath) {
+        this.pv.push(newSq);
         let exists = false;
         // alert(`existsPv: bestPath.allVariations=${JSON.stringify(bestPath.allVariations, null, '  ')}`);
         for (let exist_var of bestPath.allVariations) {
-            // alert(`existsPv: pv=${JSON.stringify(state.pv, null, '  ')}\n exist_var=${JSON.stringify(exist_var, null, '  ')}`);
-            if (exist_var.length < state.pv.length) {
+            // alert(`existsPv: exist_var=${JSON.stringify(exist_var, null, '  ')}`);
+            if (exist_var.length < this.pv.length) {
                 // 一致しない
                 continue;
             }
-            for (let i = 0; i < state.pv.length; i++) {
-                if (exist_var[i] !== state.pv[i]) {
+            for (let i = 0; i < this.pv.length; i++) {
+                if (exist_var[i] !== this.pv[i]) {
                     // 一致しない
                     continue;
                 }
@@ -449,7 +449,7 @@ class Search {
             exists = true;
             break;
         }
-        state.pv.pop();
+        this.pv.pop();
         return exists;
     }
 
