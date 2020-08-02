@@ -46,7 +46,7 @@
             document.getElementById("enclosureNameJp").innerHTML = `${input.enclosureName[1]}`;
 
             // 探索開始
-            let bestArrows = await playout_all(input, false);
+            let bestArrows = await playoutAll(input, false);
 
             // 計算結果
             let reversed = Array.from(bestArrows);

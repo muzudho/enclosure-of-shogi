@@ -71,12 +71,18 @@
             }
 
             // 探索開始
-            let bestArrows = await playout_all(input, true);
+            let bestArrows = await playoutAll(input, true);
 
             // 矢印
             for (entry of bestArrows) {
                 let angle = whichAngle(entry[1]);
-                document.getElementById(`${angle}${entry[0]}`).setAttribute('class', entry[1]);
+                let id = `${angle}${entry[0]}`;
+                alert(`board.html: id=${id} class=${entry[1]}`);
+                if (entry[1]) {
+                    document.getElementById(id).setAttribute('class', entry[1]);
+                }
+                const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+                await _sleep(INTERVAL_MSEC / 10);
             }
         }
 

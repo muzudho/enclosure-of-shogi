@@ -6,15 +6,15 @@ const ANIMATION_FLAG = true;
  * @param {*} input 
  * @param {*} isBoard 
  */
-async function playout_all(input, isBoard) {
+async function playoutAll(input, isBoard) {
     let bestPath = new BestPath();
 
     let search = new Search();
     await search.search(input, isBoard, bestPath);
-    alert(`search.js/playout_all: [1] search.nodesCount=${search.nodesCount}`);
+    alert(`search.js/playoutAll: [1] search.nodesCount=${search.nodesCount}`);
     search = new Search();
     await search.search(input, isBoard, bestPath);
-    alert(`search.js/playout_all: [2] search.nodesCount=${search.nodesCount}`);
+    alert(`search.js/playoutAll: [2] search.nodesCount=${search.nodesCount}`);
 
     return bestPath.createArrows();
 }
@@ -187,11 +187,11 @@ class Search {
         this.checkBoard = undefined;
         this.value = undefined;
         this.isBoard = undefined;
-        // Principal variation.
-        this.pv = undefined;
-        this.pv_value = undefined;
+        // Graph.
+        this.graphSq = undefined;
+        this.graphValue = undefined;
         // Search round trip path.
-        this.path_sq = undefined;
+        this.pathSq = undefined;
     }
 
     async search(input, isBoard, bestPath) {
@@ -200,11 +200,11 @@ class Search {
         this.checkBoard = this.createFalseBoard(input);
         this.value = 0;
         this.isBoard = isBoard;
-        // Principal variation.
-        this.pv = [];
-        this.pv_value = [];
+        // Graph.
+        this.graphSq = [];
+        this.graphValue = [];
         // Search round trip path.
-        this.path_sq = [];
+        this.pathSq = [];
         await this.node(undefined, this.find('K'), bestPath);
     }
 
@@ -224,9 +224,9 @@ class Search {
         let diffValue = this.letDiffValue(preSq, currSq);
         this.nodesCount++;
         this.checkBoard[currSq] = true;
-        this.pv.push(currSq);
-        this.pv_value.push(diffValue);
-        this.path_sq.push(currSq);
+        this.graphSq.push(currSq);
+        this.graphValue.push(diffValue);
+        this.pathSq.push(currSq);
         let ways = this.genMove(currSq, bestPath);
         // alert(`ways.length=${ways.length}`);
         if (ways.length === 0) {
@@ -234,18 +234,18 @@ class Search {
             if (diffValue != 4) {
                 // 「行き止まり」を追加。
                 this.value += 1;
-                this.pv.push(currSq);
-                this.pv_value.push(1);
-                this.path_sq.push(currSq);
+                this.graphSq.push(currSq);
+                this.graphValue.push(1);
+                this.pathSq.push(currSq);
             }
             if (bestPath.value < this.value) {
                 bestPath.value = this.value;
-                bestPath.variation = Array.from(this.pv);
-                bestPath.variationValues = Array.from(this.pv_value);
+                bestPath.variation = Array.from(this.graphSq);
+                bestPath.variationValues = Array.from(this.graphValue);
             }
-            // Record pv.
-            bestPath.allVariations.push(Array.from(this.pv));
-            bestPath.allVariationValues.push(Array.from(this.pv_value));
+            // Record graph.
+            bestPath.allVariations.push(Array.from(this.graphSq));
+            bestPath.allVariationValues.push(Array.from(this.graphValue));
         }
         for (let nextSq of ways) {
             switch (this.board[nextSq]) {
@@ -259,8 +259,6 @@ class Search {
                     break;
             }
         }
-        this.pv_value.pop();
-        this.pv.pop();
         this.checkBoard[currSq] = false;
 
         // Animation
@@ -436,17 +434,17 @@ class Search {
     }
 
     existsPath(newSq, bestPath) {
-        this.path_sq.push(newSq);
+        this.pathSq.push(newSq);
         let exists = false;
         // alert(`existsPath: bestPath.allVariations=${JSON.stringify(bestPath.allVariations, null, '  ')}`);
-        for (let exist_var of bestPath.allVariations) {
-            // alert(`existsPath: exist_var=${JSON.stringify(exist_var, null, '  ')}`);
-            if (exist_var.length < this.path_sq.length) {
+        for (let existVar of bestPath.allVariations) {
+            // alert(`existsPath: existVar=${JSON.stringify(existVar, null, '  ')}`);
+            if (existVar.length < this.pathSq.length) {
                 // 一致しない
                 continue;
             }
-            for (let i = 0; i < this.path_sq.length; i++) {
-                if (exist_var[i] !== this.path_sq[i]) {
+            for (let i = 0; i < this.pathSq.length; i++) {
+                if (existVar[i] !== this.pathSq[i]) {
                     // 一致しない
                     continue;
                 }
@@ -455,7 +453,7 @@ class Search {
             exists = true;
             break;
         }
-        this.path_sq.pop();
+        this.pathSq.pop();
         return exists;
     }
 
