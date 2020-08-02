@@ -84,8 +84,8 @@
         function drawArrow(srcSq, classOfArrow) {
             let angle = whichAngle(classOfArrow);
             let id = `${angle}${srcSq}`;
-            // alert(`board.html: id=${id} class=${entry[1]}`);
-            if (classOfArrow) {
+            alert(`board.html: id=${id} class=${classOfArrow}`);
+            if (srcSq && classOfArrow) {
                 document.getElementById(id).setAttribute('class', classOfArrow);
             }
         }

@@ -37,46 +37,8 @@ class BestPath {
         for (let i = 1; i < bestVarLen; i++) {
             let srcSq = this.graphSq[i - 1];
             let edgeValueFromDst = this.graphValues[i];
-            let diff = this.graphSq[i] - this.graphSq[i - 1];
-            /*
-            // Angle 算出
-            switch (diff) {
-                case -10: // thru
-                case 10:
-                    angle = 'w';
-                    break;
-                case -1: // thru
-                case 1:
-                    angle = 'h';
-                    break;
-                case -11: // thru
-                case -9: // thru
-                case 9: // thru
-                case 11:
-                    angle = 'd';
-                    break;
-                case 0:
-                    angle = 'c';
-                    break;
-            }
-            */
-            // ドロップ・シャドウずらし
-            switch (diff) {
-                case 9:
-                    srcSq += 9;
-                    break;
-                case -1: // thru
-                case -11: // thru
-                    srcSq += -1;
-                    break;
-                case 10:
-                case 11:
-                    srcSq += 10;
-                    break;
-                default:
-                    break;
-            }
-            arrows.push([srcSq, createClassText(edgeValueFromDst, diff)]);
+            let sqDiff = this.graphSq[i] - this.graphSq[i - 1];
+            arrows.push([adjustSrcSq(srcSq, sqDiff), createClassText(edgeValueFromDst, sqDiff)]);
         }
         // alert(`arrows=${JSON.stringify(arrows, null, '\t')}`);
 
@@ -84,6 +46,30 @@ class BestPath {
     }
 }
 
+/**
+ * 矢の元側マスの位置調整（ドロップ・シャドウ）。
+ * @param {*} sq 
+ * @param {*} sqDiff 
+ */
+function adjustSrcSq(sq, sqDiff) {
+    // ドロップ・シャドウずらし
+    switch (sqDiff) {
+        case 9:
+            sq += 9;
+            break;
+        case -1: // thru
+        case -11: // thru
+            sq += -1;
+            break;
+        case 10:
+        case 11:
+            sq += 10;
+            break;
+        default:
+            break;
+    }
+    return sq;
+}
 function createClassText(edgeValueFromDst, sqDiff) {
     let classText;
 
@@ -226,14 +212,16 @@ class Search {
         if (ANIMATION_FLAG && this.isBoard) {
             const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
             await _sleep(INTERVAL_MSEC);
-            // alert(`search.js/node/start currSq=${currSq}`);
             if (prevSq) {
                 document.getElementById(`ui${prevSq}`).setAttribute('class', 's');
             }
             document.getElementById(`ui${currSq}`).setAttribute('class', 'green_cursor');
 
-            let classText = createClassText(diffValue, currSq - prevSq);
-            drawArrow(prevSq, classText);
+            let sqDiff = currSq - prevSq;
+            let srcSq = prevSq;// adjustSrcSq(prevSq, sqDiff);
+            let classText = createClassText(diffValue, sqDiff);
+            drawArrow(srcSq, classText);
+            alert(`search.js/node/start diffValue=${diffValue} prevSq=${prevSq} currSq=${currSq} sqDiff=${sqDiff} classText=${classText}`);
         }
 
         let ways = this.genMove(currSq, bestPath);
