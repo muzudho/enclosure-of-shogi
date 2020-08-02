@@ -46,10 +46,10 @@
             document.getElementById("enclosureNameJp").innerHTML = `${input.enclosureName[1]}`;
 
             // 探索開始
-            let arrows = await search(input, false);
+            let bestArrows = await playout_all(input, false);
 
             // 計算結果
-            let reversed = Array.from(arrows);
+            let reversed = Array.from(bestArrows);
             reversed.reverse();
             let total = 0;
             let i = 1;

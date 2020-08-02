@@ -71,10 +71,10 @@
             }
 
             // 探索開始
-            let arrows = await search(input, true);
+            let bestArrows = await playout_all(input, true);
 
             // 矢印
-            for (entry of arrows) {
+            for (entry of bestArrows) {
                 let angle = whichAngle(entry[1]);
                 document.getElementById(`${angle}${entry[0]}`).setAttribute('class', entry[1]);
             }

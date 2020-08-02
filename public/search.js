@@ -4,13 +4,22 @@ const ANIMATION_FLAG = true;
 let nodesCount;
 let allVariations = [];
 let allVariationValues = [];
-let bestValue;
 let bestVariation;
 let bestVariationValues;
 
-async function search(input, isBoard) {
+class BestPath {
+    constructor() {
+        this.bestValue = 0;
+    }
+}
+
+async function playout_all(input, isBoard) {
+    let bestPath = new BestPath();
+    return search(input, isBoard, bestPath);
+}
+
+async function search(input, isBoard, bestPath) {
     nodesCount = 0;
-    bestValue = 0;
     let board = createBoard(input);
     let state = {
         board: board,
@@ -22,10 +31,10 @@ async function search(input, isBoard) {
         isBoard: isBoard,
     };
 
-    await node(undefined, find('K', board), state);
+    await node(undefined, find('K', board), state, bestPath);
 
     // alert(`search.js nodesCount=${nodesCount} allVariations=${JSON.stringify(allVariations, null, '\t')}  allVariationValues=${JSON.stringify(allVariationValues, null, '\t')}`);
-    // alert(`search.js bestValue=${bestValue} bestVariation=${JSON.stringify(bestVariation, null, '\t')}  bestVariationValues=${JSON.stringify(bestVariationValue, null, '\t')}`);
+    // alert(`search.js bestVariation=${JSON.stringify(bestVariation, null, '\t')}  bestVariationValues=${JSON.stringify(bestVariationValue, null, '\t')}`);
     // 矢印に変換。
     let arrows = [];
     let bestVarLen = 0;
@@ -175,7 +184,7 @@ async function search(input, isBoard) {
     return arrows;
 }
 
-async function node(preSq, currSq, state) {
+async function node(preSq, currSq, state, bestPath) {
     // Animation
     if (ANIMATION_FLAG && state.isBoard) {
         const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -203,8 +212,8 @@ async function node(preSq, currSq, state) {
             state.pv.push(currSq);
             state.pv_value.push(1);
         }
-        if (bestValue < state.value) {
-            bestValue = state.value;
+        if (bestPath.bestValue < state.value) {
+            bestPath.bestValue = state.value;
             bestVariation = Array.from(state.pv);
             bestVariationValue = Array.from(state.pv_value);
         }
@@ -215,12 +224,10 @@ async function node(preSq, currSq, state) {
     for (nextSq of ways) {
         switch (state.board[nextSq]) {
             case 'G':
-                // alert(`search.js/node/G/setInterval currSq=${currSq} nextSq=${nextSq}`);
-                await node(currSq, nextSq, state);
+                await node(currSq, nextSq, state, bestPath);
                 break;
             case 'S':
-                // alert(`search.js/node/S/setInterval currSq=${currSq} nextSq=${nextSq}`);
-                await node(currSq, nextSq, state);
+                await node(currSq, nextSq, state, bestPath);
                 break;
             default:
                 break;
