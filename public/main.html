@@ -72,7 +72,7 @@
 
 <body onload="on_load();" style="margin:40px;">
     <!-- 囲いの名前 -->
-    <div>
+    <div style="margin-top:100px;">
         <ruby><span id="enclosureCategoryJp" style="font-size:36px; color:rgb(51, 153, 204); line-height:90%;"></span>
             <rt><span id="enclosureCategoryEn" style="font-size:20px; color:rgb(51, 153, 204); line-height:90%;"></span>
             </rt>
@@ -87,19 +87,19 @@
     <!-- 将棋盤
         ヨコ5   なら width:364px;
         ヨコ9   なら width:600px;
-        タテ5.5 なら height:320px;
-        タテ6.5 なら height:384px
+        タテ5.5 なら height:420px;
+        タテ6.5 なら height:484px
     -->
     <iframe id="iframe1" src="./board.html?file=9&rank=4.5"
-        style="position:absolute; top:110px; width:600px; height:384px; border:none;" scrolling="no">
+        style="position:absolute; top:185px; width:600px; height:484px; border:none;" scrolling="no">
     </iframe>
     <!-- 得点計算
         ヨコ5 なら left:430px;
         ヨコ9 なら left:666px;
-        タテ5.5 なら top:-105px;
-        タテ6.5 なら top:-41px
+        タテ5.5 なら top:-5px;
+        タテ6.5 なら top:61px
     -->
-    <div style="position:absolute; top:-41px; left:666px;">
+    <div style="position:absolute; top:61px; left:666px;">
         <span style="margin-left:77px;"></span><img id="sc8_im" src="img/map.png" class="s"><span id="sc8_tx"
             style="font-size:24px;"></span><br>
         <span style="margin-left:77px;"></span><img id="sc7_im" src="img/map.png" class="s"><span id="sc7_tx"
