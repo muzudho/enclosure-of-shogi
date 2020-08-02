@@ -57,9 +57,11 @@
             for (entry of reversed) {
                 // alert(`entry=${JSON.stringify(entry, null, `  `)}`)
                 // let angle = whichAngle(entry[1]);
-                document.getElementById(`sc${i}_im`).setAttribute('class', entry[1]);
-                document.getElementById(`sc${i}_tx`).innerHTML = `${table[entry[1]]} 点`;
-                total += parseInt(table[entry[1]]);
+                if (entry[1]) {
+                    document.getElementById(`sc${i}_im`).setAttribute('class', entry[1]);
+                    document.getElementById(`sc${i}_tx`).innerHTML = `${table[entry[1]]} 点`;
+                    total += parseInt(table[entry[1]]);
+                }
                 i++;
             }
 
@@ -94,8 +96,10 @@
     <!-- 得点計算
         ヨコ5 なら left:430px;
         ヨコ9 なら left:666px;
+        タテ5.5 なら top:-105px;
+        タテ6.5 なら top:-41px
     -->
-    <div style="position:absolute; top:-105px; left:666px;">
+    <div style="position:absolute; top:-41px; left:666px;">
         <span style="margin-left:77px;"></span><img id="sc8_im" src="img/map.png" class="s"><span id="sc8_tx"
             style="font-size:24px;"></span><br>
         <span style="margin-left:77px;"></span><img id="sc7_im" src="img/map.png" class="s"><span id="sc7_tx"

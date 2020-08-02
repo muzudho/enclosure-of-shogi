@@ -207,12 +207,14 @@ class Search {
         this.pathSq.push(currSq);
 
         // Animation
-        if (ANIMATION_FLAG && this.isBoard) {
-            await sleep(INTERVAL_MSEC);
-            if (prevSq) {
-                document.getElementById(`ui${prevSq}`).setAttribute('class', 's');
+        if (ANIMATION_FLAG) {
+            if (this.isBoard) {
+                await sleep(INTERVAL_MSEC);
+                if (prevSq) {
+                    document.getElementById(`ui${prevSq}`).setAttribute('class', 's');
+                }
+                document.getElementById(`ui${currSq}`).setAttribute('class', 'green_cursor');
             }
-            document.getElementById(`ui${currSq}`).setAttribute('class', 'green_cursor');
 
             let sqDiff = currSq - prevSq;
             let srcSq = adjustSrcSq(prevSq, sqDiff);
