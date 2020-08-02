@@ -165,319 +165,329 @@ class BestPath {
     }
 }
 
-async function playout_all(input, isBoard) {
-    let bestPath = new BestPath();
-    await search(input, isBoard, bestPath);
-    return bestPath.createArrows();
-}
-
-async function search(input, isBoard, bestPath) {
-    nodesCount = 0;
-    let board = createBoard(input);
-    let state = {
-        board: board,
-        checkBoard: createFalseBoard(input),
-        value: 0,
-        // Principal variations.
-        pv: [],
-        pv_value: [],
-        isBoard: isBoard,
-    };
-
-    await node(undefined, find('K', board), state, bestPath);
-}
-
-async function node(preSq, currSq, state, bestPath) {
-    // Animation
-    if (ANIMATION_FLAG && state.isBoard) {
-        const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-        await _sleep(INTERVAL_MSEC);
-        // alert(`search.js/node/start currSq=${currSq}`);
-        if (preSq) {
-            document.getElementById(`ui${preSq}`).setAttribute('class', 's');
-        }
-        document.getElementById(`ui${currSq}`).setAttribute('class', 'green_cursor');
+class Search {
+    constructor() {
     }
 
-    // 直前の点数計算
-    let diffValue = letDiffValue(preSq, currSq, state);
-    nodesCount++;
-    state.checkBoard[currSq] = true;
-    state.pv.push(currSq);
-    state.pv_value.push(diffValue);
-    let ways = genMove(currSq, state);
-    // alert(`ways.length=${ways.length}`);
-    if (ways.length === 0) {
-        // Leaf
-        if (diffValue != 4) {
-            // 「行き止まり」を追加。
-            state.value += 1;
-            state.pv.push(currSq);
-            state.pv_value.push(1);
-        }
-        if (bestPath.value < state.value) {
-            bestPath.value = state.value;
-            bestPath.variation = Array.from(state.pv);
-            bestPath.variationValues = Array.from(state.pv_value);
-        }
-        // Record pv.
-        allVariations.push(Array.from(state.pv));
-        allVariationValues.push(Array.from(state.pv_value));
+    async search(input, isBoard, bestPath) {
+        nodesCount = 0;
+        let board = this.createBoard(input);
+        let state = {
+            board: board,
+            checkBoard: this.createFalseBoard(input),
+            value: 0,
+            // Principal variations.
+            pv: [],
+            pv_value: [],
+            isBoard: isBoard,
+        };
+
+        await this.node(undefined, this.find('K', board), state, bestPath);
     }
-    for (nextSq of ways) {
-        switch (state.board[nextSq]) {
+
+    async node(preSq, currSq, state, bestPath) {
+        // Animation
+        if (ANIMATION_FLAG && state.isBoard) {
+            const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+            await _sleep(INTERVAL_MSEC);
+            // alert(`search.js/node/start currSq=${currSq}`);
+            if (preSq) {
+                document.getElementById(`ui${preSq}`).setAttribute('class', 's');
+            }
+            document.getElementById(`ui${currSq}`).setAttribute('class', 'green_cursor');
+        }
+
+        // 直前の点数計算
+        let diffValue = this.letDiffValue(preSq, currSq, state);
+        nodesCount++;
+        state.checkBoard[currSq] = true;
+        state.pv.push(currSq);
+        state.pv_value.push(diffValue);
+        let ways = this.genMove(currSq, state);
+        // alert(`ways.length=${ways.length}`);
+        if (ways.length === 0) {
+            // Leaf
+            if (diffValue != 4) {
+                // 「行き止まり」を追加。
+                state.value += 1;
+                state.pv.push(currSq);
+                state.pv_value.push(1);
+            }
+            if (bestPath.value < state.value) {
+                bestPath.value = state.value;
+                bestPath.variation = Array.from(state.pv);
+                bestPath.variationValues = Array.from(state.pv_value);
+            }
+            // Record pv.
+            allVariations.push(Array.from(state.pv));
+            allVariationValues.push(Array.from(state.pv_value));
+        }
+        for (let nextSq of ways) {
+            switch (state.board[nextSq]) {
+                case 'G':
+                    await this.node(currSq, nextSq, state, bestPath);
+                    break;
+                case 'S':
+                    await this.node(currSq, nextSq, state, bestPath);
+                    break;
+                default:
+                    break;
+            }
+        }
+        state.pv_value.pop();
+        state.pv.pop();
+        state.checkBoard[currSq] = false;
+
+        // Animation
+        if (ANIMATION_FLAG && state.isBoard) {
+            const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+            await _sleep(INTERVAL_MSEC);
+            // alert(`search.js/node/start currSq=${currSq}`);
+            if (preSq) {
+                document.getElementById(`ui${preSq}`).setAttribute('class', 'red_cursor');
+            }
+            document.getElementById(`ui${currSq}`).setAttribute('class', 's');
+        }
+    }
+
+    /**
+     * Generation move.
+     */
+    genMove(currSq, state) {
+        let ways = [];
+
+        switch (state.board[currSq]) {
+            case 'K':
+                this.pushWay(- 10, ways, currSq, state);
+                this.pushWay(- 11, ways, currSq, state);
+                this.pushWay(- 1, ways, currSq, state);
+                this.pushWay(9, ways, currSq, state);
+                this.pushWay(10, ways, currSq, state);
+                this.pushWay(11, ways, currSq, state);
+                this.pushWay(1, ways, currSq, state);
+                this.pushWay(- 9, ways, currSq, state);
+                break;
             case 'G':
-                await node(currSq, nextSq, state, bestPath);
+                this.pushWay(- 10, ways, currSq, state);
+                this.pushWay(- 11, ways, currSq, state);
+                this.pushWay(- 1, ways, currSq, state);
+                this.pushWay(9, ways, currSq, state);
+                this.pushWay(10, ways, currSq, state);
+                this.pushWay(1, ways, currSq, state);
                 break;
             case 'S':
-                await node(currSq, nextSq, state, bestPath);
+                this.pushWay(- 11, ways, currSq, state);
+                this.pushWay(- 1, ways, currSq, state);
+                this.pushWay(9, ways, currSq, state);
+                this.pushWay(11, ways, currSq, state);
+                this.pushWay(- 9, ways, currSq, state);
                 break;
             default:
                 break;
         }
+        return ways;
     }
-    state.pv_value.pop();
-    state.pv.pop();
-    state.checkBoard[currSq] = false;
 
-    // Animation
-    if (ANIMATION_FLAG && state.isBoard) {
-        const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-        await _sleep(INTERVAL_MSEC);
-        // alert(`search.js/node/start currSq=${currSq}`);
-        if (preSq) {
-            document.getElementById(`ui${preSq}`).setAttribute('class', 'red_cursor');
+    pushWay(offset, ways, currSq, state) {
+        let nextSq = currSq + offset;
+        let dstPc = state.board[nextSq];
+        if (this.existsPv(nextSq, state)) {
+            // 既存の枝は作らない。
+            return;
         }
-        document.getElementById(`ui${currSq}`).setAttribute('class', 's');
+        if (!state.checkBoard[nextSq] && (dstPc === 'G' || dstPc === 'S')) {
+            let srcPc = state.board[currSq];
+            if (srcPc === 'G' || srcPc === 'S') {
+                // 点数計算
+                let diffValue = this.letDiffValue(currSq, nextSq, state);
+                // alert(`nextSq=${nextSq} state.checkBoard[nextSq]=${state.checkBoard[nextSq]} dstPc=${dstPc} diffValue=${diffValue}`);
+                state.value += diffValue;
+            }
+            ways.push(nextSq);
+        }
     }
-}
 
-/**
- * Generation move.
- */
-function genMove(currSq, state) {
-    let ways = [];
-
-    switch (state.board[currSq]) {
-        case 'K':
-            pushWay(- 10, ways, currSq, state);
-            pushWay(- 11, ways, currSq, state);
-            pushWay(- 1, ways, currSq, state);
-            pushWay(9, ways, currSq, state);
-            pushWay(10, ways, currSq, state);
-            pushWay(11, ways, currSq, state);
-            pushWay(1, ways, currSq, state);
-            pushWay(- 9, ways, currSq, state);
-            break;
-        case 'G':
-            pushWay(- 10, ways, currSq, state);
-            pushWay(- 11, ways, currSq, state);
-            pushWay(- 1, ways, currSq, state);
-            pushWay(9, ways, currSq, state);
-            pushWay(10, ways, currSq, state);
-            pushWay(1, ways, currSq, state);
-            break;
-        case 'S':
-            pushWay(- 11, ways, currSq, state);
-            pushWay(- 1, ways, currSq, state);
-            pushWay(9, ways, currSq, state);
-            pushWay(11, ways, currSq, state);
-            pushWay(- 9, ways, currSq, state);
-            break;
-        default:
-            break;
-    }
-    return ways;
-}
-function pushWay(offset, ways, currSq, state) {
-    nextSq = currSq + offset;
-    let dstPc = state.board[nextSq];
-    if (existsPv(nextSq, state)) {
-        // 既存の枝は作らない。
-        return;
-    }
-    if (!state.checkBoard[nextSq] && (dstPc === 'G' || dstPc === 'S')) {
+    /**
+     * 局面差分評価値算出
+     * @param {*} state 
+     */
+    letDiffValue(currSq, nextSq, state) {
         let srcPc = state.board[currSq];
-        if (srcPc === 'G' || srcPc === 'S') {
-            // 点数計算
-            let diffValue = letDiffValue(currSq, nextSq, state);
-            // alert(`nextSq=${nextSq} state.checkBoard[nextSq]=${state.checkBoard[nextSq]} dstPc=${dstPc} diffValue=${diffValue}`);
-            state.value += diffValue;
+        let dstPc = state.board[nextSq];
+        let diff = nextSq - currSq;
+        // alert(`letDiffValue: srcPc=${srcPc} dstPc=${dstPc} diff=${diff}`);
+        switch (srcPc) {
+            case 'G': // Gold
+                switch (dstPc) {
+                    case 'G': // Gold
+                        switch (diff) {
+                            case 1: //thru
+                            case -1: // thru
+                            case 10: // thru
+                            case -10:
+                                //        金(-1)
+                                // 金(10) 金     金(-10)
+                                //        金(1)
+                                return 4;
+                            case 9: // thuru
+                            case -11:
+                                // 金(9)    金(-11)
+                                //      金
+                                return 2;
+                            default:
+                                break;
+                        }
+                        break;
+                    case 'S': // Silver
+                        switch (diff) {
+                            case -11: // thru
+                            case 9:
+                                // 銀(9)　銀(-11)
+                                // 　   金
+                                return 4;
+                            case 1: //thru
+                            case -1: // thru
+                            case 10: // thru
+                            case -10:
+                                //        銀(-1)
+                                // 銀(10) 金    銀(-10)
+                                //        銀(1)
+                                return 2;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case 'S': // Silver
+                switch (dstPc) {
+                    case 'G': // Gold
+                        switch (diff) {
+                            case -9: // thru
+                            case -1: // thru
+                            case 11:
+                                //     金(-1)
+                                //     銀
+                                // 金(11)  金(-9)
+                                return 4;
+                            case -11: // thru
+                            case 9:
+                                // 金(9)  金(-11)
+                                //     銀
+                                return 2;
+                            default:
+                                break;
+                        }
+                        break;
+                    case 'S': // Silver
+                        switch (diff) {
+                            case -11: // thru
+                            case 9: // thru
+                            case 11: // thru
+                            case -9: // thru
+                                // 銀(9)    銀(-11)
+                                //      銀
+                                // 銀(11)   銀(-9)
+                                return 4;
+                            case -1:
+                                // 銀(-1)
+                                // 銀
+                                return 2;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
         }
-        ways.push(nextSq);
-    }
-}
-/**
- * 局面差分評価値算出
- * @param {*} state 
- */
-function letDiffValue(currSq, nextSq, state) {
-    let srcPc = state.board[currSq];
-    let dstPc = state.board[nextSq];
-    let diff = nextSq - currSq;
-    // alert(`letDiffValue: srcPc=${srcPc} dstPc=${dstPc} diff=${diff}`);
-    switch (srcPc) {
-        case 'G': // Gold
-            switch (dstPc) {
-                case 'G': // Gold
-                    switch (diff) {
-                        case 1: //thru
-                        case -1: // thru
-                        case 10: // thru
-                        case -10:
-                            //        金(-1)
-                            // 金(10) 金     金(-10)
-                            //        金(1)
-                            return 4;
-                        case 9: // thuru
-                        case -11:
-                            // 金(9)    金(-11)
-                            //      金
-                            return 2;
-                        default:
-                            break;
-                    }
-                    break;
-                case 'S': // Silver
-                    switch (diff) {
-                        case -11: // thru
-                        case 9:
-                            // 銀(9)　銀(-11)
-                            // 　   金
-                            return 4;
-                        case 1: //thru
-                        case -1: // thru
-                        case 10: // thru
-                        case -10:
-                            //        銀(-1)
-                            // 銀(10) 金    銀(-10)
-                            //        銀(1)
-                            return 2;
-                        default:
-                            break;
-                    }
-                    break;
-                default:
-                    break;
-            }
-            break;
-        case 'S': // Silver
-            switch (dstPc) {
-                case 'G': // Gold
-                    switch (diff) {
-                        case -9: // thru
-                        case -1: // thru
-                        case 11:
-                            //     金(-1)
-                            //     銀
-                            // 金(11)  金(-9)
-                            return 4;
-                        case -11: // thru
-                        case 9:
-                            // 金(9)  金(-11)
-                            //     銀
-                            return 2;
-                        default:
-                            break;
-                    }
-                    break;
-                case 'S': // Silver
-                    switch (diff) {
-                        case -11: // thru
-                        case 9: // thru
-                        case 11: // thru
-                        case -9: // thru
-                            // 銀(9)    銀(-11)
-                            //      銀
-                            // 銀(11)   銀(-9)
-                            return 4;
-                        case -1:
-                            // 銀(-1)
-                            // 銀
-                            return 2;
-                        default:
-                            break;
-                    }
-                    break;
-                default:
-                    break;
-            }
-            break;
-        default:
-            break;
+
+        // Error.
+        return 0;
     }
 
-    // Error.
-    return 0;
-}
-function existsPv(newSq, state) {
-    state.pv.push(newSq);
-    let exists = false;
-    for (exist_var in allVariations) {
-        if (exist_var.length < state.pv.length) {
-            // 一致しない
-            continue;
-        }
-        for (i = 0; i < state.pv.length; i++) {
-            if (exist_var[i] !== state.pv[i]) {
+    existsPv(newSq, state) {
+        state.pv.push(newSq);
+        let exists = false;
+        for (let exist_var in allVariations) {
+            if (exist_var.length < state.pv.length) {
                 // 一致しない
                 continue;
             }
+            for (i = 0; i < state.pv.length; i++) {
+                if (exist_var[i] !== state.pv[i]) {
+                    // 一致しない
+                    continue;
+                }
+            }
+            // 一致した
+            exists = true;
+            break;
         }
-        // 一致した
-        exists = true;
-        break;
+        state.pv.pop();
+        return exists;
     }
-    state.pv.pop();
-    return exists;
+
+    find(piece, board) {
+        for (const [i, sq] of board.entries()) {
+            /*
+            if (70 < i) {
+                alert(`i=${i} sq=${sq}`);
+            }
+            */
+            if (sq === piece) {
+                return i;
+            }
+        }
+    }
+
+    createBoard(input) {
+        let board = [];
+
+        for (let rank = 1; rank < 10; rank++) {
+            for (let file = 9; 0 < file; file--) {
+                board[file * 10 + rank] = '';
+            }
+        }
+
+        for (entry of input.board) {
+            // alert(`entry[${entry[0]}][${entry[1]}]`);
+            switch (entry[1]) {
+                case 'K': // thru
+                case 'G': // thru
+                case 'S':
+                    board[entry[0]] = entry[1];
+                    break;
+                default:
+                    // alert(`default entry[${entry[0]}][${entry[1]}]`);
+                    break;
+            }
+        }
+
+        return board;
+    }
+
+    createFalseBoard() {
+        let board = [];
+
+        for (let rank = 1; rank < 10; rank++) {
+            for (let file = 9; 0 < file; file--) {
+                board[file * 10 + rank] = false;
+            }
+        }
+
+        return board;
+    }
 }
-function find(piece, board) {
-    for (const [i, sq] of board.entries()) {
-        /*
-        if (70 < i) {
-            alert(`i=${i} sq=${sq}`);
-        }
-        */
-        if (sq === piece) {
-            return i;
-        }
-    }
-}
 
-function createBoard(input) {
-    board = [];
-
-    for (rank = 1; rank < 10; rank++) {
-        for (file = 9; 0 < file; file--) {
-            board[file * 10 + rank] = '';
-        }
-    }
-
-    for (entry of input.board) {
-        // alert(`entry[${entry[0]}][${entry[1]}]`);
-        switch (entry[1]) {
-            case 'K': // thru
-            case 'G': // thru
-            case 'S':
-                board[entry[0]] = entry[1];
-                break;
-            default:
-                // alert(`default entry[${entry[0]}][${entry[1]}]`);
-                break;
-        }
-    }
-
-    return board;
-}
-
-function createFalseBoard() {
-    board = [];
-
-    for (rank = 1; rank < 10; rank++) {
-        for (file = 9; 0 < file; file--) {
-            board[file * 10 + rank] = false;
-        }
-    }
-
-    return board;
+async function playout_all(input, isBoard) {
+    let bestPath = new BestPath();
+    let search = new Search();
+    await search.search(input, isBoard, bestPath);
+    return bestPath.createArrows();
 }
