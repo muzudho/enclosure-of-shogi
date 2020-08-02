@@ -218,7 +218,7 @@ class Search {
             document.getElementById(`ui${currSq}`).setAttribute('class', 'green_cursor');
 
             let sqDiff = currSq - prevSq;
-            let srcSq = prevSq;// adjustSrcSq(prevSq, sqDiff);
+            let srcSq = adjustSrcSq(prevSq, sqDiff);
             let classText = createClassText(diffValue, sqDiff);
             drawArrow(srcSq, classText);
             alert(`search.js/node/start diffValue=${diffValue} prevSq=${prevSq} currSq=${currSq} sqDiff=${sqDiff} classText=${classText}`);
