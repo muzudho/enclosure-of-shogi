@@ -459,7 +459,8 @@ class Search {
             }
         }
 
-        for (let entry of input.board) {
+
+        for (let entry of board_to_array(input)) {
             switch (entry[1]) {
                 case 'K': // thru
                 case 'G': // thru

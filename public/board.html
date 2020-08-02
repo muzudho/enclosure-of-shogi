@@ -34,8 +34,7 @@
             let input = get_data();
 
             // 盤面 (Webブラウザーで 80%に縮小して見るとちょうどいいかも)
-            for (entry of input.board) {
-                // alert(`board.html input.board entry=${JSON.stringify(entry, null, '  ')}`);
+            for (entry of board_to_array(input)) {
                 document.getElementById(`sq${entry[0]}`).setAttribute('class', `pc_${entry[1].toLowerCase()}`);
             }
 

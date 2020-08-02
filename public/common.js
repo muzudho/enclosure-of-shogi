@@ -6,7 +6,6 @@ async function sleep(msec) {
 function drawArrow(srcSq, classOfArrow) {
     let angle = whichAngle(classOfArrow);
     let id = `${angle}${srcSq}`;
-    // alert(`board.html: id=${id} class=${classOfArrow}`);
     if (srcSq && classOfArrow) {
         document.getElementById(id).setAttribute('class', classOfArrow);
     }
@@ -61,4 +60,32 @@ function shuffle_array(array) {
         k = Math.floor(Math.random() * i);
         [array[k], array[i - 1]] = [array[i - 1], array[k]];
     }
+}
+
+function board_to_array(input) {
+    let array = [];
+
+    let rank = 1;
+    for (row of input.board) {
+        let file = 9;
+        for (piece of row) {
+            switch (piece) {
+                case '.':
+                    // Ignored it.
+                    break;
+                case 'G':
+                case 'S':
+                case 'K':
+                    array.push([file * 10 + rank, piece]);
+                    break;
+                default:
+                    array.push([file * 10 + rank, '0']);
+                    break;
+            }
+            file--;
+        }
+        rank++;
+    }
+
+    return array;
 }
