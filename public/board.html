@@ -75,14 +75,18 @@
 
             // 矢印
             for (entry of bestArrows) {
-                let angle = whichAngle(entry[1]);
-                let id = `${angle}${entry[0]}`;
-                alert(`board.html: id=${id} class=${entry[1]}`);
-                if (entry[1]) {
-                    document.getElementById(id).setAttribute('class', entry[1]);
-                }
+                drawArrow(entry[0], entry[1]);
                 const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
                 await _sleep(INTERVAL_MSEC / 10);
+            }
+        }
+
+        function drawArrow(srcSq, classOfArrow) {
+            let angle = whichAngle(classOfArrow);
+            let id = `${angle}${srcSq}`;
+            // alert(`board.html: id=${id} class=${entry[1]}`);
+            if (classOfArrow) {
+                document.getElementById(id).setAttribute('class', classOfArrow);
             }
         }
 

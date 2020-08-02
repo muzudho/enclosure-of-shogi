@@ -11,10 +11,10 @@ async function playoutAll(input, isBoard) {
 
     let search = new Search();
     await search.search(input, isBoard, bestPath);
-    alert(`search.js/playoutAll: [1] search.nodesCount=${search.nodesCount}`);
+    // alert(`search.js/playoutAll: [1] search.nodesCount=${search.nodesCount}`);
     search = new Search();
     await search.search(input, isBoard, bestPath);
-    alert(`search.js/playoutAll: [2] search.nodesCount=${search.nodesCount}`);
+    // alert(`search.js/playoutAll: [2] search.nodesCount=${search.nodesCount}`);
 
     return bestPath.createArrows();
 }
@@ -22,26 +22,23 @@ async function playoutAll(input, isBoard) {
 class BestPath {
     constructor() {
         this.value = 0;
-        this.variation = undefined;
-        this.variationValues = undefined;
-        this.allVariations = [];
-        this.allVariationValues = [];
+        this.graphSq = undefined;
+        this.graphValues = undefined;
+        this.allGraphSq = [];
     }
 
     createArrows() {
         // 矢印に変換。
         let arrows = [];
         let bestVarLen = 0;
-        // alert(`search.js/createArrows: this.variation=${JSON.stringify(this.variation, null, '  ')}`);
-        if (this.variation) {
-            bestVarLen = this.variation.length;
+        if (this.graphSq) {
+            bestVarLen = this.graphSq.length;
         }
         for (let i = 1; i < bestVarLen; i++) {
-            let bestSq = this.variation[i - 1];
-            let bestVarVal = this.variationValues[i];
-            let diff = this.variation[i] - this.variation[i - 1];
-            let angle;
-            let classText;
+            let srcSq = this.graphSq[i - 1];
+            let edgeValueFromDst = this.graphValues[i];
+            let diff = this.graphSq[i] - this.graphSq[i - 1];
+            /*
             // Angle 算出
             switch (diff) {
                 case -10: // thru
@@ -62,122 +59,130 @@ class BestPath {
                     angle = 'c';
                     break;
             }
+            */
             // ドロップ・シャドウずらし
             switch (diff) {
                 case 9:
-                    bestSq += 9;
+                    srcSq += 9;
                     break;
                 case -1: // thru
                 case -11: // thru
-                    bestSq += -1;
+                    srcSq += -1;
                     break;
                 case 10:
                 case 11:
-                    bestSq += 10;
+                    srcSq += 10;
                     break;
                 default:
                     break;
             }
-            // 線算出
-            switch (bestVarVal) {
-                case 0:
-                    // 玉からの矢印
-                    switch (diff) {
-                        case -10:
-                            classText = 'k51';
-                            break;
-                        case -11:
-                            classText = 'k62';
-                            break;
-                        case -1:
-                            classText = 'k73';
-                            break;
-                        case 9:
-                            classText = 'k84';
-                            break;
-                        case 10:
-                            classText = 'k15';
-                            break;
-                        case 11:
-                            classText = 'k26';
-                            break;
-                        case 1:
-                            classText = 'k37';
-                            break;
-                        case -9:
-                            classText = 'k48';
-                            break;
-                    }
-                    break;
-                case 1:
-                    // 行き止まり
-                    classText = 'a1';
-                    break;
-                case 2:
-                    // 一方通行
-                    switch (diff) {
-                        case -10:
-                            classText = 'a51';
-                            break;
-                        case -11:
-                            classText = 'a62';
-                            break;
-                        case -1:
-                            classText = 'a73';
-                            break;
-                        case 9:
-                            classText = 'a84';
-                            break;
-                        case 10:
-                            classText = 'a15';
-                            break;
-                        case 11:
-                            classText = 'a26';
-                            break;
-                        case 1:
-                            classText = 'a37';
-                            break;
-                        case -9:
-                            classText = 'a48';
-                            break;
-                    }
-                    break;
-                case 4:
-                    // 双方向
-                    switch (diff) {
-                        case -10:
-                            classText = 'a1551';
-                            break;
-                        case -11:
-                            classText = 'a2662';
-                            break;
-                        case -1:
-                            classText = 'a3773';
-                            break;
-                        case 9:
-                            classText = 'a4884';
-                            break;
-                        case 10:
-                            classText = 'a1551';
-                            break;
-                        case 11:
-                            classText = 'a2662';
-                            break;
-                        case 1:
-                            classText = 'a3773';
-                            break;
-                        case -9:
-                            classText = 'a4884';
-                            break;
-                    }
-                    break;
-            }
-            arrows.push([bestSq, classText]);
+            arrows.push([srcSq, createClassText(edgeValueFromDst, diff)]);
         }
         // alert(`arrows=${JSON.stringify(arrows, null, '\t')}`);
 
         return arrows;
     }
+}
+
+function createClassText(edgeValueFromDst, sqDiff) {
+    let classText;
+
+    // 線算出
+    switch (edgeValueFromDst) {
+        case 0:
+            // 玉からの矢印
+            switch (sqDiff) {
+                case -10:
+                    classText = 'k51';
+                    break;
+                case -11:
+                    classText = 'k62';
+                    break;
+                case -1:
+                    classText = 'k73';
+                    break;
+                case 9:
+                    classText = 'k84';
+                    break;
+                case 10:
+                    classText = 'k15';
+                    break;
+                case 11:
+                    classText = 'k26';
+                    break;
+                case 1:
+                    classText = 'k37';
+                    break;
+                case -9:
+                    classText = 'k48';
+                    break;
+            }
+            break;
+        case 1:
+            // 行き止まり
+            classText = 'a1';
+            break;
+        case 2:
+            // 一方通行
+            switch (sqDiff) {
+                case -10:
+                    classText = 'a51';
+                    break;
+                case -11:
+                    classText = 'a62';
+                    break;
+                case -1:
+                    classText = 'a73';
+                    break;
+                case 9:
+                    classText = 'a84';
+                    break;
+                case 10:
+                    classText = 'a15';
+                    break;
+                case 11:
+                    classText = 'a26';
+                    break;
+                case 1:
+                    classText = 'a37';
+                    break;
+                case -9:
+                    classText = 'a48';
+                    break;
+            }
+            break;
+        case 4:
+            // 双方向
+            switch (sqDiff) {
+                case -10:
+                    classText = 'a1551';
+                    break;
+                case -11:
+                    classText = 'a2662';
+                    break;
+                case -1:
+                    classText = 'a3773';
+                    break;
+                case 9:
+                    classText = 'a4884';
+                    break;
+                case 10:
+                    classText = 'a1551';
+                    break;
+                case 11:
+                    classText = 'a2662';
+                    break;
+                case 1:
+                    classText = 'a3773';
+                    break;
+                case -9:
+                    classText = 'a4884';
+                    break;
+            }
+            break;
+    }
+
+    return classText;
 }
 
 class Search {
@@ -208,25 +213,29 @@ class Search {
         await this.node(undefined, this.find('K'), bestPath);
     }
 
-    async node(preSq, currSq, bestPath) {
-        // Animation
-        if (ANIMATION_FLAG && this.isBoard) {
-            const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-            await _sleep(INTERVAL_MSEC);
-            // alert(`search.js/node/start currSq=${currSq}`);
-            if (preSq) {
-                document.getElementById(`ui${preSq}`).setAttribute('class', 's');
-            }
-            document.getElementById(`ui${currSq}`).setAttribute('class', 'green_cursor');
-        }
-
+    async node(prevSq, currSq, bestPath) {
         // 直前の点数計算
-        let diffValue = this.letDiffValue(preSq, currSq);
+        let diffValue = this.letDiffValue(prevSq, currSq);
         this.nodesCount++;
         this.checkBoard[currSq] = true;
         this.graphSq.push(currSq);
         this.graphValue.push(diffValue);
         this.pathSq.push(currSq);
+
+        // Animation
+        if (ANIMATION_FLAG && this.isBoard) {
+            const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+            await _sleep(INTERVAL_MSEC);
+            // alert(`search.js/node/start currSq=${currSq}`);
+            if (prevSq) {
+                document.getElementById(`ui${prevSq}`).setAttribute('class', 's');
+            }
+            document.getElementById(`ui${currSq}`).setAttribute('class', 'green_cursor');
+
+            let classText = createClassText(diffValue, currSq - prevSq);
+            drawArrow(prevSq, classText);
+        }
+
         let ways = this.genMove(currSq, bestPath);
         // alert(`ways.length=${ways.length}`);
         if (ways.length === 0) {
@@ -240,12 +249,11 @@ class Search {
             }
             if (bestPath.value < this.value) {
                 bestPath.value = this.value;
-                bestPath.variation = Array.from(this.graphSq);
-                bestPath.variationValues = Array.from(this.graphValue);
+                bestPath.graphSq = Array.from(this.graphSq);
+                bestPath.graphValues = Array.from(this.graphValue);
             }
             // Record graph.
-            bestPath.allVariations.push(Array.from(this.graphSq));
-            bestPath.allVariationValues.push(Array.from(this.graphValue));
+            bestPath.allGraphSq.push(Array.from(this.graphSq));
         }
         for (let nextSq of ways) {
             switch (this.board[nextSq]) {
@@ -259,6 +267,9 @@ class Search {
                     break;
             }
         }
+        // 後ろ向きパス
+        // this.graphValue.push(0);
+        // this.graphSq.push(0);
         this.checkBoard[currSq] = false;
 
         // Animation
@@ -266,8 +277,8 @@ class Search {
             const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
             await _sleep(INTERVAL_MSEC);
             // alert(`search.js/node/start currSq=${currSq}`);
-            if (preSq) {
-                document.getElementById(`ui${preSq}`).setAttribute('class', 'red_cursor');
+            if (prevSq) {
+                document.getElementById(`ui${prevSq}`).setAttribute('class', 'red_cursor');
             }
             document.getElementById(`ui${currSq}`).setAttribute('class', 's');
         }
@@ -436,8 +447,7 @@ class Search {
     existsPath(newSq, bestPath) {
         this.pathSq.push(newSq);
         let exists = false;
-        // alert(`existsPath: bestPath.allVariations=${JSON.stringify(bestPath.allVariations, null, '  ')}`);
-        for (let existVar of bestPath.allVariations) {
+        for (let existVar of bestPath.allGraphSq) {
             // alert(`existsPath: existVar=${JSON.stringify(existVar, null, '  ')}`);
             if (existVar.length < this.pathSq.length) {
                 // 一致しない
