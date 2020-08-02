@@ -184,14 +184,16 @@ class Search {
     constructor() {
         this.nodesCount = undefined;
         this.board = undefined;
+        this.checkBoard = undefined;
+        this.value = undefined;
     }
 
     async search(input, isBoard, bestPath) {
         this.nodesCount = 0;
         this.board = this.createBoard(input);
+        this.checkBoard = this.createFalseBoard(input);
+        this.value = 0;
         let state = {
-            checkBoard: this.createFalseBoard(input),
-            value: 0,
             // Principal variations.
             pv: [],
             pv_value: [],
@@ -216,7 +218,7 @@ class Search {
         // 直前の点数計算
         let diffValue = this.letDiffValue(preSq, currSq, state);
         this.nodesCount++;
-        state.checkBoard[currSq] = true;
+        this.checkBoard[currSq] = true;
         state.pv.push(currSq);
         state.pv_value.push(diffValue);
         let ways = this.genMove(currSq, state, bestPath);
@@ -225,12 +227,12 @@ class Search {
             // Leaf
             if (diffValue != 4) {
                 // 「行き止まり」を追加。
-                state.value += 1;
+                this.value += 1;
                 state.pv.push(currSq);
                 state.pv_value.push(1);
             }
-            if (bestPath.value < state.value) {
-                bestPath.value = state.value;
+            if (bestPath.value < this.value) {
+                bestPath.value = this.value;
                 bestPath.variation = Array.from(state.pv);
                 bestPath.variationValues = Array.from(state.pv_value);
             }
@@ -252,7 +254,7 @@ class Search {
         }
         state.pv_value.pop();
         state.pv.pop();
-        state.checkBoard[currSq] = false;
+        this.checkBoard[currSq] = false;
 
         // Animation
         if (ANIMATION_FLAG && state.isBoard) {
@@ -311,13 +313,13 @@ class Search {
             // 既存の枝は作らない。
             return;
         }
-        if (!state.checkBoard[nextSq] && (dstPc === 'G' || dstPc === 'S')) {
+        if (!this.checkBoard[nextSq] && (dstPc === 'G' || dstPc === 'S')) {
             let srcPc = this.board[currSq];
             if (srcPc === 'G' || srcPc === 'S') {
                 // 点数計算
                 let diffValue = this.letDiffValue(currSq, nextSq, state);
-                // alert(`nextSq=${nextSq} state.checkBoard[nextSq]=${state.checkBoard[nextSq]} dstPc=${dstPc} diffValue=${diffValue}`);
-                state.value += diffValue;
+                // alert(`nextSq=${nextSq} dstPc=${dstPc} diffValue=${diffValue}`);
+                this.value += diffValue;
             }
             ways.push(nextSq);
         }
