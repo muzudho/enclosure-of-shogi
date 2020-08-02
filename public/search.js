@@ -14,7 +14,7 @@ async function playoutAll(input, isBoard) {
         await search.search(input, isBoard, bestPath);
     }
 
-    return bestPath.createArrows();
+    return bestPath;
 }
 
 class BestPath {
@@ -234,7 +234,7 @@ class Search {
             let sqDiff = currSq - prevSq;
             let srcSq = adjustSrcSq(prevSq, sqDiff);
             let classText = createClassText(diffValue, sqDiff);
-            await this.recordArrow(srcSq, classText);
+            await this.recordArrow(srcSq, classText, diffValue);
             // alert(`search.js/node/start diffValue=${diffValue} prevSq=${prevSq} currSq=${currSq} sqDiff=${sqDiff} classText=${classText}`);
         }
 
@@ -253,7 +253,7 @@ class Search {
                 this.pathSq.push(currSq);
 
                 let classText = createClassText(leafValue, 0);
-                await this.recordArrow(currSq, classText);
+                await this.recordArrow(currSq, classText, leafValue);
             }
             // Record graph.
             bestPath.allGraphSq.push(Array.from(this.graphSq));
@@ -335,8 +335,8 @@ class Search {
     }
     */
 
-    async recordArrow(srcSq, classText) {
-        this.arrows.push([srcSq, classText]);
+    async recordArrow(srcSq, classText, value) {
+        this.arrows.push([srcSq, classText, value]);
         if (this.isBoard) {
             drawArrow(srcSq, classText);
         }

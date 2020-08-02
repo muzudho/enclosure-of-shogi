@@ -40,7 +40,8 @@
             }
 
             // 探索開始
-            let bestArrows = await playoutAll(input, true);
+            let bestPath = await playoutAll(input, true);
+            let bestArrows = bestPath.createArrows();
 
             // 矢印
             for (entry of bestArrows) {

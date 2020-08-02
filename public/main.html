@@ -12,6 +12,7 @@
     <script src="./search.js"></script>
     <script>
         async function on_load() {
+            /*
             // 得点計算表示
             let table = {
                 "k84": 0,
@@ -36,6 +37,7 @@
                 "a2662": 4,
                 "a1551": 4,
             };
+            */
 
             // データ読み取り
             let input = get_data();
@@ -47,25 +49,26 @@
             document.getElementById("enclosureNameJp").innerHTML = `${input.enclosureName[1]}`;
 
             // 探索開始
-            let bestArrows = await playoutAll(input, false);
+            let bestPath = await playoutAll(input, false);
+            let bestArrows = bestPath.createArrows();
 
             // 計算結果
             let reversed = Array.from(bestArrows);
             reversed.reverse();
-            let total = 0;
+            // let total = 0;
             let i = 1;
             for (entry of reversed) {
                 // alert(`entry=${JSON.stringify(entry, null, `  `)}`)
                 // let angle = whichAngle(entry[1]);
                 if (entry[1]) {
                     document.getElementById(`sc${i}_im`).setAttribute('class', entry[1]);
-                    document.getElementById(`sc${i}_tx`).innerHTML = `${table[entry[1]]} 点`;
-                    total += parseInt(table[entry[1]]);
+                    document.getElementById(`sc${i}_tx`).innerHTML = `${entry[2]} 点`;
+                    // total += parseInt(table[entry[1]]);
                 }
                 i++;
             }
 
-            document.getElementById("sc0_tx").innerHTML = `${total} 点`;
+            document.getElementById("sc0_tx").innerHTML = `${bestPath.value} 点`;
         }
     </script>
 </head>
