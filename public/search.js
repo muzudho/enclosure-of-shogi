@@ -15,6 +15,8 @@ async function playoutAll(input, isBoard) {
     clearUiLayer();
     // alert(`search.js/playoutAll: [1] search.nodesCount=${search.nodesCount}`);
     await sleep(INTERVAL_MSEC);
+    // ベスト更新
+    search.updateBest(bestPath);
 
     search = new Search();
     await search.search(input, isBoard, bestPath);
@@ -22,6 +24,8 @@ async function playoutAll(input, isBoard) {
     clearUiLayer();
     // alert(`search.js/playoutAll: [2] search.nodesCount=${search.nodesCount}`);
     await sleep(INTERVAL_MSEC);
+    // ベスト更新
+    search.updateBest(bestPath);
 
     return bestPath.createArrows();
 }
@@ -252,14 +256,6 @@ class Search {
                 let classText = createClassText(leafValue, 0);
                 await this.recordArrow(currSq, classText);
             }
-            // ベスト更新
-            if (depth === 0 && bestPath.value < this.value) {
-                alert(`search.js: ベスト更新。 bestPath.value=${bestPath.value} this.value=${this.value}`);
-                bestPath.value = this.value;
-                bestPath.graphSq = Array.from(this.graphSq);
-                bestPath.graphValues = Array.from(this.graphValue);
-                bestPath.arrows = Array.from(this.arrows);
-            }
             // Record graph.
             bestPath.allGraphSq.push(Array.from(this.graphSq));
         }
@@ -289,6 +285,18 @@ class Search {
                 document.getElementById(`ui${prevSq}`).setAttribute('class', 'red_cursor');
             }
             document.getElementById(`ui${currSq}`).setAttribute('class', 's');
+        }
+    }
+
+    updateBest(bestPath) {
+        if (bestPath.value < this.value) {
+            // alert(`search.js: ベスト更新。 bestPath.value=${bestPath.value} this.value=${this.value}`);
+            bestPath.value = this.value;
+            bestPath.graphSq = Array.from(this.graphSq);
+            bestPath.graphValues = Array.from(this.graphValue);
+            bestPath.arrows = Array.from(this.arrows);
+            //} else {
+            //    alert(`search.js: ベスト更新ならず。`);
         }
     }
 
@@ -356,7 +364,7 @@ class Search {
 
     addValue(offset) {
         this.value += offset;
-        alert(`search.js: 点数加算 offset=${offset} value=${this.value}`);
+        // alert(`search.js: 点数加算 offset=${offset} value=${this.value}`);
     }
 
     /**
