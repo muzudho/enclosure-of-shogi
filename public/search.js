@@ -14,14 +14,14 @@ async function playoutAll(input, isBoard) {
     clearArrowLayer();
     clearUiLayer();
     // alert(`search.js/playoutAll: [1] search.nodesCount=${search.nodesCount}`);
-    sleep(INTERVAL_MSEC);
+    await sleep(INTERVAL_MSEC);
 
     search = new Search();
     await search.search(input, isBoard, bestPath);
     clearArrowLayer();
     clearUiLayer();
     // alert(`search.js/playoutAll: [2] search.nodesCount=${search.nodesCount}`);
-    sleep(INTERVAL_MSEC);
+    await sleep(INTERVAL_MSEC);
 
     return bestPath.createArrows();
 }
@@ -208,10 +208,10 @@ class Search {
         // Search round trip path.
         this.pathSq = [];
         this.arrows = [];
-        await this.node(undefined, this.find('K'), bestPath);
+        await this.node(0, undefined, this.find('K'), bestPath);
     }
 
-    async node(prevSq, currSq, bestPath) {
+    async node(depth, prevSq, currSq, bestPath) {
         // 直前の点数計算
         let diffValue = this.letDiffValue(prevSq, currSq);
         this.nodesCount++;
@@ -232,9 +232,7 @@ class Search {
             let sqDiff = currSq - prevSq;
             let srcSq = adjustSrcSq(prevSq, sqDiff);
             let classText = createClassText(diffValue, sqDiff);
-            this.arrows.push([srcSq, classText]);
-            drawArrow(srcSq, classText);
-            sleep(INTERVAL_MSEC);
+            await this.recordArrow(srcSq, classText);
             // alert(`search.js/node/start diffValue=${diffValue} prevSq=${prevSq} currSq=${currSq} sqDiff=${sqDiff} classText=${classText}`);
         }
 
@@ -243,20 +241,20 @@ class Search {
         if (ways.length === 0) {
             // Leaf
             // alert(`search.js: 行き止まり。 currSq=${currSq} ways.length=${ways.length}`);
+            // 「行き止まり」を追加。
             if (diffValue != 4) {
-                // 「行き止まり」を追加。
                 let leafValue = 1;
-                this.value += leafValue;
+                this.addValue(leafValue);
                 this.graphSq.push(currSq);
                 this.graphValue.push(1);
                 this.pathSq.push(currSq);
 
                 let classText = createClassText(leafValue, 0);
-                this.arrows.push([currSq, classText]);
-                drawArrow(currSq, classText);
-                sleep(INTERVAL_MSEC);
+                await this.recordArrow(currSq, classText);
             }
-            if (bestPath.value < this.value) {
+            // ベスト更新
+            if (depth === 0 && bestPath.value < this.value) {
+                alert(`search.js: ベスト更新。 bestPath.value=${bestPath.value} this.value=${this.value}`);
                 bestPath.value = this.value;
                 bestPath.graphSq = Array.from(this.graphSq);
                 bestPath.graphValues = Array.from(this.graphValue);
@@ -268,10 +266,10 @@ class Search {
         for (let nextSq of ways) {
             switch (this.board[nextSq]) {
                 case 'G':
-                    await this.node(currSq, nextSq, bestPath);
+                    await this.node(depth + 1, currSq, nextSq, bestPath);
                     break;
                 case 'S':
-                    await this.node(currSq, nextSq, bestPath);
+                    await this.node(depth + 1, currSq, nextSq, bestPath);
                     break;
                 default:
                     break;
@@ -292,6 +290,12 @@ class Search {
             }
             document.getElementById(`ui${currSq}`).setAttribute('class', 's');
         }
+    }
+
+    async recordArrow(srcSq, classText) {
+        this.arrows.push([srcSq, classText]);
+        drawArrow(srcSq, classText);
+        await sleep(INTERVAL_MSEC);
     }
 
     /**
@@ -342,13 +346,17 @@ class Search {
         if (!this.checkBoard[nextSq] && (dstPc === 'G' || dstPc === 'S')) {
             let srcPc = this.board[currSq];
             if (srcPc === 'G' || srcPc === 'S') {
-                // 点数計算
+                // 点数加算
                 let diffValue = this.letDiffValue(currSq, nextSq);
-                // alert(`nextSq=${nextSq} dstPc=${dstPc} diffValue=${diffValue}`);
-                this.value += diffValue;
+                this.addValue(diffValue);
             }
             ways.push(nextSq);
         }
+    }
+
+    addValue(offset) {
+        this.value += offset;
+        alert(`search.js: 点数加算 offset=${offset} value=${this.value}`);
     }
 
     /**
