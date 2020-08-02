@@ -1,3 +1,6 @@
+const INTERVAL_MSEC = 17;
+animationEnable = true;
+
 async function sleep(msec) {
     const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     await _sleep(INTERVAL_MSEC);
@@ -88,4 +91,17 @@ function board_to_array(input) {
     }
 
     return array;
+}
+
+function findGetParameter(parameterName) {
+    let result = null;
+    let tmp = [];
+    window.location.search
+        .substr(1)
+        .split("&")
+        .forEach(function (item) {
+            tmp = item.split("=");
+            if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+        });
+    return result;
 }

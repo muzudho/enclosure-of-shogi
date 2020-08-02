@@ -1,6 +1,3 @@
-const INTERVAL_MSEC = 17;
-const ANIMATION_FLAG = true;
-
 /**
  * Playout.
  * @param {*} input 
@@ -198,7 +195,7 @@ class Search {
         // ベスト更新
         bestPath.update(this.value, this.graphSq, this.graphValues, this.arrows);
         // 後処理。
-        if (this.isBoard) {
+        if (animationEnable && this.isBoard) {
             clearArrowLayer();
             clearUiLayer();
             await sleep(INTERVAL_MSEC);
@@ -215,7 +212,7 @@ class Search {
         this.pathSq.push(currSq);
 
         // Animation
-        if (ANIMATION_FLAG) {
+        if (animationEnable) {
             if (this.isBoard) {
                 await sleep(INTERVAL_MSEC);
                 if (prevSq) {
@@ -223,12 +220,13 @@ class Search {
                 }
                 document.getElementById(`ui${currSq}`).setAttribute('class', 'green_cursor');
             }
-
-            let sqDiff = currSq - prevSq;
-            let srcSq = adjustSrcSq(prevSq, sqDiff);
-            let classText = createClassText(diffValue, sqDiff);
-            await this.recordArrow(srcSq, classText, diffValue);
         }
+
+        // Record
+        let sqDiff = currSq - prevSq;
+        let srcSq = adjustSrcSq(prevSq, sqDiff);
+        let classText = createClassText(diffValue, sqDiff);
+        await this.recordArrow(srcSq, classText, diffValue);
 
         let ways = this.genMove(currSq, bestPath);
         shuffle_array(ways);
@@ -273,7 +271,7 @@ class Search {
         }
 
         // Animation
-        if (ANIMATION_FLAG && this.isBoard) {
+        if (animationEnable && this.isBoard) {
             await sleep(INTERVAL_MSEC);
             if (prevSq) {
                 document.getElementById(`ui${prevSq}`).setAttribute('class', 'red_cursor');
@@ -284,7 +282,7 @@ class Search {
 
     async recordArrow(srcSq, classText, value) {
         this.arrows.push([srcSq, classText, value]);
-        if (this.isBoard) {
+        if (animationEnable && this.isBoard) {
             drawArrow(srcSq, classText);
             await sleep(INTERVAL_MSEC);
         }

@@ -14,4 +14,6 @@ Click the `public/main.html`.
 
 ## Appendix
 
-It will be faster if you comment out the contents of the `common.js/sleep()` function.  
+It will be faster:  
+
+Click the `public/main.html?anime=off`.
