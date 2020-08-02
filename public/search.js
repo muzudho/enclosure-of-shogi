@@ -183,13 +183,13 @@ class BestPath {
 class Search {
     constructor() {
         this.nodesCount = undefined;
+        this.board = undefined;
     }
 
     async search(input, isBoard, bestPath) {
         this.nodesCount = 0;
-        let board = this.createBoard(input);
+        this.board = this.createBoard(input);
         let state = {
-            board: board,
             checkBoard: this.createFalseBoard(input),
             value: 0,
             // Principal variations.
@@ -198,7 +198,7 @@ class Search {
             isBoard: isBoard,
         };
 
-        await this.node(undefined, this.find('K', board), state, bestPath);
+        await this.node(undefined, this.find('K'), state, bestPath);
     }
 
     async node(preSq, currSq, state, bestPath) {
@@ -239,7 +239,7 @@ class Search {
             bestPath.allVariationValues.push(Array.from(state.pv_value));
         }
         for (let nextSq of ways) {
-            switch (state.board[nextSq]) {
+            switch (this.board[nextSq]) {
                 case 'G':
                     await this.node(currSq, nextSq, state, bestPath);
                     break;
@@ -272,7 +272,7 @@ class Search {
     genMove(currSq, state, bestPath) {
         let ways = [];
 
-        switch (state.board[currSq]) {
+        switch (this.board[currSq]) {
             case 'K':
                 this.pushWay(- 10, ways, currSq, state, bestPath);
                 this.pushWay(- 11, ways, currSq, state, bestPath);
@@ -306,13 +306,13 @@ class Search {
 
     pushWay(offset, ways, currSq, state, bestPath) {
         let nextSq = currSq + offset;
-        let dstPc = state.board[nextSq];
+        let dstPc = this.board[nextSq];
         if (this.existsPv(nextSq, state, bestPath)) {
             // 既存の枝は作らない。
             return;
         }
         if (!state.checkBoard[nextSq] && (dstPc === 'G' || dstPc === 'S')) {
-            let srcPc = state.board[currSq];
+            let srcPc = this.board[currSq];
             if (srcPc === 'G' || srcPc === 'S') {
                 // 点数計算
                 let diffValue = this.letDiffValue(currSq, nextSq, state);
@@ -328,8 +328,8 @@ class Search {
      * @param {*} state 
      */
     letDiffValue(currSq, nextSq, state) {
-        let srcPc = state.board[currSq];
-        let dstPc = state.board[nextSq];
+        let srcPc = this.board[currSq];
+        let dstPc = this.board[nextSq];
         let diff = nextSq - currSq;
         // alert(`letDiffValue: srcPc=${srcPc} dstPc=${dstPc} diff=${diff}`);
         switch (srcPc) {
@@ -451,13 +451,8 @@ class Search {
         return exists;
     }
 
-    find(piece, board) {
-        for (const [i, sq] of board.entries()) {
-            /*
-            if (70 < i) {
-                alert(`i=${i} sq=${sq}`);
-            }
-            */
+    find(piece) {
+        for (const [i, sq] of this.board.entries()) {
             if (sq === piece) {
                 return i;
             }
