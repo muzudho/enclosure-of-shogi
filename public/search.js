@@ -11,11 +11,164 @@ class BestPath {
         this.variation = undefined;
         this.variationValues = undefined;
     }
+
+    createArrows() {
+        // alert(`search.js nodesCount=${nodesCount} allVariations=${JSON.stringify(allVariations, null, '\t')}  allVariationValues=${JSON.stringify(allVariationValues, null, '\t')}`);
+        // 矢印に変換。
+        let arrows = [];
+        let bestVarLen = 0;
+        // alert(`search.js/createArrows: this.variation=${JSON.stringify(this.variation, null, '  ')}`);
+        if (this.variation) {
+            bestVarLen = this.variation.length;
+        }
+        for (let i = 1; i < bestVarLen; i++) {
+            let bestSq = this.variation[i - 1];
+            let bestVarVal = this.variationValues[i];
+            let diff = this.variation[i] - this.variation[i - 1];
+            let angle;
+            let classText;
+            // Angle 算出
+            switch (diff) {
+                case -10: // thru
+                case 10:
+                    angle = 'w';
+                    break;
+                case -1: // thru
+                case 1:
+                    angle = 'h';
+                    break;
+                case -11: // thru
+                case -9: // thru
+                case 9: // thru
+                case 11:
+                    angle = 'd';
+                    break;
+                case 0:
+                    angle = 'c';
+                    break;
+            }
+            // ドロップ・シャドウずらし
+            switch (diff) {
+                case 9:
+                    bestSq += 9;
+                    break;
+                case -1: // thru
+                case -11: // thru
+                    bestSq += -1;
+                    break;
+                case 10:
+                case 11:
+                    bestSq += 10;
+                    break;
+                default:
+                    break;
+            }
+            // 線算出
+            switch (bestVarVal) {
+                case 0:
+                    // 玉からの矢印
+                    switch (diff) {
+                        case -10:
+                            classText = 'k51';
+                            break;
+                        case -11:
+                            classText = 'k62';
+                            break;
+                        case -1:
+                            classText = 'k73';
+                            break;
+                        case 9:
+                            classText = 'k84';
+                            break;
+                        case 10:
+                            classText = 'k15';
+                            break;
+                        case 11:
+                            classText = 'k26';
+                            break;
+                        case 1:
+                            classText = 'k37';
+                            break;
+                        case -9:
+                            classText = 'k48';
+                            break;
+                    }
+                    break;
+                case 1:
+                    // 行き止まり
+                    classText = 'a1';
+                    break;
+                case 2:
+                    // 一方通行
+                    switch (diff) {
+                        case -10:
+                            classText = 'a51';
+                            break;
+                        case -11:
+                            classText = 'a62';
+                            break;
+                        case -1:
+                            classText = 'a73';
+                            break;
+                        case 9:
+                            classText = 'a84';
+                            break;
+                        case 10:
+                            classText = 'a15';
+                            break;
+                        case 11:
+                            classText = 'a26';
+                            break;
+                        case 1:
+                            classText = 'a37';
+                            break;
+                        case -9:
+                            classText = 'a48';
+                            break;
+                    }
+                    break;
+                case 4:
+                    // 双方向
+                    switch (diff) {
+                        case -10:
+                            classText = 'a1551';
+                            break;
+                        case -11:
+                            classText = 'a2662';
+                            break;
+                        case -1:
+                            classText = 'a3773';
+                            break;
+                        case 9:
+                            classText = 'a4884';
+                            break;
+                        case 10:
+                            classText = 'a1551';
+                            break;
+                        case 11:
+                            classText = 'a2662';
+                            break;
+                        case 1:
+                            classText = 'a3773';
+                            break;
+                        case -9:
+                            classText = 'a4884';
+                            break;
+                    }
+                    break;
+            }
+            arrows.push([bestSq, classText]);
+        }
+        // alert(`arrows=${JSON.stringify(arrows, null, '\t')}`);
+
+        return arrows;
+    }
 }
 
 async function playout_all(input, isBoard) {
     let bestPath = new BestPath();
-    return search(input, isBoard, bestPath);
+    await search(input, isBoard, bestPath);
+    return bestPath.createArrows();
 }
 
 async function search(input, isBoard, bestPath) {
@@ -32,155 +185,6 @@ async function search(input, isBoard, bestPath) {
     };
 
     await node(undefined, find('K', board), state, bestPath);
-
-    // alert(`search.js nodesCount=${nodesCount} allVariations=${JSON.stringify(allVariations, null, '\t')}  allVariationValues=${JSON.stringify(allVariationValues, null, '\t')}`);
-    // 矢印に変換。
-    let arrows = [];
-    let bestVarLen = 0;
-    if (bestPath.variation) {
-        bestVarLen = bestPath.variation.length;
-    }
-    for (i = 1; i < bestVarLen; i++) {
-        let bestSq = bestPath.variation[i - 1];
-        let bestVarVal = bestPath.variationValues[i];
-        let diff = bestPath.variation[i] - bestPath.variation[i - 1];
-        let angle;
-        let classText;
-        // Angle 算出
-        switch (diff) {
-            case -10: // thru
-            case 10:
-                angle = 'w';
-                break;
-            case -1: // thru
-            case 1:
-                angle = 'h';
-                break;
-            case -11: // thru
-            case -9: // thru
-            case 9: // thru
-            case 11:
-                angle = 'd';
-                break;
-            case 0:
-                angle = 'c';
-                break;
-        }
-        // ドロップ・シャドウずらし
-        switch (diff) {
-            case 9:
-                bestSq += 9;
-                break;
-            case -1: // thru
-            case -11: // thru
-                bestSq += -1;
-                break;
-            case 10:
-            case 11:
-                bestSq += 10;
-                break;
-            default:
-                break;
-        }
-        // 線算出
-        switch (bestVarVal) {
-            case 0:
-                // 玉からの矢印
-                switch (diff) {
-                    case -10:
-                        classText = 'k51';
-                        break;
-                    case -11:
-                        classText = 'k62';
-                        break;
-                    case -1:
-                        classText = 'k73';
-                        break;
-                    case 9:
-                        classText = 'k84';
-                        break;
-                    case 10:
-                        classText = 'k15';
-                        break;
-                    case 11:
-                        classText = 'k26';
-                        break;
-                    case 1:
-                        classText = 'k37';
-                        break;
-                    case -9:
-                        classText = 'k48';
-                        break;
-                }
-                break;
-            case 1:
-                // 行き止まり
-                classText = 'a1';
-                break;
-            case 2:
-                // 一方通行
-                switch (diff) {
-                    case -10:
-                        classText = 'a51';
-                        break;
-                    case -11:
-                        classText = 'a62';
-                        break;
-                    case -1:
-                        classText = 'a73';
-                        break;
-                    case 9:
-                        classText = 'a84';
-                        break;
-                    case 10:
-                        classText = 'a15';
-                        break;
-                    case 11:
-                        classText = 'a26';
-                        break;
-                    case 1:
-                        classText = 'a37';
-                        break;
-                    case -9:
-                        classText = 'a48';
-                        break;
-                }
-                break;
-            case 4:
-                // 双方向
-                switch (diff) {
-                    case -10:
-                        classText = 'a1551';
-                        break;
-                    case -11:
-                        classText = 'a2662';
-                        break;
-                    case -1:
-                        classText = 'a3773';
-                        break;
-                    case 9:
-                        classText = 'a4884';
-                        break;
-                    case 10:
-                        classText = 'a1551';
-                        break;
-                    case 11:
-                        classText = 'a2662';
-                        break;
-                    case 1:
-                        classText = 'a3773';
-                        break;
-                    case -9:
-                        classText = 'a4884';
-                        break;
-                }
-                break;
-        }
-        arrows.push([bestSq, classText]);
-    }
-    // alert(`arrows=${JSON.stringify(arrows, null, '\t')}`);
-
-    return arrows;
 }
 
 async function node(preSq, currSq, state, bestPath) {
