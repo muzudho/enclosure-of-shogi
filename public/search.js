@@ -1,4 +1,4 @@
-const INTERVAL_MSEC = 300;
+const INTERVAL_MSEC = 250;
 const ANIMATION_FLAG = true;
 
 /**
@@ -222,8 +222,7 @@ class Search {
 
         // Animation
         if (ANIMATION_FLAG && this.isBoard) {
-            const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-            await _sleep(INTERVAL_MSEC);
+            await sleep(INTERVAL_MSEC);
             if (prevSq) {
                 document.getElementById(`ui${prevSq}`).setAttribute('class', 's');
             }
@@ -267,15 +266,10 @@ class Search {
                     break;
             }
         }
-        // 後ろ向きパス
-        // this.graphValue.push(0);
-        // this.graphSq.push(0);
-        // this.checkBoard[currSq] = false;
 
         // Animation
         if (ANIMATION_FLAG && this.isBoard) {
-            const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-            await _sleep(INTERVAL_MSEC);
+            await sleep(INTERVAL_MSEC);
             // alert(`search.js/node/start currSq=${currSq}`);
             if (prevSq) {
                 document.getElementById(`ui${prevSq}`).setAttribute('class', 'red_cursor');
