@@ -286,8 +286,8 @@ class Search {
         this.arrows.push([srcSq, classText, value]);
         if (this.isBoard) {
             drawArrow(srcSq, classText);
+            await sleep(INTERVAL_MSEC);
         }
-        await sleep(INTERVAL_MSEC);
     }
 
     /**
