@@ -430,12 +430,14 @@ class Search {
     existsPv(newSq, state, bestPath) {
         state.pv.push(newSq);
         let exists = false;
-        for (let exist_var in bestPath.allVariations) {
+        // alert(`existsPv: bestPath.allVariations=${JSON.stringify(bestPath.allVariations, null, '  ')}`);
+        for (let exist_var of bestPath.allVariations) {
+            // alert(`existsPv: pv=${JSON.stringify(state.pv, null, '  ')}\n exist_var=${JSON.stringify(exist_var, null, '  ')}`);
             if (exist_var.length < state.pv.length) {
                 // 一致しない
                 continue;
             }
-            for (i = 0; i < state.pv.length; i++) {
+            for (let i = 0; i < state.pv.length; i++) {
                 if (exist_var[i] !== state.pv[i]) {
                     // 一致しない
                     continue;
