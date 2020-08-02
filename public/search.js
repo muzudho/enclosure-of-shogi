@@ -1,9 +1,26 @@
 const INTERVAL_MSEC = 1000;
 const ANIMATION_FLAG = true;
 
-let nodesCount;
 let allVariations = [];
 let allVariationValues = [];
+
+/**
+ * Playout.
+ * @param {*} input 
+ * @param {*} isBoard 
+ */
+async function playout_all(input, isBoard) {
+    let bestPath = new BestPath();
+
+    let search = new Search();
+    await search.search(input, isBoard, bestPath);
+    alert(`search.js/playout_all: [1] search.nodesCount=${search.nodesCount}`);
+    search = new Search();
+    await search.search(input, isBoard, bestPath);
+    alert(`search.js/playout_all: [2] search.nodesCount=${search.nodesCount}`);
+
+    return bestPath.createArrows();
+}
 
 class BestPath {
     constructor() {
@@ -13,7 +30,7 @@ class BestPath {
     }
 
     createArrows() {
-        // alert(`search.js nodesCount=${nodesCount} allVariations=${JSON.stringify(allVariations, null, '\t')}  allVariationValues=${JSON.stringify(allVariationValues, null, '\t')}`);
+        // alert(`search.js allVariations=${JSON.stringify(allVariations, null, '\t')}  allVariationValues=${JSON.stringify(allVariationValues, null, '\t')}`);
         // 矢印に変換。
         let arrows = [];
         let bestVarLen = 0;
@@ -167,10 +184,11 @@ class BestPath {
 
 class Search {
     constructor() {
+        this.nodesCount = undefined;
     }
 
     async search(input, isBoard, bestPath) {
-        nodesCount = 0;
+        this.nodesCount = 0;
         let board = this.createBoard(input);
         let state = {
             board: board,
@@ -199,7 +217,7 @@ class Search {
 
         // 直前の点数計算
         let diffValue = this.letDiffValue(preSq, currSq, state);
-        nodesCount++;
+        this.nodesCount++;
         state.checkBoard[currSq] = true;
         state.pv.push(currSq);
         state.pv_value.push(diffValue);
@@ -483,11 +501,4 @@ class Search {
 
         return board;
     }
-}
-
-async function playout_all(input, isBoard) {
-    let bestPath = new BestPath();
-    let search = new Search();
-    await search.search(input, isBoard, bestPath);
-    return bestPath.createArrows();
 }
