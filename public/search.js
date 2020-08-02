@@ -1,9 +1,6 @@
 const INTERVAL_MSEC = 1000;
 const ANIMATION_FLAG = true;
 
-let allVariations = [];
-let allVariationValues = [];
-
 /**
  * Playout.
  * @param {*} input 
@@ -27,10 +24,11 @@ class BestPath {
         this.value = 0;
         this.variation = undefined;
         this.variationValues = undefined;
+        this.allVariations = [];
+        this.allVariationValues = [];
     }
 
     createArrows() {
-        // alert(`search.js allVariations=${JSON.stringify(allVariations, null, '\t')}  allVariationValues=${JSON.stringify(allVariationValues, null, '\t')}`);
         // 矢印に変換。
         let arrows = [];
         let bestVarLen = 0;
@@ -221,7 +219,7 @@ class Search {
         state.checkBoard[currSq] = true;
         state.pv.push(currSq);
         state.pv_value.push(diffValue);
-        let ways = this.genMove(currSq, state);
+        let ways = this.genMove(currSq, state, bestPath);
         // alert(`ways.length=${ways.length}`);
         if (ways.length === 0) {
             // Leaf
@@ -237,8 +235,8 @@ class Search {
                 bestPath.variationValues = Array.from(state.pv_value);
             }
             // Record pv.
-            allVariations.push(Array.from(state.pv));
-            allVariationValues.push(Array.from(state.pv_value));
+            bestPath.allVariations.push(Array.from(state.pv));
+            bestPath.allVariationValues.push(Array.from(state.pv_value));
         }
         for (let nextSq of ways) {
             switch (state.board[nextSq]) {
@@ -271,34 +269,34 @@ class Search {
     /**
      * Generation move.
      */
-    genMove(currSq, state) {
+    genMove(currSq, state, bestPath) {
         let ways = [];
 
         switch (state.board[currSq]) {
             case 'K':
-                this.pushWay(- 10, ways, currSq, state);
-                this.pushWay(- 11, ways, currSq, state);
-                this.pushWay(- 1, ways, currSq, state);
-                this.pushWay(9, ways, currSq, state);
-                this.pushWay(10, ways, currSq, state);
-                this.pushWay(11, ways, currSq, state);
-                this.pushWay(1, ways, currSq, state);
-                this.pushWay(- 9, ways, currSq, state);
+                this.pushWay(- 10, ways, currSq, state, bestPath);
+                this.pushWay(- 11, ways, currSq, state, bestPath);
+                this.pushWay(- 1, ways, currSq, state, bestPath);
+                this.pushWay(9, ways, currSq, state, bestPath);
+                this.pushWay(10, ways, currSq, state, bestPath);
+                this.pushWay(11, ways, currSq, state, bestPath);
+                this.pushWay(1, ways, currSq, state, bestPath);
+                this.pushWay(- 9, ways, currSq, state, bestPath);
                 break;
             case 'G':
-                this.pushWay(- 10, ways, currSq, state);
-                this.pushWay(- 11, ways, currSq, state);
-                this.pushWay(- 1, ways, currSq, state);
-                this.pushWay(9, ways, currSq, state);
-                this.pushWay(10, ways, currSq, state);
-                this.pushWay(1, ways, currSq, state);
+                this.pushWay(- 10, ways, currSq, state, bestPath);
+                this.pushWay(- 11, ways, currSq, state, bestPath);
+                this.pushWay(- 1, ways, currSq, state, bestPath);
+                this.pushWay(9, ways, currSq, state, bestPath);
+                this.pushWay(10, ways, currSq, state, bestPath);
+                this.pushWay(1, ways, currSq, state, bestPath);
                 break;
             case 'S':
-                this.pushWay(- 11, ways, currSq, state);
-                this.pushWay(- 1, ways, currSq, state);
-                this.pushWay(9, ways, currSq, state);
-                this.pushWay(11, ways, currSq, state);
-                this.pushWay(- 9, ways, currSq, state);
+                this.pushWay(- 11, ways, currSq, state, bestPath);
+                this.pushWay(- 1, ways, currSq, state, bestPath);
+                this.pushWay(9, ways, currSq, state, bestPath);
+                this.pushWay(11, ways, currSq, state, bestPath);
+                this.pushWay(- 9, ways, currSq, state, bestPath);
                 break;
             default:
                 break;
@@ -306,10 +304,10 @@ class Search {
         return ways;
     }
 
-    pushWay(offset, ways, currSq, state) {
+    pushWay(offset, ways, currSq, state, bestPath) {
         let nextSq = currSq + offset;
         let dstPc = state.board[nextSq];
-        if (this.existsPv(nextSq, state)) {
+        if (this.existsPv(nextSq, state, bestPath)) {
             // 既存の枝は作らない。
             return;
         }
@@ -429,10 +427,10 @@ class Search {
         return 0;
     }
 
-    existsPv(newSq, state) {
+    existsPv(newSq, state, bestPath) {
         state.pv.push(newSq);
         let exists = false;
-        for (let exist_var in allVariations) {
+        for (let exist_var in bestPath.allVariations) {
             if (exist_var.length < state.pv.length) {
                 // 一致しない
                 continue;
