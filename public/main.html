@@ -72,7 +72,7 @@
 
 <body onload="on_load();" style="margin:40px;">
     <!-- 囲いの名前 -->
-    <div style="margin-top:100px;">
+    <div style="margin-top:350px;">
         <ruby><span id="enclosureCategoryJp" style="font-size:36px; color:rgb(51, 153, 204); line-height:90%;"></span>
             <rt><span id="enclosureCategoryEn" style="font-size:20px; color:rgb(51, 153, 204); line-height:90%;"></span>
             </rt>
@@ -91,15 +91,23 @@
         タテ6.5 なら height:484px
     -->
     <iframe id="iframe1" src="./board.html?file=9&rank=4.5"
-        style="position:absolute; top:185px; width:600px; height:484px; border:none;" scrolling="no">
+        style="position:absolute; top:435px; width:600px; height:484px; border:none;" scrolling="no">
     </iframe>
     <!-- 得点計算
         ヨコ5 なら left:430px;
         ヨコ9 なら left:666px;
         タテ5.5 なら top:-5px;
-        タテ6.5 なら top:61px
+        タテ6.5 なら top:311px
     -->
-    <div style="position:absolute; top:61px; left:666px;">
+    <div style="position:absolute; top:51px; left:666px;">
+        <span style="margin-left:77px;"></span><img id="sc12_im" src="img/map.png" class="s"><span id="sc12_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="sc11_im" src="img/map.png" class="s"><span id="sc11_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="sc10_im" src="img/map.png" class="s"><span id="sc10_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="sc9_im" src="img/map.png" class="s"><span id="sc9_tx"
+            style="font-size:24px;"></span><br>
         <span style="margin-left:77px;"></span><img id="sc8_im" src="img/map.png" class="s"><span id="sc8_tx"
             style="font-size:24px;"></span><br>
         <span style="margin-left:77px;"></span><img id="sc7_im" src="img/map.png" class="s"><span id="sc7_tx"
@@ -119,6 +127,8 @@
         <br>
         <span style="font-size:24px; font-weight:bold;">囲いっぽさ</span><span id="sc0_tx"
             style="font-size:24px; margin-left:20px;"></span><br>
+    </div>
+    <div style="position:absolute; top:311px; left:666px;">
         <span style="position:absolute; top:440px; font-size:48px; font-weight:bold;">＋</span><br>
         <span style="position:absolute; top:501px; font-size:24px; font-weight:bold;">━━━━━━━━</span><br>
     </div>
