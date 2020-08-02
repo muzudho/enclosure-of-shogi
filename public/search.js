@@ -30,22 +30,6 @@ class BestPath {
 
     createArrows() {
         return this.arrows;
-        /*
-        // 矢印に変換。
-        let arrows = [];
-        let bestVarLen = 0;
-        if (this.graphSq) {
-            bestVarLen = this.graphSq.length;
-        }
-        for (let i = 1; i < bestVarLen; i++) {
-            let srcSq = this.graphSq[i - 1];
-            let edgeValueFromDst = this.graphValues[i];
-            let sqDiff = this.graphSq[i] - this.graphSq[i - 1];
-            arrows.push([adjustSrcSq(srcSq, sqDiff), createClassText(edgeValueFromDst, sqDiff)]);
-        }
-
-        return arrows;
-        */
     }
 }
 
@@ -204,9 +188,11 @@ class Search {
         await this.node(0, undefined, this.find('K'), bestPath);
 
         // 後処理。
-        clearArrowLayer();
-        clearUiLayer();
-        await sleep(INTERVAL_MSEC);
+        if (this.isBoard) {
+            clearArrowLayer();
+            clearUiLayer();
+            await sleep(INTERVAL_MSEC);
+        }
         // ベスト更新
         this.updateBest(bestPath);
     }
@@ -292,7 +278,9 @@ class Search {
 
     async recordArrow(srcSq, classText) {
         this.arrows.push([srcSq, classText]);
-        drawArrow(srcSq, classText);
+        if (this.isBoard) {
+            drawArrow(srcSq, classText);
+        }
         await sleep(INTERVAL_MSEC);
     }
 
@@ -500,7 +488,7 @@ class Search {
             }
         }
 
-        for (entry of input.board) {
+        for (let entry of input.board) {
             // alert(`entry[${entry[0]}][${entry[1]}]`);
             switch (entry[1]) {
                 case 'K': // thru
