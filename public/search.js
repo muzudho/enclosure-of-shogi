@@ -1,4 +1,4 @@
-const INTERVAL_MSEC = 500;
+const INTERVAL_MSEC = 300;
 const ANIMATION_FLAG = true;
 
 /**
@@ -9,23 +9,12 @@ const ANIMATION_FLAG = true;
 async function playoutAll(input, isBoard) {
     let bestPath = new BestPath();
 
-    let search = new Search();
-    await search.search(input, isBoard, bestPath);
-    clearArrowLayer();
-    clearUiLayer();
-    // alert(`search.js/playoutAll: [1] search.nodesCount=${search.nodesCount}`);
-    await sleep(INTERVAL_MSEC);
-    // ベスト更新
-    search.updateBest(bestPath);
-
-    search = new Search();
-    await search.search(input, isBoard, bestPath);
-    clearArrowLayer();
-    clearUiLayer();
-    // alert(`search.js/playoutAll: [2] search.nodesCount=${search.nodesCount}`);
-    await sleep(INTERVAL_MSEC);
-    // ベスト更新
-    search.updateBest(bestPath);
+    let nodesCount = 999;
+    while (1 < nodesCount) {
+        let search = new Search();
+        await search.search(input, isBoard, bestPath);
+        nodesCount = search.nodesCount;
+    }
 
     return bestPath.createArrows();
 }
@@ -213,6 +202,13 @@ class Search {
         this.pathSq = [];
         this.arrows = [];
         await this.node(0, undefined, this.find('K'), bestPath);
+
+        // 後処理。
+        clearArrowLayer();
+        clearUiLayer();
+        await sleep(INTERVAL_MSEC);
+        // ベスト更新
+        this.updateBest(bestPath);
     }
 
     async node(depth, prevSq, currSq, bestPath) {
