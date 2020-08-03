@@ -1,7 +1,24 @@
 function get_data() {
     return {
+        "english": "Mino country like a diamond",
+        "category": [
+            ["美", "Mi"],
+            ["濃", "no"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
+        ],
+        "formalName": [
+            ["ダ", "Da"],
+            ["イ", "i"],
+            ["ヤ", "ya"],
+            ["モ", "mo"],
+            ["ン", "n"],
+            ["ド", "do"],
+            ["美", "Mi"],
+            ["濃", "no"]
+        ],
         "enclosureName": [
-            "美濃囲い", "ダイヤモンド美濃", "Mino Gakoi", "Daiamond Mino"
+            "美濃囲い", "美濃", "Mino Gakoi", " Mino"
         ],
         "board": [
             ".........",

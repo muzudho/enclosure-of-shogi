@@ -1,7 +1,15 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "その他", "舟囲い", "Sonota", "Funa Gakoi"
+        "english": "Boat fence",
+        "category": [
+            ["そ", "So"],
+            ["の", "no"],
+            ["他", "ta"]
+        ],
+        "formalName": [
+            ["舟", "Funa(e)"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
         ],
         "board": [
             ".........",

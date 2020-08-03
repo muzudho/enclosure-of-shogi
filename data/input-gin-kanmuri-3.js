@@ -1,7 +1,16 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "美濃囲い", "銀冠3", "Mino Gakoi", "Gin Kanmuri 3"
+        "english": "Silver crown 3",
+        "category": [
+            ["美", "Mi"],
+            ["濃", "no"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
+        ],
+        "formalName": [
+            ["銀", "Gin"],
+            ["冠", "Kanmuri"],
+            ["3", "3"]
         ],
         "board": [
             ".........",
