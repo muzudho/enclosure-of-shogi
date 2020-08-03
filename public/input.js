@@ -1,15 +1,14 @@
 function get_data() {
     return {
-        "english": "Skewered cutlet",
+        "english": "Strongest fence",
         "category": [
             ["そ", "So"],
             ["の", "no"],
             ["他", "ta"]
         ],
         "formalName": [
-            ["串", "Kushi"],
-            ["カ", "Ka"],
-            ["ツ", "tsu"],
+            ["最", "Sai"],
+            ["強", "kyo"],
             ["囲", "G(k)ako"],
             ["い", "i"]
         ],
@@ -19,10 +18,10 @@ function get_data() {
             ".........",
             ".........",
             ".........",
-            "..0......",
-            "0000.....",
-            "KSG......",
-            "00G......",
+            ".........",
+            "..00000..",
+            "...S.S...",
+            "...GKG...",
         ]
     };
 }

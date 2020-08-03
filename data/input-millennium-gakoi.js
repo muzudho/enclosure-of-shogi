@@ -1,7 +1,19 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "その他", "ミレニアム囲い", "Sonota", "Millennium Gakoi"
+        "english": "Millennium fence",
+        "category": [
+            ["そ", "So"],
+            ["の", "no"],
+            ["他", "ta"]
+        ],
+        "formalName": [
+            ["ミ", "Mi"],
+            ["レ", "re"],
+            ["ニ", "ni"],
+            ["ア", "a"],
+            ["ム", "mu"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
         ],
         "board": [
             ".........",

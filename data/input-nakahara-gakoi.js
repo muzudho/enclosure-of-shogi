@@ -1,7 +1,16 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "その他", "中原囲い", "Sonota", "Nakahara Gakoi"
+        "english": "Nakahara Meijin's fence",
+        "category": [
+            ["そ", "So"],
+            ["の", "no"],
+            ["他", "ta"]
+        ],
+        "formalName": [
+            ["中", "Naka"],
+            ["原", "hara"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
         ],
         "board": [
             ".........",

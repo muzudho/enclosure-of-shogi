@@ -1,7 +1,16 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "その他", "中住まい", "Sonota", "Nakazumai"
+        "english": "Live in the center",
+        "category": [
+            ["そ", "So"],
+            ["の", "no"],
+            ["他", "ta"]
+        ],
+        "formalName": [
+            ["中", "Naka"],
+            ["住", "zu"],
+            ["ま", "ma"],
+            ["い", "i"]
         ],
         "board": [
             ".........",

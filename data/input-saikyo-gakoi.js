@@ -1,7 +1,16 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "その他", "最強囲い", "Sonota", "Saikyo Gakoi"
+        "english": "Strongest fence",
+        "category": [
+            ["そ", "So"],
+            ["の", "no"],
+            ["他", "ta"]
+        ],
+        "formalName": [
+            ["最", "Sai"],
+            ["強", "kyo"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
         ],
         "board": [
             ".........",

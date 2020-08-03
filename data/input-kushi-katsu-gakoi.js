@@ -1,6 +1,6 @@
 function get_data() {
     return {
-        "english": "Skewered cutlet",
+        "english": "Skewered cutlet fence",
         "category": [
             ["そ", "So"],
             ["の", "no"],
