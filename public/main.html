@@ -24,11 +24,29 @@
             // データ読み取り
             let input = get_data();
 
+            // 囲いの英語名
+            let englishHtml = input.english;
+            document.getElementById("enclosureEnglish").innerHTML = englishHtml;
+
+            // 囲いのカテゴリー名
+            let categoryHtml = "";
+            for (let item of input.category) {
+                categoryHtml += `<ruby><span style="font-size:36px; color:rgb(51, 153, 204); line-height:90%;">${item[0]}</span>
+<rt><span style="font-size:20px; color:rgb(51, 153, 204); line-height:90%;">${item[1]}.</span>
+</rt>
+</ruby>`;
+            }
+            document.getElementById("enclosureCategory").innerHTML = categoryHtml;
+
             // 囲いの名前
-            document.getElementById("enclosureCategoryEn").innerHTML = `${input.enclosureName[2]}`;
-            document.getElementById("enclosureCategoryJp").innerHTML = `${input.enclosureName[0]}`;
-            document.getElementById("enclosureNameEn").innerHTML = `${input.enclosureName[3]}`;
-            document.getElementById("enclosureNameJp").innerHTML = `${input.enclosureName[1]}`;
+            let nameHtml = "";
+            for (let item of input.formalName) {
+                nameHtml += `<ruby><span style="font-size:36px; color:rgb(51, 153, 204); line-height:90%;">${item[0]}</span>
+<rt><span id="enclosureNameEn" style="font-size:20px; color:rgb(51, 153, 204); line-height:90%;">${item[1]}.</span>
+</rt>
+</ruby>`;
+            }
+            document.getElementById("enclosureName").innerHTML = nameHtml;
 
             // 探索開始
             let bestPath = await playoutAll(input, false);
@@ -53,16 +71,13 @@
 
 <body onload="on_load();" style="margin:40px;">
     <!-- 囲いの名前 -->
-    <div style="margin-top:350px;">
-        <ruby><span id="enclosureCategoryJp" style="font-size:36px; color:rgb(51, 153, 204); line-height:90%;"></span>
-            <rt><span id="enclosureCategoryEn" style="font-size:20px; color:rgb(51, 153, 204); line-height:90%;"></span>
-            </rt>
-        </ruby>
+    <div id="enclosureEnglish"
+        style="position:absolute; top:300px; font-size:28px; color:white; background-color:rgb(51, 153, 204); padding:2px 16px;">
+    </div>
+    <div style="position:absolute; top:350px;">
+        <span id="enclosureCategory"></span>
         <span style="font-size:36px; color:rgb(51, 153, 204); line-height:90%;">（</span>
-        <ruby><span id="enclosureNameJp" style="font-size:36px; color:rgb(51, 153, 204); line-height:90%;"></span>
-            <rt><span id="enclosureNameEn" style="font-size:20px; color:rgb(51, 153, 204); line-height:90%;"></span>
-            </rt>
-        </ruby>
+        <span id="enclosureName"></span>
         <span style="font-size:36px; color:rgb(51, 153, 204); line-height:90%;">）</span>
     </div>
     <!-- 将棋盤
@@ -105,6 +120,8 @@
         <span style="margin-left:77px;"></span><img id="sc1_im" src="img/map.png" class="s"><span id="sc1_tx"
             style="font-size:24px;"></span><br>
         <br>
+        <span style="font-size:18px; font-weight:bold;">On a leash</span><span
+            style="font-size:18px; margin-left:60px;">pts.</span><br>
         <span style="font-size:24px; font-weight:bold;">囲いっぽさ</span><span id="sc0_tx"
             style="font-size:24px; margin-left:20px;"></span><br>
     </div>
