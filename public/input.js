@@ -1,18 +1,17 @@
 function get_data() {
     return {
-        "english": "Bears enter the nest without castling",
+        "english": "Skewered cutlet",
         "category": [
-            ["穴", "Ana"],
-            ["熊", "g(k)uma"],
-            ["囲", "G(K)ako"],
-            ["い", "i"]
+            ["そ", "So"],
+            ["の", "no"],
+            ["他", "ta"]
         ],
         "formalName": [
-            ["居", "I"],
-            ["飛", "b(h)i"],
-            ["車", "sha"],
-            ["穴", "Ana"],
-            ["熊", "g(k)uma"]
+            ["串", "Kushi"],
+            ["カ", "Ka"],
+            ["ツ", "tsu"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
         ],
         "board": [
             ".........",
@@ -22,8 +21,8 @@ function get_data() {
             ".........",
             "..0......",
             "0000.....",
-            "0SG......",
-            "K0G......",
+            "KSG......",
+            "00G......",
         ]
     };
 }

@@ -1,7 +1,17 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "その他", "串カツ囲い", "Sonota", "Kushi Katsu Gakoi"
+        "english": "Skewered cutlet",
+        "category": [
+            ["そ", "So"],
+            ["の", "no"],
+            ["他", "ta"]
+        ],
+        "formalName": [
+            ["串", "Kushi"],
+            ["カ", "Ka"],
+            ["ツ", "tsu"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
         ],
         "board": [
             ".........",

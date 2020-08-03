@@ -1,7 +1,17 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "美濃囲い", "木村美濃", "Mino Gakoi", "Kimura Mino"
+        "english": "Kimura Meijin's Mino country",
+        "category": [
+            ["美", "Mi"],
+            ["濃", "no"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
+        ],
+        "formalName": [
+            ["木", "Ki"],
+            ["村", "mura"],
+            ["美", "Mi"],
+            ["濃", "no"]
         ],
         "board": [
             ".........",
