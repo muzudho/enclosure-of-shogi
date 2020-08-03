@@ -1,7 +1,17 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "美濃囲い", "坊主美濃", "Mino Gakoi", "Bouzu Mino"
+        "english": "Monk head fence",
+        "category": [
+            ["美", "Mi"],
+            ["濃", "no"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
+        ],
+        "formalName": [
+            ["坊", "Bou"],
+            ["主", "z(sh)u"],
+            ["美", "Mi"],
+            ["濃", "no"]
         ],
         "board": [
             ".........",

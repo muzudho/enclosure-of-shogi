@@ -1,7 +1,18 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "その他", "ボナンザ囲い", "Sonota", "Bonanza Gakoi"
+        "english": "Bonanza's Fence",
+        "category": [
+            ["そ", "So"],
+            ["の", "no"],
+            ["他", "ta"]
+        ],
+        "formalName": [
+            ["ボ", "Bo"],
+            ["ナ", "na"],
+            ["ン", "n"],
+            ["ザ", "za"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
         ],
         "board": [
             ".........",
