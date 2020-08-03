@@ -1,7 +1,16 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "美濃囲い", "本美濃", "Mino Gakoi", "Hon Mino"
+        "english": "General Mino country",
+        "category": [
+            ["美", "Mi"],
+            ["濃", "no"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
+        ],
+        "formalName": [
+            ["本", "Hon"],
+            ["美", "Mi"],
+            ["濃", "no"]
         ],
         "board": [
             ".........",

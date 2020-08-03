@@ -1,7 +1,18 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "穴熊囲い", "居飛車穴熊", "Anaguma Gakoi", "Ibisha Anaguma"
+        "english": "Bears enter the nest without castling",
+        "category": [
+            ["穴", "Ana"],
+            ["熊", "g(k)uma"],
+            ["囲", "G(K)ako"],
+            ["い", "i"]
+        ],
+        "formalName": [
+            ["居", "I"],
+            ["飛", "b(h)i"],
+            ["車", "sha"],
+            ["穴", "Ana"],
+            ["熊", "g(k)uma"]
         ],
         "board": [
             ".........",

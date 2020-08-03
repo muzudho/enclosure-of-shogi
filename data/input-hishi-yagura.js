@@ -1,7 +1,16 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "矢倉囲い", "菱矢倉", "Yagura Gakoi", "Hishi Yagura"
+        "english": "Rhombus wooden observatory",
+        "category": [
+            ["矢", "Ya"],
+            ["倉", "g(k)ura"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
+        ],
+        "formalName": [
+            ["菱", "Hishi"],
+            ["矢", "Ya"],
+            ["倉", "g(k)ura"]
         ],
         "board": [
             ".........",

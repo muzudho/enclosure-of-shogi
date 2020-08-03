@@ -1,16 +1,18 @@
 function get_data() {
     return {
-        "english": "Silver crown 3",
+        "english": "Bears enter the nest without castling",
         "category": [
-            ["美", "Mi"],
-            ["濃", "no"],
-            ["囲", "G(k)ako"],
+            ["穴", "Ana"],
+            ["熊", "g(k)uma"],
+            ["囲", "G(K)ako"],
             ["い", "i"]
         ],
         "formalName": [
-            ["銀", "Gin"],
-            ["冠", "Kanmuri"],
-            ["3", "3"]
+            ["居", "I"],
+            ["飛", "b(h)i"],
+            ["車", "sha"],
+            ["穴", "Ana"],
+            ["熊", "g(k)uma"]
         ],
         "board": [
             ".........",
@@ -18,10 +20,10 @@ function get_data() {
             ".........",
             ".........",
             ".........",
-            ".....0000",
-            "....0G0S.",
-            "......GK.",
-            "........0",
+            "..0......",
+            "0000.....",
+            "0SG......",
+            "K0G......",
         ]
     };
 }
