@@ -1,7 +1,19 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "美濃囲い", "ちょんまげ美濃", "Mino Gakoi", "Chonmage Mino"
+        "english": "Topknot fence",
+        "category": [
+            ["美", "Mi"],
+            ["濃", "no"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
+        ],
+        "formalName": [
+            ["ちょ", "Cho"],
+            ["ん", "n"],
+            ["ま", "ma"],
+            ["げ", "ge"],
+            ["美", "Mi"],
+            ["濃", "no"]
         ],
         "board": [
             ".........",
