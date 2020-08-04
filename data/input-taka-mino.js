@@ -1,7 +1,16 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "美濃囲い", "高美濃", "Mino Gakoi", "Taka Mino"
+        "english": "Tall Mino country",
+        "category": [
+            ["美", "Mi"],
+            ["濃", "no"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
+        ],
+        "formalName": [
+            ["高", "Taka"],
+            ["美", "Mi"],
+            ["濃", "no"]
         ],
         "board": [
             ".........",

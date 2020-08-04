@@ -1,16 +1,18 @@
 function get_data() {
     return {
-        "english": "Strongest fence",
+        "english": "4 pieces in Mino country",
         "category": [
-            ["そ", "So"],
-            ["の", "no"],
-            ["他", "ta"]
-        ],
-        "formalName": [
-            ["最", "Sai"],
-            ["強", "kyo"],
+            ["左", "Hidari"],
+            ["美", "Mi"],
+            ["濃", "no"],
             ["囲", "G(k)ako"],
             ["い", "i"]
+        ],
+        "formalName": [
+            ["四", "Yon"],
+            ["枚", "mai"],
+            ["美", "Mi"],
+            ["濃", "no"]
         ],
         "board": [
             ".........",
@@ -18,10 +20,10 @@ function get_data() {
             ".........",
             ".........",
             ".........",
-            ".........",
-            "..00000..",
-            "...S.S...",
-            "...GKG...",
+            "00000....",
+            ".KSG.....",
+            "..S......",
+            "000G.....",
         ]
     };
 }

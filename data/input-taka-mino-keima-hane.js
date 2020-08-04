@@ -1,7 +1,20 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "美濃囲い", "高美濃桂馬跳ね", "Mino Gakoi", "Taka Mino Keima Hane"
+        "english": "Country of tall Mino where knight advanced",
+        "category": [
+            ["美", "Mi"],
+            ["濃", "no"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
+        ],
+        "formalName": [
+            ["高", "Taka"],
+            ["美", "Mi"],
+            ["濃", "no"],
+            ["桂", "Kei"],
+            ["馬", "ma"],
+            ["跳", "Ha"],
+            ["ね", "ne"]
         ],
         "board": [
             ".........",

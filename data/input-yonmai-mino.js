@@ -1,7 +1,18 @@
 function get_data() {
     return {
-        "enclosureName": [
-            "左美濃囲い", "四枚美濃", "Hidari Mino Gakoi", "Yonmai Mino"
+        "english": "4 pieces in Mino country",
+        "category": [
+            ["左", "Hidari"],
+            ["美", "Mi"],
+            ["濃", "no"],
+            ["囲", "G(k)ako"],
+            ["い", "i"]
+        ],
+        "formalName": [
+            ["四", "Yon"],
+            ["枚", "mai"],
+            ["美", "Mi"],
+            ["濃", "no"]
         ],
         "board": [
             ".........",
