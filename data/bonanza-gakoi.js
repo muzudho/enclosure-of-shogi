@@ -1,6 +1,6 @@
 function get_data() {
     return {
-        "english": "Bonanza's Fence",
+        "english": "Bonanza's fence",
         "category": [
             ["そ", "So"],
             ["の", "no"],
