@@ -232,8 +232,8 @@ class Search {
         shuffle_array(ways);
         if (ways.length === 0) {
             // Leaf
-            // 「行き止まり」を追加。
-            if (diffValue != 4) {
+            // 「行き止まり」を追加。ただし、玉が葉のときを除く。
+            if (diffValue != 4 && this.board[currSq] !== 'K') {
                 let leafValue = 1;
                 this.addValue(leafValue);
                 this.graphSq.push(currSq);
