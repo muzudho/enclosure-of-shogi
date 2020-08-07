@@ -1,6 +1,6 @@
 function get_data() {
     return {
-        "english": "Big four",
+        "english": "Bears enter the nest without castling type 2",
         "category": [
             ["穴", "Ana"],
             ["熊", "g(k)uma"],
@@ -8,10 +8,12 @@ function get_data() {
             ["い", "i"]
         ],
         "formalName": [
-            ["ビ", "Bi"],
-            ["ッ", "g"],
-            ["グ", "gu"],
-            ["４", "Foh"]
+            ["居", "I"],
+            ["飛", "b(h)i"],
+            ["車", "sha"],
+            ["穴", "Ana"],
+            ["熊", "g(k)uma"],
+            ["２", "Ni"]
         ],
         "board": [
             ".........",
@@ -19,10 +21,10 @@ function get_data() {
             ".........",
             ".........",
             ".........",
-            ".000.....",
-            "0SS.0....",
-            "0GG......",
-            "K0.......",
+            "..0......",
+            "0000.....",
+            "0SG......",
+            "K0G......",
         ]
     };
 }

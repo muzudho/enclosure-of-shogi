@@ -1,6 +1,6 @@
 function get_data() {
     return {
-        "english": "Bears enter the nest without castling",
+        "english": "Bears enter the nest without castling type 1",
         "category": [
             ["穴", "Ana"],
             ["熊", "g(k)uma"],
@@ -12,7 +12,8 @@ function get_data() {
             ["飛", "b(h)i"],
             ["車", "sha"],
             ["穴", "Ana"],
-            ["熊", "g(k)uma"]
+            ["熊", "g(k)uma"],
+            ["１", "Ichi"]
         ],
         "board": [
             ".........",
@@ -22,7 +23,7 @@ function get_data() {
             ".........",
             "..0......",
             "0000.....",
-            "0SG......",
+            "0S.......",
             "K0G......",
         ]
     };

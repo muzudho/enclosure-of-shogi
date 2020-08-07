@@ -36,15 +36,18 @@ function whichAngle(classText) {
             return 'h';
         case 'a26': // thru
         case 'a2662': // thru
+        case 'a62': // thru
+        case 'k26': // thru
+        case 'k62': // thru
+            // ／
+            return 'dz';
         case 'a48': // thru
         case 'a4884': // thru
-        case 'a62': // thru
         case 'a84': // thru
-        case 'k26': // thru
         case 'k48': // thru
-        case 'k62': // thru
         case 'k84':
-            return 'd';
+            // ＼
+            return 'ds';
         case 'a1':
             return 'c';
         default:
