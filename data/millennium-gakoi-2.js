@@ -1,6 +1,6 @@
 function get_data() {
     return {
-        "english": "Millennium fence",
+        "english": "Millennium fence type 2",
         "category": [
             ["そ", "So"],
             ["の", "no"],
@@ -13,7 +13,8 @@ function get_data() {
             ["ア", "a"],
             ["ム", "mu"],
             ["囲", "G(k)ako"],
-            ["い", "i"]
+            ["い", "i"],
+            ["２", "Ni"]
         ],
         "board": [
             ".........",
