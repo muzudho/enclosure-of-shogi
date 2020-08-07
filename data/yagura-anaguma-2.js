@@ -1,6 +1,8 @@
 function get_data() {
     return {
-        "link": "http://shinolabo.com/kakoi/yagura_kuma.html",
+        "link": [
+            "http://shinolabo.com/kakoi/yagura_kuma.html"
+        ],
         "english": "A bear enters the nest by the wooden observatory type 2",
         "category": [
             ["矢", "Ya"],

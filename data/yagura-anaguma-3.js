@@ -1,6 +1,8 @@
 function get_data() {
     return {
-        "link": "https://www.shougi.jp/kakoi/yagura/yagura_anaguma.html",
+        "link": [
+            "https://www.shougi.jp/kakoi/yagura/yagura_anaguma.html"
+        ],
         "english": "A bear enters the nest by the wooden observatory type 3",
         "category": [
             ["矢", "Ya"],
