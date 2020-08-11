@@ -16,21 +16,23 @@ async function playoutAll(input, isBoard) {
 
 class BestPath {
     constructor() {
-        this.value = 0;
+        this.leashValue = 0;
         /** Array of source squares. */
         this.arrayOfSourceSquares = undefined;
-        this.arrayOfValues = undefined;
+        this.arrayOfLeashValues = undefined;
+        this.arrayOfPlayoffValues = undefined;
         this.allGraphSq = [];
-        /** [{srcSq, classText, diffValue}] */
+        /** [{srcSq, classText, leashValue}] */
         this.connectedGraph = [];
     }
 
-    update(value, arrayOfSourceSquares, arrayOfValues, connectedGraph) {
-        if (this.value < value) {
+    update(leashValue, playoffValue, arrayOfSourceSquares, arrayOfLeashValues, arrayOfPlayoffValues, connectedGraph) {
+        if ((this.leashValue < leashValue) || (this.leashValue == leashValue && this.playoffValue < playoffValue)) {
             // ベスト更新
-            this.value = value;
+            this.leashValue = leashValue;
             this.arrayOfSourceSquares = Array.from(arrayOfSourceSquares);
-            this.arrayOfValues = Array.from(arrayOfValues);
+            this.arrayOfLeashValues = Array.from(arrayOfLeashValues);
+            this.arrayOfPlayoffValues = Array.from(arrayOfPlayoffValues);
             this.connectedGraph = Array.from(connectedGraph);
         }
     }
@@ -269,11 +271,12 @@ class Search {
         this.nodesCount = undefined;
         this.board = undefined;
         this.checkBoard = undefined;
-        this.value = undefined;
+        this.leashValue = undefined;
         this.isBoard = undefined;
         // Graph.
         this.arrayOfSourceSquares = undefined;
-        this.arrayOfValues = undefined;
+        this.arrayOfLeashValues = undefined;
+        this.arrayOfPlayoffValues = undefined;
         this.connectedGraph = undefined;
     }
 
@@ -281,16 +284,17 @@ class Search {
         this.nodesCount = 0;
         this.board = this.createBoard(input);
         this.checkBoard = this.createFalseBoard();
-        this.value = 0;
+        this.leashValue = 0;
         this.isBoard = isBoard;
         // Graph.
         this.arrayOfSourceSquares = [];
-        this.arrayOfValues = [];
+        this.arrayOfLeashValues = [];
+        this.arrayOfPlayoffValues = [];
         this.connectedGraph = [];
         await this.node(0, undefined, this.find('K'), bestPath);
 
         // ベスト更新
-        bestPath.update(this.value, this.arrayOfSourceSquares, this.arrayOfValues, this.connectedGraph);
+        bestPath.update(this.leashValue, this.playoffValue, this.arrayOfSourceSquares, this.arrayOfLeashValues, this.arrayOfPlayoffValues, this.connectedGraph);
         // 後処理。
         if (animationEnable && this.isBoard) {
             clearArrowLayer();
@@ -301,11 +305,13 @@ class Search {
 
     async node(depth, prevSq, currSq, bestPath) {
         // 直前の点数計算
-        let diffValue = this.letDiffValue(prevSq, currSq);
+        let leashValue = this.letLeashValue(prevSq, currSq);
+        let playoffValue = this.letPlayoffValue(prevSq, currSq);
         this.nodesCount++;
         this.checkBoard[currSq] = true;
         this.arrayOfSourceSquares.push(currSq);
-        this.arrayOfValues.push(diffValue);
+        this.arrayOfLeashValues.push(leashValue);
+        this.arrayOfPlayoffValues.push(playoffValue);
 
         // Animation
         if (animationEnable) {
@@ -321,19 +327,20 @@ class Search {
         // Record
         let sqDiff = currSq - prevSq;
         let srcSq = adjustSrcSq(prevSq, sqDiff);
-        let classText = createClassText(diffValue, sqDiff);
-        await this.recordArrow(srcSq, classText, diffValue);
+        let classText = createClassText(leashValue, sqDiff);
+        await this.recordArrow(srcSq, classText, leashValue);
 
         let ways = this.genMove(currSq, bestPath);
         shuffle_array(ways);
         if (ways.length === 0) {
             // Leaf
             // 「行き止まり」を追加。ただし、玉が葉のときを除く。
-            if (diffValue != 4 && this.board[currSq] !== 'K') {
+            if (leashValue != 4 && this.board[currSq] !== 'K') {
                 let leafValue = 1;
-                this.addValue(leafValue);
+                this.addLeashValue(leafValue);
                 this.arrayOfSourceSquares.push(currSq);
-                this.arrayOfValues.push(1);
+                this.arrayOfLeashValues.push(1);
+                this.arrayOfPlayoffValues.push(0);
 
                 let classText = createClassText(leafValue, 0);
                 await this.recordArrow(currSq, classText, leafValue);
@@ -348,8 +355,8 @@ class Search {
                 let srcPc = this.board[currSq];
                 // キングを除く
                 if (srcPc !== 'K') {
-                    let diffValue = this.letDiffValue(currSq, nextSq);
-                    this.addValue(diffValue);
+                    let leashValue = this.letLeashValue(currSq, nextSq);
+                    this.addLeashValue(leashValue);
                 }
 
                 switch (this.board[nextSq]) {
@@ -375,8 +382,8 @@ class Search {
         }
     }
 
-    async recordArrow(srcSq, classText, value) {
-        this.connectedGraph.push([srcSq, classText, value]);
+    async recordArrow(srcSq, classText, leashValue) {
+        this.connectedGraph.push([srcSq, classText, leashValue]);
         if (animationEnable && this.isBoard) {
             drawArrow(srcSq, classText);
             await sleep(INTERVAL_MSEC);
@@ -429,14 +436,56 @@ class Search {
         }
     }
 
-    addValue(offset) {
-        this.value += offset;
+    addLeashValue(offset) {
+        this.leashValue += offset;
     }
 
     /**
-     * 局面差分評価値算出
+     * 
+     * @param {*} currSq 
+     * @param {*} nextSq 
      */
-    letDiffValue(currSq, nextSq) {
+    letPlayoffValue(currSq, nextSq) {
+        let diff = nextSq - currSq;
+        let value;
+        // 9, -1, -11
+        // 10, 0, -10
+        // 11, 1, -9
+        switch (diff) {
+            case -10:
+                value = 8;
+                break;
+            case -11:
+                value = 7;
+                break;
+            case -1:
+                value = 6;
+                break;
+            case 9:
+                value = 5;
+                break;
+            case 10:
+                value = 4;
+                break;
+            case 11:
+                value = 3;
+                break;
+            case 1:
+                value = 2;
+                break;
+            case -9:
+                value = 1;
+                break;
+            default:
+                break;
+        }
+
+        return value;
+    }
+    /**
+     * 矢のleash点数算出
+     */
+    letLeashValue(currSq, nextSq) {
         let srcPc = this.board[currSq];
         let dstPc = this.board[nextSq];
         let diff = nextSq - currSq;
