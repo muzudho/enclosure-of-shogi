@@ -46,6 +46,9 @@ class BestPath {
         return this.connectedGraph;
     }
 
+    /**
+     * 同点決勝点。
+     */
     sumPlayoffValueWithWeight() {
         let sum = 0;
         if (this.arrayOfPlayoffValuesWithWeight) {
@@ -344,7 +347,9 @@ class Search {
     }
 
     async recordArrow(srcSq, classText, leashValue, playoffValueSource) {
-        let playoffValueWithWeight = Math.pow(playoffValueSource, this.connectedGraph.length + 1);
+        let exp = this.connectedGraph.length + 1;
+        let playoffValueWithWeight = Math.pow(playoffValueSource, exp);
+        console.log(`記録 playoffValue src=|${playoffValueSource}| exp=|${exp}| w=|${playoffValueWithWeight}|`);
         this.connectedGraph.push([srcSq, classText, leashValue, playoffValueSource, playoffValueWithWeight]);
         if (animationEnable && this.isBoard) {
             drawArrow(srcSq, classText);
