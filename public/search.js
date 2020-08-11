@@ -17,12 +17,13 @@ async function playoutAll(input, isBoard) {
 class BestPath {
     constructor() {
         this.leashValue = 0;
+        this.playoffValue = 0;
         /** Array of source squares. */
         this.arrayOfSourceSquares = undefined;
         this.arrayOfLeashValues = undefined;
         this.arrayOfPlayoffValues = undefined;
         this.allGraphSq = [];
-        /** [{srcSq, classText, leashValue}] */
+        /** [[srcSq, classText, leashValue, playoffValue]] */
         this.connectedGraph = [];
     }
 
@@ -30,6 +31,7 @@ class BestPath {
         if ((this.leashValue < leashValue) || (this.leashValue == leashValue && this.playoffValue < playoffValue)) {
             // ベスト更新
             this.leashValue = leashValue;
+            this.playoffValue = playoffValue;
             this.arrayOfSourceSquares = Array.from(arrayOfSourceSquares);
             this.arrayOfLeashValues = Array.from(arrayOfLeashValues);
             this.arrayOfPlayoffValues = Array.from(arrayOfPlayoffValues);
@@ -42,11 +44,10 @@ class BestPath {
     }
 
     /**
-     * @returns [connectedGraph[],points]
+     * @returns connectedGraph[]
      */
     createPlayoffArrows() {
         let connectedGraph = [];
-        let points = 0;
 
         for (let arrow of this.connectedGraph) {
             let result;
@@ -132,12 +133,9 @@ class BestPath {
             }
 
             connectedGraph.push(result);
-            if (result) {
-                points += result[1];
-            }
         }
 
-        return [connectedGraph, points];
+        return connectedGraph;
     }
 }
 
@@ -272,6 +270,7 @@ class Search {
         this.board = undefined;
         this.checkBoard = undefined;
         this.leashValue = undefined;
+        this.playoffValue = undefined;
         this.isBoard = undefined;
         // Graph.
         this.arrayOfSourceSquares = undefined;
@@ -285,6 +284,7 @@ class Search {
         this.board = this.createBoard(input);
         this.checkBoard = this.createFalseBoard();
         this.leashValue = 0;
+        this.playoffValue = 0;
         this.isBoard = isBoard;
         // Graph.
         this.arrayOfSourceSquares = [];
@@ -328,7 +328,7 @@ class Search {
         let sqDiff = currSq - prevSq;
         let srcSq = adjustSrcSq(prevSq, sqDiff);
         let classText = createClassText(leashValue, sqDiff);
-        await this.recordArrow(srcSq, classText, leashValue);
+        await this.recordArrow(srcSq, classText, leashValue, playoffValue);
 
         let ways = this.genMove(currSq, bestPath);
         shuffle_array(ways);
@@ -356,7 +356,9 @@ class Search {
                 // キングを除く
                 if (srcPc !== 'K') {
                     let leashValue = this.letLeashValue(currSq, nextSq);
+                    let playoffValue = this.letPlayoffValue(currSq, nextSq);
                     this.addLeashValue(leashValue);
+                    this.addPlayoffValue(playoffValue);
                 }
 
                 switch (this.board[nextSq]) {
@@ -382,8 +384,8 @@ class Search {
         }
     }
 
-    async recordArrow(srcSq, classText, leashValue) {
-        this.connectedGraph.push([srcSq, classText, leashValue]);
+    async recordArrow(srcSq, classText, leashValue, playoffValue) {
+        this.connectedGraph.push([srcSq, classText, leashValue, playoffValue]);
         if (animationEnable && this.isBoard) {
             drawArrow(srcSq, classText);
             await sleep(INTERVAL_MSEC);
@@ -438,6 +440,10 @@ class Search {
 
     addLeashValue(offset) {
         this.leashValue += offset;
+    }
+
+    addPlayoffValue(offset) {
+        this.playoffValue += offset;
     }
 
     /**

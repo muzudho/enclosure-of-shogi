@@ -67,7 +67,7 @@
 
             // 同点決勝
             let bestConnectedGraph2 = bestPath.createPlayoffArrows();
-            reversed = Array.from(bestConnectedGraph2[0]);
+            reversed = Array.from(bestConnectedGraph2);
             reversed.reverse();
             i = 1;
             for (entry of reversed) {
@@ -77,7 +77,7 @@
                 }
                 i++;
             }
-            document.getElementById("po0_tx").innerHTML = `${bestConnectedGraph2[1]}`;
+            document.getElementById("po0_tx").innerHTML = `${bestPath.playoffValue}`;
         }
     </script>
 </head>
