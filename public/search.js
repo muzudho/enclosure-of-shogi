@@ -21,13 +21,13 @@ class BestPath {
         /** 根元と行き先で別。 */
         this.arrayOfSrcSquares = undefined;
         this.arrayOfDstLeashValues = undefined;
-        this.arrayOfPlayoffValues = undefined;
+        this.arrayOfDstPlayoffValues = undefined;
         this.allGraphSq = [];
         /** [[srcSq, classText, leashValue, sourcePlayoffBase, sourcePlayoffExp]] */
         this.connectedGraph = [];
     }
 
-    update(leashValue, arrayOfSrcSquares, arrayOfDstLeashValues, arrayOfPlayoffValues, connectedGraph) {
+    update(leashValue, arrayOfSrcSquares, arrayOfDstLeashValues, arrayOfDstPlayoffValues, connectedGraph) {
         let playoffValueWithWeight = this.sumPlayoffValueWithWeight();
         if ((this.leashValue < leashValue) || (this.leashValue == leashValue && this.playoffValueWithWeight < playoffValueWithWeight)) {
             // ベスト更新
@@ -35,7 +35,7 @@ class BestPath {
             this.playoffValueWithWeight = playoffValueWithWeight;
             this.arrayOfSrcSquares = Array.from(arrayOfSrcSquares);
             this.arrayOfDstLeashValues = Array.from(arrayOfDstLeashValues);
-            this.arrayOfPlayoffValues = Array.from(arrayOfPlayoffValues);
+            this.arrayOfDstPlayoffValues = Array.from(arrayOfDstPlayoffValues);
             this.connectedGraph = Array.from(connectedGraph);
         }
     }
@@ -53,29 +53,29 @@ class BestPath {
         // 根元、行き先 と交互に現れる。
         // 葉も含まれることに注意。
         let count = 0;
-        if (this.arrayOfPlayoffValues) {
-            for (let i = 0; i < this.arrayOfPlayoffValues.length; i++) {
+        if (this.arrayOfDstPlayoffValues) {
+            for (let i = 0; i < this.arrayOfDstPlayoffValues.length; i++) {
                 // 葉を除く。行き先だけ取る。
-                if (1 < this.arrayOfPlayoffValues[i] && i % 2 == 1) {
-                    console.log(`sumPlayoffValueWithWeight i=${i} count=${count} value=${this.arrayOfPlayoffValues[i]}`);
+                if (1 < this.arrayOfDstPlayoffValues[i] && i % 2 == 1) {
+                    console.log(`sumPlayoffValueWithWeight i=${i} count=${count} value=${this.arrayOfDstPlayoffValues[i]}`);
                     count++;
                 } else {
-                    console.log(`sumPlayoffValueWithWeight i=${i} ignored value=${this.arrayOfPlayoffValues[i]}`);
+                    console.log(`sumPlayoffValueWithWeight i=${i} ignored value=${this.arrayOfDstPlayoffValues[i]}`);
                 }
             }
         }
 
         let index = 0;
-        if (this.arrayOfPlayoffValues) {
-            for (let i = 0; i < this.arrayOfPlayoffValues.length; i++) {
+        if (this.arrayOfDstPlayoffValues) {
+            for (let i = 0; i < this.arrayOfDstPlayoffValues.length; i++) {
                 // 葉を除く。行き先だけ取る。
-                if (1 < this.arrayOfPlayoffValues[i] && i % 2 == 1) {
+                if (1 < this.arrayOfDstPlayoffValues[i] && i % 2 == 1) {
                     let exp = count - index;
-                    console.log(`sumPlayoffValueWithWeight: i=${i} count=${count} index=${index} value=${this.arrayOfPlayoffValues[i]} exp=${exp}`);
-                    sum += Math.pow(this.arrayOfPlayoffValues[i], exp); // TODO
+                    console.log(`sumPlayoffValueWithWeight: i=${i} count=${count} index=${index} value=${this.arrayOfDstPlayoffValues[i]} exp=${exp}`);
+                    sum += Math.pow(this.arrayOfDstPlayoffValues[i], exp); // TODO
                     index++;
                 } else {
-                    console.log(`sumPlayoffValueWithWeight: i=${i} ignored. count=${count} index=${index} value=${this.arrayOfPlayoffValues[i]}`);
+                    console.log(`sumPlayoffValueWithWeight: i=${i} ignored. count=${count} index=${index} value=${this.arrayOfDstPlayoffValues[i]}`);
                 }
             }
         }
@@ -254,7 +254,7 @@ class Search {
         // Graph. 根元と行き先で別。
         this.arrayOfSrcSquares = undefined;
         this.arrayOfDstLeashValues = undefined;
-        this.arrayOfPlayoffValues = undefined;
+        this.arrayOfDstPlayoffValues = undefined;
         this.connectedGraph = undefined;
     }
 
@@ -268,12 +268,12 @@ class Search {
         // Graph.
         this.arrayOfSrcSquares = [];
         this.arrayOfDstLeashValues = [];
-        this.arrayOfPlayoffValues = [];
+        this.arrayOfDstPlayoffValues = [];
         this.connectedGraph = [];
         await this.node(0, undefined, this.find('K'), bestPath);
 
         // ベスト更新
-        bestPath.update(this.leashValue, this.arrayOfSrcSquares, this.arrayOfDstLeashValues, this.arrayOfPlayoffValues, this.connectedGraph);
+        bestPath.update(this.leashValue, this.arrayOfSrcSquares, this.arrayOfDstLeashValues, this.arrayOfDstPlayoffValues, this.connectedGraph);
         // 後処理。
         if (animationEnable && this.isBoard) {
             clearArrowLayer();
@@ -291,7 +291,6 @@ class Search {
         this.nodesCount++;
         this.checkBoard[currSq] = true;
         this.arrayOfSrcSquares.push(currSq);
-        this.addPlayoffValue(undefined); // sourcePlayoffValue
 
         // Animation
         if (animationEnable) {
@@ -322,7 +321,7 @@ class Search {
                 let sourcePlayoffValue = 0;
                 this.addLeashValue(leafValue);
                 this.arrayOfDstLeashValues.push(leafValue);
-                this.addPlayoffValue(sourcePlayoffValue);
+                this.arrayOfDstPlayoffValues.push(sourcePlayoffValue);
 
                 let classText = createClassText(leafValue, 0);
                 await this.recordArrow(currSq, classText, leafValue, sourcePlayoffValue);
@@ -342,7 +341,7 @@ class Search {
                     let sourcePlayoffValue = this.letSourcePlayoffValue(currSq, nextSq);
                     this.addLeashValue(leashValue);
                     this.arrayOfDstLeashValues.push(leashValue);
-                    this.addPlayoffValue(sourcePlayoffValue);
+                    this.arrayOfDstPlayoffValues.push(sourcePlayoffValue);
                 }
 
                 switch (this.board[nextSq]) {
@@ -424,10 +423,6 @@ class Search {
 
     addLeashValue(offset) {
         this.leashValue += offset;
-    }
-
-    addPlayoffValue(value) {
-        this.arrayOfPlayoffValues.push(value);
     }
 
     /**
