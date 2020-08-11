@@ -49,13 +49,32 @@ class BestPath {
      */
     sumPlayoffValueWithWeight() {
         let sum = 0;
+
+        // 葉も含まれることに注意。
+        let count = 0;
         if (this.arrayOfPlayoffValuesBase) {
             for (let i = 0; i < this.arrayOfPlayoffValuesBase.length; i++) {
-                if (this.arrayOfPlayoffValuesBase[i]) {
-                    sum += Math.pow(this.arrayOfPlayoffValuesBase[i], i); // TODO
+                // 葉を除く。
+                if (1 < this.arrayOfPlayoffValuesBase[i]) {
+                    console.log(`sumPlayoffValueWithWeight count=${count} value=${this.arrayOfPlayoffValuesBase[i]}`);
+                    count++;
                 }
             }
         }
+
+        let index = 0;
+        if (this.arrayOfPlayoffValuesBase) {
+            for (let i = 0; i < this.arrayOfPlayoffValuesBase.length; i++) {
+                // 葉を除く。
+                if (1 < this.arrayOfPlayoffValuesBase[i]) {
+                    let exp = count - index;
+                    console.log(`sumPlayoffValueWithWeight: i=${i} count=${count} index=${index} value=${this.arrayOfPlayoffValuesBase[i]} exp=${exp}`);
+                    sum += Math.pow(this.arrayOfPlayoffValuesBase[i], exp); // TODO
+                    index++;
+                }
+            }
+        }
+
         return sum;
     }
 }
