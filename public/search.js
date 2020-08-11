@@ -42,101 +42,40 @@ class BestPath {
     createConnectedGraph() {
         return this.connectedGraph;
     }
+}
 
-    /**
-     * @returns connectedGraph[]
-     */
-    createPlayoffArrows() {
-        let connectedGraph = [];
-
-        for (let arrow of this.connectedGraph) {
-            let result;
-            switch (arrow[1]) {
-                case 'k51':
-                    result = ['po51', 8];
-                    break;
-                case 'k62':
-                    result = ['po62', 7];
-                    break;
-                case 'k73':
-                    result = ['po73', 6];
-                    break;
-                case 'k84':
-                    result = ['po84', 5];
-                    break;
-                case 'k15':
-                    result = ['po15', 4];
-                    break;
-                case 'k26':
-                    result = ['po26', 3];
-                    break;
-                case 'k37':
-                    result = ['po37', 2];
-                    break;
-                case 'k48':
-                    result = ['po48', 1];
-                    break;
-                case 'a1':
-                    result = ['s', 0];
-                    break;
-                case 'a51':
-                    result = ['po51', 8];
-                    break;
-                case 'a62':
-                    result = ['po62', 7];
-                    break;
-                case 'a73':
-                    result = ['po73', 6];
-                    break;
-                case 'a84':
-                    result = ['po84', 5];
-                    break;
-                case 'a15':
-                    result = ['po15', 4];
-                    break;
-                case 'a26':
-                    result = ['po26', 3];
-                    break;
-                case 'a37':
-                    result = ['po37', 2];
-                    break;
-                case 'a48':
-                    result = ['po48', 1];
-                    break;
-                case 'a1551':
-                    result = ['po15', 4];
-                    break;
-                case 'a2662':
-                    result = ['po26', 3];
-                    break;
-                case 'a3773':
-                    result = ['po37', 2];
-                    break;
-                case 'a4884':
-                    result = ['po48', 1];
-                    break;
-                case 'a5115':
-                    result = ['po51', 8];
-                    break;
-                case 'a6226':
-                    result = ['po62', 7];
-                    break;
-                case 'a7337':
-                    result = ['po73', 6];
-                    break;
-                case 'a8448':
-                    result = ['po84', 5];
-                    break;
-                default:
-                    result = undefined;
-                    break;
-            }
-
-            connectedGraph.push(result);
-        }
-
-        return connectedGraph;
+function playoutValueToClassText(playoutValue) {
+    let result;
+    switch (playoutValue) {
+        case 8:
+            result = 'po51';
+            break;
+        case 7:
+            result = 'po62';
+            break;
+        case 6:
+            result = 'po73';
+            break;
+        case 5:
+            result = 'po84';
+            break;
+        case 4:
+            result = 'po15';
+            break;
+        case 3:
+            result = 'po26';
+            break;
+        case 2:
+            result = 'po37';
+            break;
+        case 1:
+            result = 'po48';
+            break;
+        default:
+            result = undefined;
+            break;
     }
+    return result;
 }
 
 /**

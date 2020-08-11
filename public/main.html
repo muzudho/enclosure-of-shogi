@@ -50,10 +50,10 @@
 
             // 探索開始
             let bestPath = await playoutAll(input, false);
-            let bestConnectedGraph1 = bestPath.createConnectedGraph();
+            let bestConnectedGraph = bestPath.createConnectedGraph();
 
             // 囲いっぽさ
-            let reversed = Array.from(bestConnectedGraph1);
+            let reversed = Array.from(bestConnectedGraph);
             reversed.reverse();
             let i = 1;
             for (entry of reversed) {
@@ -66,14 +66,11 @@
             document.getElementById("sc0_tx").innerHTML = `${bestPath.leashValue}`;
 
             // 同点決勝
-            let bestConnectedGraph2 = bestPath.createPlayoffArrows();
-            reversed = Array.from(bestConnectedGraph2);
-            reversed.reverse();
             i = 1;
             for (entry of reversed) {
-                if (entry) {
-                    document.getElementById(`po${i}_im`).setAttribute('class', entry[0]);
-                    document.getElementById(`po${i}_tx`).innerHTML = `${entry[1]} 点`;
+                if (entry[1]) {
+                    document.getElementById(`po${i}_im`).setAttribute('class', playoutValueToClassText(entry[3]));
+                    document.getElementById(`po${i}_tx`).innerHTML = `${entry[3]} 点`;
                 }
                 i++;
             }
