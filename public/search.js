@@ -18,16 +18,16 @@ class BestPath {
     constructor() {
         this.leashValue = 0;
         this.playoffValueWithWeight = 0;
-        /** Array of source squares. */
+        /** 根元と行き先が交互に入ってる。 */
         this.arrayOfSourceSquares = undefined;
         this.arrayOfLeashValues = undefined;
-        this.arrayOfPlayoffValuesBase = undefined;
+        this.arrayOfPlayoffValues = undefined;
         this.allGraphSq = [];
         /** [[srcSq, classText, leashValue, sourcePlayoffBase, sourcePlayoffExp]] */
         this.connectedGraph = [];
     }
 
-    update(leashValue, arrayOfSourceSquares, arrayOfLeashValues, arrayOfPlayoffValuesBase, connectedGraph) {
+    update(leashValue, arrayOfSourceSquares, arrayOfLeashValues, arrayOfPlayoffValues, connectedGraph) {
         let playoffValueWithWeight = this.sumPlayoffValueWithWeight();
         if ((this.leashValue < leashValue) || (this.leashValue == leashValue && this.playoffValueWithWeight < playoffValueWithWeight)) {
             // ベスト更新
@@ -35,7 +35,7 @@ class BestPath {
             this.playoffValueWithWeight = playoffValueWithWeight;
             this.arrayOfSourceSquares = Array.from(arrayOfSourceSquares);
             this.arrayOfLeashValues = Array.from(arrayOfLeashValues);
-            this.arrayOfPlayoffValuesBase = Array.from(arrayOfPlayoffValuesBase);
+            this.arrayOfPlayoffValues = Array.from(arrayOfPlayoffValues);
             this.connectedGraph = Array.from(connectedGraph);
         }
     }
@@ -50,27 +50,32 @@ class BestPath {
     sumPlayoffValueWithWeight() {
         let sum = 0;
 
+        // 根元、行き先 と交互に現れる。
         // 葉も含まれることに注意。
         let count = 0;
-        if (this.arrayOfPlayoffValuesBase) {
-            for (let i = 0; i < this.arrayOfPlayoffValuesBase.length; i++) {
-                // 葉を除く。
-                if (1 < this.arrayOfPlayoffValuesBase[i]) {
-                    console.log(`sumPlayoffValueWithWeight count=${count} value=${this.arrayOfPlayoffValuesBase[i]}`);
+        if (this.arrayOfPlayoffValues) {
+            for (let i = 0; i < this.arrayOfPlayoffValues.length; i++) {
+                // 葉を除く。行き先だけ取る。
+                if (1 < this.arrayOfPlayoffValues[i] && i % 2 == 1) {
+                    console.log(`sumPlayoffValueWithWeight i=${i} count=${count} value=${this.arrayOfPlayoffValues[i]}`);
                     count++;
+                } else {
+                    console.log(`sumPlayoffValueWithWeight i=${i} ignored value=${this.arrayOfPlayoffValues[i]}`);
                 }
             }
         }
 
         let index = 0;
-        if (this.arrayOfPlayoffValuesBase) {
-            for (let i = 0; i < this.arrayOfPlayoffValuesBase.length; i++) {
-                // 葉を除く。
-                if (1 < this.arrayOfPlayoffValuesBase[i]) {
+        if (this.arrayOfPlayoffValues) {
+            for (let i = 0; i < this.arrayOfPlayoffValues.length; i++) {
+                // 葉を除く。行き先だけ取る。
+                if (1 < this.arrayOfPlayoffValues[i] && i % 2 == 1) {
                     let exp = count - index;
-                    console.log(`sumPlayoffValueWithWeight: i=${i} count=${count} index=${index} value=${this.arrayOfPlayoffValuesBase[i]} exp=${exp}`);
-                    sum += Math.pow(this.arrayOfPlayoffValuesBase[i], exp); // TODO
+                    console.log(`sumPlayoffValueWithWeight: i=${i} count=${count} index=${index} value=${this.arrayOfPlayoffValues[i]} exp=${exp}`);
+                    sum += Math.pow(this.arrayOfPlayoffValues[i], exp); // TODO
                     index++;
+                } else {
+                    console.log(`sumPlayoffValueWithWeight: i=${i} ignored. count=${count} index=${index} value=${this.arrayOfPlayoffValues[i]}`);
                 }
             }
         }
@@ -246,10 +251,10 @@ class Search {
         this.leashValue = undefined;
         this.playoffValueWithWeight = undefined;
         this.isBoard = undefined;
-        // Graph.
+        // Graph. 根元と行き先が交互に入ってる。
         this.arrayOfSourceSquares = undefined;
         this.arrayOfLeashValues = undefined;
-        this.arrayOfPlayoffValuesBase = undefined;
+        this.arrayOfPlayoffValues = undefined;
         this.connectedGraph = undefined;
     }
 
@@ -263,12 +268,12 @@ class Search {
         // Graph.
         this.arrayOfSourceSquares = [];
         this.arrayOfLeashValues = [];
-        this.arrayOfPlayoffValuesBase = [];
+        this.arrayOfPlayoffValues = [];
         this.connectedGraph = [];
         await this.node(0, undefined, this.find('K'), bestPath);
 
         // ベスト更新
-        bestPath.update(this.leashValue, this.arrayOfSourceSquares, this.arrayOfLeashValues, this.arrayOfPlayoffValuesBase, this.connectedGraph);
+        bestPath.update(this.leashValue, this.arrayOfSourceSquares, this.arrayOfLeashValues, this.arrayOfPlayoffValues, this.connectedGraph);
         // 後処理。
         if (animationEnable && this.isBoard) {
             clearArrowLayer();
@@ -279,13 +284,14 @@ class Search {
 
     async node(depth, prevSq, currSq, bestPath) {
         // 直前の点数計算
+        console.log(`add node: 284 根元`);
         let leashValue = this.letLeashValue(prevSq, currSq);
         let sourcePlayoffValue = this.letSourcePlayoffValue(prevSq, currSq);
         this.nodesCount++;
         this.checkBoard[currSq] = true;
         this.arrayOfSourceSquares.push(currSq);
-        this.arrayOfLeashValues.push(leashValue);
-        this.addPlayoffValue(sourcePlayoffValue);
+        this.arrayOfLeashValues.push(undefined); // leashValue
+        this.addPlayoffValue(undefined); // sourcePlayoffValue
 
         // Animation
         if (animationEnable) {
@@ -310,10 +316,11 @@ class Search {
             // Leaf
             // 「行き止まり」を追加。ただし、玉が葉のときを除く。
             if (leashValue != 4 && this.board[currSq] !== 'K') {
+                console.log(`add node: 315 行き先は行き止まり`);
                 let leafValue = 1;
                 let sourcePlayoffValue = 0;
                 this.addLeashValue(leafValue);
-                this.arrayOfSourceSquares.push(currSq);
+                this.arrayOfSourceSquares.push(undefined); // currSq
                 this.arrayOfLeashValues.push(leafValue);
                 this.addPlayoffValue(sourcePlayoffValue);
 
@@ -328,12 +335,13 @@ class Search {
             if (!this.checkBoard[nextSq]) {
                 // 点数加算
                 let srcPc = this.board[currSq];
-                // キングを除く
+                // キングを除く。
                 if (srcPc !== 'K') {
+                    console.log(`add node: 335 行き先`);
                     let leashValue = this.letLeashValue(currSq, nextSq);
                     let sourcePlayoffValue = this.letSourcePlayoffValue(currSq, nextSq);
                     this.addLeashValue(leashValue);
-                    this.arrayOfSourceSquares.push(currSq);
+                    this.arrayOfSourceSquares.push(undefined); // currSq
                     this.arrayOfLeashValues.push(leashValue);
                     this.addPlayoffValue(sourcePlayoffValue);
                 }
@@ -420,7 +428,7 @@ class Search {
     }
 
     addPlayoffValue(value) {
-        this.arrayOfPlayoffValuesBase.push(value);
+        this.arrayOfPlayoffValues.push(value);
     }
 
     /**
