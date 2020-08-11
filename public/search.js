@@ -18,8 +18,8 @@ class BestPath {
     constructor() {
         this.leashValue = 0;
         this.playoffValueWithWeight = 0;
-        /** 根元と行き先が交互に入ってる。 */
-        this.arrayOfSourceSquares = undefined;
+        /** 根元と行き先で別。 */
+        this.arrayOfSrcSquares = undefined;
         this.arrayOfLeashValues = undefined;
         this.arrayOfPlayoffValues = undefined;
         this.allGraphSq = [];
@@ -27,13 +27,13 @@ class BestPath {
         this.connectedGraph = [];
     }
 
-    update(leashValue, arrayOfSourceSquares, arrayOfLeashValues, arrayOfPlayoffValues, connectedGraph) {
+    update(leashValue, arrayOfSrcSquares, arrayOfLeashValues, arrayOfPlayoffValues, connectedGraph) {
         let playoffValueWithWeight = this.sumPlayoffValueWithWeight();
         if ((this.leashValue < leashValue) || (this.leashValue == leashValue && this.playoffValueWithWeight < playoffValueWithWeight)) {
             // ベスト更新
             this.leashValue = leashValue;
             this.playoffValueWithWeight = playoffValueWithWeight;
-            this.arrayOfSourceSquares = Array.from(arrayOfSourceSquares);
+            this.arrayOfSrcSquares = Array.from(arrayOfSrcSquares);
             this.arrayOfLeashValues = Array.from(arrayOfLeashValues);
             this.arrayOfPlayoffValues = Array.from(arrayOfPlayoffValues);
             this.connectedGraph = Array.from(connectedGraph);
@@ -251,8 +251,8 @@ class Search {
         this.leashValue = undefined;
         this.playoffValueWithWeight = undefined;
         this.isBoard = undefined;
-        // Graph. 根元と行き先が交互に入ってる。
-        this.arrayOfSourceSquares = undefined;
+        // Graph. 根元と行き先で別。
+        this.arrayOfSrcSquares = undefined;
         this.arrayOfLeashValues = undefined;
         this.arrayOfPlayoffValues = undefined;
         this.connectedGraph = undefined;
@@ -266,14 +266,14 @@ class Search {
         this.playoffValueWithWeight = 0;
         this.isBoard = isBoard;
         // Graph.
-        this.arrayOfSourceSquares = [];
+        this.arrayOfSrcSquares = [];
         this.arrayOfLeashValues = [];
         this.arrayOfPlayoffValues = [];
         this.connectedGraph = [];
         await this.node(0, undefined, this.find('K'), bestPath);
 
         // ベスト更新
-        bestPath.update(this.leashValue, this.arrayOfSourceSquares, this.arrayOfLeashValues, this.arrayOfPlayoffValues, this.connectedGraph);
+        bestPath.update(this.leashValue, this.arrayOfSrcSquares, this.arrayOfLeashValues, this.arrayOfPlayoffValues, this.connectedGraph);
         // 後処理。
         if (animationEnable && this.isBoard) {
             clearArrowLayer();
@@ -284,12 +284,13 @@ class Search {
 
     async node(depth, prevSq, currSq, bestPath) {
         // 直前の点数計算
+        // エッジの根元。
         console.log(`add node: 284 根元`);
         let leashValue = this.letLeashValue(prevSq, currSq);
         let sourcePlayoffValue = this.letSourcePlayoffValue(prevSq, currSq);
         this.nodesCount++;
         this.checkBoard[currSq] = true;
-        this.arrayOfSourceSquares.push(currSq);
+        this.arrayOfSrcSquares.push(currSq);
         this.arrayOfLeashValues.push(undefined); // leashValue
         this.addPlayoffValue(undefined); // sourcePlayoffValue
 
@@ -320,7 +321,6 @@ class Search {
                 let leafValue = 1;
                 let sourcePlayoffValue = 0;
                 this.addLeashValue(leafValue);
-                this.arrayOfSourceSquares.push(undefined); // currSq
                 this.arrayOfLeashValues.push(leafValue);
                 this.addPlayoffValue(sourcePlayoffValue);
 
@@ -328,7 +328,7 @@ class Search {
                 await this.recordArrow(currSq, classText, leafValue, sourcePlayoffValue);
             }
             // Record graph.
-            bestPath.allGraphSq.push(Array.from(this.arrayOfSourceSquares));
+            bestPath.allGraphSq.push(Array.from(this.arrayOfSrcSquares));
         }
         for (let nextSq of ways) {
             // ループ中に状態が変わってるので再チェック
@@ -341,7 +341,6 @@ class Search {
                     let leashValue = this.letLeashValue(currSq, nextSq);
                     let sourcePlayoffValue = this.letSourcePlayoffValue(currSq, nextSq);
                     this.addLeashValue(leashValue);
-                    this.arrayOfSourceSquares.push(undefined); // currSq
                     this.arrayOfLeashValues.push(leashValue);
                     this.addPlayoffValue(sourcePlayoffValue);
                 }
