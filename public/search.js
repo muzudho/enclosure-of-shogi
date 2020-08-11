@@ -48,36 +48,18 @@ class BestPath {
      * 同点決勝点。
      */
     sumPlayoffValueWithWeight() {
+        let bestConnectedGraph = this.createConnectedGraph();
+
+        let reversed = Array.from(bestConnectedGraph);
+        reversed.reverse();
+        let i = 1;
+
         let sum = 0;
-
-        // 葉も含まれることに注意。
-        let count = 0;
-        if (this.arrayOfDstPlayoffValues) {
-            for (let i = 0; i < this.arrayOfDstPlayoffValues.length; i++) {
-                // 葉を除く。
-                if (1 < this.arrayOfDstPlayoffValues[i]) {
-                    // console.log(`sumPlayoffValueWithWeight A i=${i} value=${this.arrayOfDstPlayoffValues[i]}`);
-                    count++;
-                } else {
-                    // console.log(`sumPlayoffValueWithWeight A i=${i} ignored value=${this.arrayOfDstPlayoffValues[i]}`);
-                }
+        for (let entry of reversed) {
+            if (entry[1]) {
+                sum += Math.pow(entry[3], i);
             }
-        }
-        // console.log(`sumPlayoffValueWithWeight A2 count=${count}`);
-
-        let index = 0;
-        if (this.arrayOfDstPlayoffValues) {
-            for (let i = 0; i < this.arrayOfDstPlayoffValues.length; i++) {
-                // 葉を除く。
-                if (1 < this.arrayOfDstPlayoffValues[i]) {
-                    let exp = count - index;
-                    // console.log(`sumPlayoffValueWithWeight: B i=${i} index=${index} value=${this.arrayOfDstPlayoffValues[i]} exp=${exp}`);
-                    sum += Math.pow(this.arrayOfDstPlayoffValues[i], exp); // TODO
-                    index++;
-                } else {
-                    // console.log(`sumPlayoffValueWithWeight: B i=${i} ignored. index=${index} value=${this.arrayOfDstPlayoffValues[i]}`);
-                }
-            }
+            i++;
         }
 
         return sum;
