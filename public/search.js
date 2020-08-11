@@ -50,32 +50,32 @@ class BestPath {
     sumPlayoffValueWithWeight() {
         let sum = 0;
 
-        // 根元、行き先 と交互に現れる。
         // 葉も含まれることに注意。
         let count = 0;
         if (this.arrayOfDstPlayoffValues) {
             for (let i = 0; i < this.arrayOfDstPlayoffValues.length; i++) {
-                // 葉を除く。行き先だけ取る。
-                if (1 < this.arrayOfDstPlayoffValues[i] && i % 2 == 1) {
-                    console.log(`sumPlayoffValueWithWeight i=${i} count=${count} value=${this.arrayOfDstPlayoffValues[i]}`);
+                // 葉を除く。
+                if (1 < this.arrayOfDstPlayoffValues[i]) {
+                    // console.log(`sumPlayoffValueWithWeight A i=${i} value=${this.arrayOfDstPlayoffValues[i]}`);
                     count++;
                 } else {
-                    console.log(`sumPlayoffValueWithWeight i=${i} ignored value=${this.arrayOfDstPlayoffValues[i]}`);
+                    // console.log(`sumPlayoffValueWithWeight A i=${i} ignored value=${this.arrayOfDstPlayoffValues[i]}`);
                 }
             }
         }
+        // console.log(`sumPlayoffValueWithWeight A2 count=${count}`);
 
         let index = 0;
         if (this.arrayOfDstPlayoffValues) {
             for (let i = 0; i < this.arrayOfDstPlayoffValues.length; i++) {
-                // 葉を除く。行き先だけ取る。
-                if (1 < this.arrayOfDstPlayoffValues[i] && i % 2 == 1) {
+                // 葉を除く。
+                if (1 < this.arrayOfDstPlayoffValues[i]) {
                     let exp = count - index;
-                    console.log(`sumPlayoffValueWithWeight: i=${i} count=${count} index=${index} value=${this.arrayOfDstPlayoffValues[i]} exp=${exp}`);
+                    // console.log(`sumPlayoffValueWithWeight: B i=${i} index=${index} value=${this.arrayOfDstPlayoffValues[i]} exp=${exp}`);
                     sum += Math.pow(this.arrayOfDstPlayoffValues[i], exp); // TODO
                     index++;
                 } else {
-                    console.log(`sumPlayoffValueWithWeight: i=${i} ignored. count=${count} index=${index} value=${this.arrayOfDstPlayoffValues[i]}`);
+                    // console.log(`sumPlayoffValueWithWeight: B i=${i} ignored. index=${index} value=${this.arrayOfDstPlayoffValues[i]}`);
                 }
             }
         }
@@ -112,7 +112,8 @@ function playoutValueToClassText(playoutValue) {
             result = 'po48';
             break;
         default:
-            result = undefined;
+            // 行き止まりに方向はありません。
+            result = 's';
             break;
     }
     return result;
@@ -284,8 +285,8 @@ class Search {
 
     async node(depth, prevSq, currSq, bestPath) {
         // 直前の点数計算
-        // エッジの根元。
-        console.log(`add node: 284 根元`);
+        // エッジの根元。キングしかないとき、行き先のないキングになる。
+        // console.log(`add node: 284 根元`);
         let leashValue = this.letLeashValue(prevSq, currSq);
         let sourcePlayoffValue = this.letSourcePlayoffValue(prevSq, currSq);
         this.nodesCount++;
@@ -316,7 +317,7 @@ class Search {
             // 「行き止まり」を追加。ただし、玉が葉のときを除く。
             if (leashValue != 4 && this.board[currSq] !== 'K') {
                 // 行き先
-                console.log(`add node: 315 行き先は行き止まり`);
+                // console.log(`add node: 315 行き先は行き止まり`);
                 let leafValue = 1;
                 let sourcePlayoffValue = 0;
                 this.addLeashValue(leafValue);
@@ -336,7 +337,8 @@ class Search {
                 let srcPc = this.board[currSq];
                 // キングを除く。
                 if (srcPc !== 'K') {
-                    console.log(`add node: 335 行き先`);
+                    // 行き先
+                    // console.log(`add node: 335 行き先`);
                     let leashValue = this.letLeashValue(currSq, nextSq);
                     let sourcePlayoffValue = this.letSourcePlayoffValue(currSq, nextSq);
                     this.addLeashValue(leashValue);
