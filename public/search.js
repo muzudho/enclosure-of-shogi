@@ -17,19 +17,20 @@ async function playoutAll(input, isBoard) {
 class BestPath {
     constructor() {
         this.value = 0;
-        this.graphSq = undefined;
-        this.graphValues = undefined;
+        /** Array of source squares. */
+        this.arrayOfSourceSquares = undefined;
+        this.arrayOfValues = undefined;
         this.allGraphSq = [];
-        /** [[srcSq, classText, diffValue]] */
+        /** [{srcSq, classText, diffValue}] */
         this.connectedGraph = [];
     }
 
-    update(value, graphSq, graphValues, connectedGraph) {
+    update(value, arrayOfSourceSquares, arrayOfValues, connectedGraph) {
         if (this.value < value) {
             // ベスト更新
             this.value = value;
-            this.graphSq = Array.from(graphSq);
-            this.graphValues = Array.from(graphValues);
+            this.arrayOfSourceSquares = Array.from(arrayOfSourceSquares);
+            this.arrayOfValues = Array.from(arrayOfValues);
             this.connectedGraph = Array.from(connectedGraph);
         }
     }
@@ -271,10 +272,8 @@ class Search {
         this.value = undefined;
         this.isBoard = undefined;
         // Graph.
-        this.graphSq = undefined;
-        this.graphValues = undefined;
-        // Search round trip path.
-        this.pathSq = undefined;
+        this.arrayOfSourceSquares = undefined;
+        this.arrayOfValues = undefined;
         this.connectedGraph = undefined;
     }
 
@@ -285,15 +284,13 @@ class Search {
         this.value = 0;
         this.isBoard = isBoard;
         // Graph.
-        this.graphSq = [];
-        this.graphValues = [];
-        // Search round trip path.
-        this.pathSq = [];
+        this.arrayOfSourceSquares = [];
+        this.arrayOfValues = [];
         this.connectedGraph = [];
         await this.node(0, undefined, this.find('K'), bestPath);
 
         // ベスト更新
-        bestPath.update(this.value, this.graphSq, this.graphValues, this.connectedGraph);
+        bestPath.update(this.value, this.arrayOfSourceSquares, this.arrayOfValues, this.connectedGraph);
         // 後処理。
         if (animationEnable && this.isBoard) {
             clearArrowLayer();
@@ -307,9 +304,8 @@ class Search {
         let diffValue = this.letDiffValue(prevSq, currSq);
         this.nodesCount++;
         this.checkBoard[currSq] = true;
-        this.graphSq.push(currSq);
-        this.graphValues.push(diffValue);
-        this.pathSq.push(currSq);
+        this.arrayOfSourceSquares.push(currSq);
+        this.arrayOfValues.push(diffValue);
 
         // Animation
         if (animationEnable) {
@@ -336,15 +332,14 @@ class Search {
             if (diffValue != 4 && this.board[currSq] !== 'K') {
                 let leafValue = 1;
                 this.addValue(leafValue);
-                this.graphSq.push(currSq);
-                this.graphValues.push(1);
-                this.pathSq.push(currSq);
+                this.arrayOfSourceSquares.push(currSq);
+                this.arrayOfValues.push(1);
 
                 let classText = createClassText(leafValue, 0);
                 await this.recordArrow(currSq, classText, leafValue);
             }
             // Record graph.
-            bestPath.allGraphSq.push(Array.from(this.graphSq));
+            bestPath.allGraphSq.push(Array.from(this.arrayOfSourceSquares));
         }
         for (let nextSq of ways) {
             // ループ中に状態が変わってるので再チェック
