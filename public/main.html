@@ -50,10 +50,10 @@
 
             // 探索開始
             let bestPath = await playoutAll(input, false);
-            let bestArrows = bestPath.createArrows();
+            let bestArrows1 = bestPath.createLeashArrows();
 
             // 囲いっぽさ
-            let reversed = Array.from(bestArrows);
+            let reversed = Array.from(bestArrows1);
             reversed.reverse();
             let i = 1;
             for (entry of reversed) {
@@ -66,17 +66,18 @@
             document.getElementById("sc0_tx").innerHTML = `${bestPath.value}`;
 
             // 同点決勝
-            reversed = Array.from(bestArrows);
+            let bestArrows2 = bestPath.createPlayoffArrows();
+            reversed = Array.from(bestArrows2[0]);
             reversed.reverse();
             i = 1;
             for (entry of reversed) {
-                if (entry[1]) {
-                    document.getElementById(`po${i}_im`).setAttribute('class', entry[1]);
-                    document.getElementById(`po${i}_tx`).innerHTML = `${entry[2]} 点`;
+                if (entry) {
+                    document.getElementById(`po${i}_im`).setAttribute('class', entry[0]);
+                    document.getElementById(`po${i}_tx`).innerHTML = `${entry[1]} 点`;
                 }
                 i++;
             }
-            document.getElementById("po0_tx").innerHTML = `${bestPath.value}`;
+            document.getElementById("po0_tx").innerHTML = `${bestArrows2[1]}`;
         }
     </script>
 </head>

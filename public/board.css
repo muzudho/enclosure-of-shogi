@@ -78,7 +78,7 @@ img.k48 {
     height: 64px;
 }
 
-/* Arrow */
+/* 2 points arrows */
 img.a1 {
     object-fit: none;
     object-position: -256px -64px;
@@ -142,7 +142,14 @@ img.a48 {
     height: 64px;
 }
 
+/* 4 points arrows */
 img.a4884 {
+    object-fit: none;
+    object-position: -0px -192px;
+    width: 64px;
+    height: 64px;
+}
+img.a8484 {
     object-fit: none;
     object-position: -0px -192px;
     width: 64px;
@@ -155,6 +162,12 @@ img.a3773 {
     width: 64px;
     height: 64px;
 }
+img.a7337 {
+    object-fit: none;
+    object-position: -64px -192px;
+    width: 64px;
+    height: 64px;
+}
 
 img.a2662 {
     object-fit: none;
@@ -162,8 +175,20 @@ img.a2662 {
     width: 64px;
     height: 64px;
 }
+img.a6226 {
+    object-fit: none;
+    object-position: -128px -192px;
+    width: 64px;
+    height: 64px;
+}
 
 img.a1551 {
+    object-fit: none;
+    object-position: -128px -256px;
+    width: 64px;
+    height: 64px;
+}
+img.a5115 {
     object-fit: none;
     object-position: -128px -256px;
     width: 64px;
@@ -178,6 +203,7 @@ img.sq {
     height: 64px;
 }
 
+/* Pieces */
 img.pc_0 {
     object-fit: none;
     object-position: 0px -256px;
@@ -202,6 +228,63 @@ img.pc_g {
 img.pc_s {
     object-fit: none;
     object-position: -128px -320px;
+    width: 64px;
+    height: 64px;
+}
+
+/* Play-off arrows */
+img.po84 {
+    object-fit: none;
+    object-position: -192px -192px;
+    width: 64px;
+    height: 64px;
+}
+
+img.po73 {
+    object-fit: none;
+    object-position: -256px -192px;
+    width: 64px;
+    height: 64px;
+}
+
+img.po62 {
+    object-fit: none;
+    object-position: -320px -192px;
+    width: 64px;
+    height: 64px;
+}
+
+img.po15 {
+    object-fit: none;
+    object-position: -192px -256px;
+    width: 64px;
+    height: 64px;
+}
+
+img.po51 {
+    object-fit: none;
+    object-position: -320px -256px;
+    width: 64px;
+    height: 64px;
+}
+
+img.po26 {
+    object-fit: none;
+    object-position: -192px -320px;
+    width: 64px;
+    height: 64px;
+}
+
+img.po37 {
+    object-fit: none;
+    object-position: -256px -320px;
+    width: 64px;
+    height: 64px;
+}
+
+img.po48 {
+    object-fit: none;
+    object-position: -320px -320px;
     width: 64px;
     height: 64px;
 }
