@@ -52,19 +52,31 @@
             let bestPath = await playoutAll(input, false);
             let bestArrows = bestPath.createArrows();
 
-            // 計算結果
+            // 囲いっぽさ
             let reversed = Array.from(bestArrows);
             reversed.reverse();
             let i = 1;
             for (entry of reversed) {
                 if (entry[1]) {
                     document.getElementById(`sc${i}_im`).setAttribute('class', entry[1]);
-                    document.getElementById(`sc${i}_tx`).innerHTML = `${entry[2]} 点`;
+                    document.getElementById(`sc${i}_tx`).innerHTML = `${entry[2]} &nbsp;点`;
                 }
                 i++;
             }
+            document.getElementById("sc0_tx").innerHTML = `${bestPath.value}`;
 
-            document.getElementById("sc0_tx").innerHTML = `${bestPath.value} 点`;
+            // 同点決勝
+            reversed = Array.from(bestArrows);
+            reversed.reverse();
+            i = 1;
+            for (entry of reversed) {
+                if (entry[1]) {
+                    document.getElementById(`po${i}_im`).setAttribute('class', entry[1]);
+                    document.getElementById(`po${i}_tx`).innerHTML = `${entry[2]} 点`;
+                }
+                i++;
+            }
+            document.getElementById("po0_tx").innerHTML = `${bestPath.value}`;
         }
     </script>
 </head>
@@ -120,12 +132,54 @@
         <span style="margin-left:77px;"></span><img id="sc1_im" src="img/map.png" class="s"><span id="sc1_tx"
             style="font-size:24px;"></span><br>
         <br>
-        <span style="font-size:18px; font-weight:bold;">On a leash</span><span
-            style="font-size:18px; margin-left:60px;">pts.</span><br>
-        <span style="font-size:24px; font-weight:bold; line-height:90%;">囲いっぽさ</span><span id="sc0_tx"
-            style="font-size:24px; margin-left:20px; line-height:90%;"></span><br>
+        <span style="font-size:24px; font-weight:bold; line-height:90%;"><ruby>囲いっぽさ<rt
+                    style="font-size:18px; font-weight:bold;">On a leash</rt>
+            </ruby></span><span id="sc0_tx" style="font-size:24px; margin-left:20px; line-height:90%;"></span>
+        <ruby style="font-size:24px; margin-left:10px; line-height:90%;">
+            点<rt style="font-size:18px;">pts.</rt>
+        </ruby><br>
     </div>
     <div style="position:absolute; top:311px; left:666px;">
+        <span style="position:absolute; top:440px; font-size:48px; font-weight:bold;">＋</span><br>
+        <span style="position:absolute; top:501px; font-size:24px; font-weight:bold;">━━━━━━━━</span><br>
+    </div>
+    <!-- 同点決勝(play-off)
+        left を + 250
+    -->
+    <div style="position:absolute; top:51px; left:916px;">
+        <span style="margin-left:77px;"></span><img id="po12_im" src="img/map.png" class="s"><span id="po12_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="po11_im" src="img/map.png" class="s"><span id="po11_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="po10_im" src="img/map.png" class="s"><span id="po10_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="po9_im" src="img/map.png" class="s"><span id="po9_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="po8_im" src="img/map.png" class="s"><span id="po8_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="po7_im" src="img/map.png" class="s"><span id="po7_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="po6_im" src="img/map.png" class="s"><span id="po6_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="po5_im" src="img/map.png" class="s"><span id="po5_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="po4_im" src="img/map.png" class="s"><span id="po4_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="po3_im" src="img/map.png" class="s"><span id="po3_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="po2_im" src="img/map.png" class="s"><span id="po2_tx"
+            style="font-size:24px;"></span><br>
+        <span style="margin-left:77px;"></span><img id="po1_im" src="img/map.png" class="s"><span id="po1_tx"
+            style="font-size:24px;"></span><br>
+        <br>
+        <span style="font-size:24px; font-weight:bold; line-height:90%;"><ruby>同点決勝<rt
+                    style="font-size:18px; font-weight:bold;">Play-off</rt>
+            </ruby></span><span id="po0_tx" style="font-size:24px; margin-left:20px; line-height:90%;"></span>
+        <ruby style="font-size:24px; margin-left:10px; line-height:90%;">
+            点<rt style="font-size:18px;">pts.</rt>
+        </ruby><br>
+    </div>
+    <div style="position:absolute; top:311px; left:916px;">
         <span style="position:absolute; top:440px; font-size:48px; font-weight:bold;">＋</span><br>
         <span style="position:absolute; top:501px; font-size:24px; font-weight:bold;">━━━━━━━━</span><br>
     </div>
