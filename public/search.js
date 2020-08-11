@@ -276,13 +276,15 @@ class Search {
             // 「行き止まり」を追加。ただし、玉が葉のときを除く。
             if (leashValue != 4 && this.board[currSq] !== 'K') {
                 let leafValue = 1;
+                let playoffValue = 0;
                 this.addLeashValue(leafValue);
+                this.addPlayoffValue(playoffValue);
                 this.arrayOfSourceSquares.push(currSq);
-                this.arrayOfLeashValues.push(1);
-                this.arrayOfPlayoffValues.push(0);
+                this.arrayOfLeashValues.push(leafValue);
+                this.arrayOfPlayoffValues.push(playoffValue);
 
                 let classText = createClassText(leafValue, 0);
-                await this.recordArrow(currSq, classText, leafValue);
+                await this.recordArrow(currSq, classText, leafValue, playoffValue);
             }
             // Record graph.
             bestPath.allGraphSq.push(Array.from(this.arrayOfSourceSquares));
