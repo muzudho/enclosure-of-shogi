@@ -21,31 +21,31 @@ class BestPath {
         this.graphValues = undefined;
         this.allGraphSq = [];
         /** [[srcSq, classText, diffValue]] */
-        this.arrows = [];
+        this.connectedGraph = [];
     }
 
-    update(value, graphSq, graphValues, arrows) {
+    update(value, graphSq, graphValues, connectedGraph) {
         if (this.value < value) {
             // ベスト更新
             this.value = value;
             this.graphSq = Array.from(graphSq);
             this.graphValues = Array.from(graphValues);
-            this.arrows = Array.from(arrows);
+            this.connectedGraph = Array.from(connectedGraph);
         }
     }
 
-    createLeashArrows() {
-        return this.arrows;
+    createConnectedGraph() {
+        return this.connectedGraph;
     }
 
     /**
-     * @returns [arrows[],points]
+     * @returns [connectedGraph[],points]
      */
     createPlayoffArrows() {
-        let arrows = [];
+        let connectedGraph = [];
         let points = 0;
 
-        for (let arrow of this.arrows) {
+        for (let arrow of this.connectedGraph) {
             let result;
             switch (arrow[1]) {
                 case 'k51':
@@ -128,13 +128,13 @@ class BestPath {
                     break;
             }
 
-            arrows.push(result);
+            connectedGraph.push(result);
             if (result) {
                 points += result[1];
             }
         }
 
-        return [arrows, points];
+        return [connectedGraph, points];
     }
 }
 
@@ -233,28 +233,28 @@ function createClassText(edgeValueFromDst, sqDiff) {
             // 双方向
             switch (sqDiff) {
                 case -10:
-                    classText = 'a1551';
-                    break;
-                case -11:
-                    classText = 'a2662';
-                    break;
-                case -1:
-                    classText = 'a3773';
-                    break;
-                case 9:
-                    classText = 'a4884';
-                    break;
-                case 10:
                     classText = 'a5115';
                     break;
-                case 11:
+                case -11:
                     classText = 'a6226';
                     break;
-                case 1:
+                case -1:
                     classText = 'a7337';
                     break;
-                case -9:
+                case 9:
                     classText = 'a8448';
+                    break;
+                case 10:
+                    classText = 'a1551';
+                    break;
+                case 11:
+                    classText = 'a2662';
+                    break;
+                case 1:
+                    classText = 'a3773';
+                    break;
+                case -9:
+                    classText = 'a4884';
                     break;
             }
             break;
@@ -275,7 +275,7 @@ class Search {
         this.graphValues = undefined;
         // Search round trip path.
         this.pathSq = undefined;
-        this.arrows = undefined;
+        this.connectedGraph = undefined;
     }
 
     async search(input, isBoard, bestPath) {
@@ -289,11 +289,11 @@ class Search {
         this.graphValues = [];
         // Search round trip path.
         this.pathSq = [];
-        this.arrows = [];
+        this.connectedGraph = [];
         await this.node(0, undefined, this.find('K'), bestPath);
 
         // ベスト更新
-        bestPath.update(this.value, this.graphSq, this.graphValues, this.arrows);
+        bestPath.update(this.value, this.graphSq, this.graphValues, this.connectedGraph);
         // 後処理。
         if (animationEnable && this.isBoard) {
             clearArrowLayer();
@@ -381,7 +381,7 @@ class Search {
     }
 
     async recordArrow(srcSq, classText, value) {
-        this.arrows.push([srcSq, classText, value]);
+        this.connectedGraph.push([srcSq, classText, value]);
         if (animationEnable && this.isBoard) {
             drawArrow(srcSq, classText);
             await sleep(INTERVAL_MSEC);
