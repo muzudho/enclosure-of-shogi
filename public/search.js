@@ -17,25 +17,27 @@ async function playoutAll(input, isBoard) {
 class BestPath {
     constructor() {
         this.leashValue = 0;
-        this.playoffValue = 0;
+        this.playoffValueWithWeight = 0;
         /** Array of source squares. */
         this.arrayOfSourceSquares = undefined;
         this.arrayOfLeashValues = undefined;
-        this.arrayOfPlayoffValues = undefined;
+        this.arrayOfPlayoffValuesSource = undefined;
+        this.arrayOfPlayoffValuesWithWeight = undefined;
         this.allGraphSq = [];
         /** [[srcSq, classText, leashValue, sourcePlayoffValue]] */
         this.connectedGraph = [];
     }
 
-    update(leashValue, arrayOfSourceSquares, arrayOfLeashValues, arrayOfPlayoffValues, connectedGraph) {
-        let playoffValue = this.sumPlayoffValue();
-        if ((this.leashValue < leashValue) || (this.leashValue == leashValue && this.playoffValue < playoffValue)) {
+    update(leashValue, arrayOfSourceSquares, arrayOfLeashValues, arrayOfPlayoffValuesSource, arrayOfPlayoffValuesWithWeight, connectedGraph) {
+        let playoffValueWithWeight = this.sumPlayoffValueWithWeight();
+        if ((this.leashValue < leashValue) || (this.leashValue == leashValue && this.playoffValueWithWeight < playoffValueWithWeight)) {
             // ベスト更新
             this.leashValue = leashValue;
-            this.playoffValue = playoffValue;
+            this.playoffValueWithWeight = playoffValueWithWeight;
             this.arrayOfSourceSquares = Array.from(arrayOfSourceSquares);
             this.arrayOfLeashValues = Array.from(arrayOfLeashValues);
-            this.arrayOfPlayoffValues = Array.from(arrayOfPlayoffValues);
+            this.arrayOfPlayoffValuesSource = Array.from(arrayOfPlayoffValuesSource);
+            this.arrayOfPlayoffValuesWithWeight = Array.from(arrayOfPlayoffValuesWithWeight);
             this.connectedGraph = Array.from(connectedGraph);
         }
     }
@@ -44,10 +46,10 @@ class BestPath {
         return this.connectedGraph;
     }
 
-    sumPlayoffValue() {
+    sumPlayoffValueWithWeight() {
         let sum = 0;
-        if (this.arrayOfPlayoffValues) {
-            for (let value of this.arrayOfPlayoffValues) {
+        if (this.arrayOfPlayoffValuesWithWeight) {
+            for (let value of this.arrayOfPlayoffValuesWithWeight) {
                 if (value) {
                     sum += value;
                 }
@@ -222,12 +224,13 @@ class Search {
         this.board = undefined;
         this.checkBoard = undefined;
         this.leashValue = undefined;
-        this.playoffValue = undefined;
+        this.playoffValueWithWeight = undefined;
         this.isBoard = undefined;
         // Graph.
         this.arrayOfSourceSquares = undefined;
         this.arrayOfLeashValues = undefined;
-        this.arrayOfPlayoffValues = undefined;
+        this.arrayOfPlayoffValuesSource = undefined;
+        this.arrayOfPlayoffValuesWithWeight = undefined;
         this.connectedGraph = undefined;
     }
 
@@ -236,17 +239,18 @@ class Search {
         this.board = this.createBoard(input);
         this.checkBoard = this.createFalseBoard();
         this.leashValue = 0;
-        this.playoffValue = 0;
+        this.playoffValueWithWeight = 0;
         this.isBoard = isBoard;
         // Graph.
         this.arrayOfSourceSquares = [];
         this.arrayOfLeashValues = [];
-        this.arrayOfPlayoffValues = [];
+        this.arrayOfPlayoffValuesSource = [];
+        this.arrayOfPlayoffValuesWithWeight = [];
         this.connectedGraph = [];
         await this.node(0, undefined, this.find('K'), bestPath);
 
         // ベスト更新
-        bestPath.update(this.leashValue, this.arrayOfSourceSquares, this.arrayOfLeashValues, this.arrayOfPlayoffValues, this.connectedGraph);
+        bestPath.update(this.leashValue, this.arrayOfSourceSquares, this.arrayOfLeashValues, this.arrayOfPlayoffValuesSource, this.arrayOfPlayoffValuesWithWeight, this.connectedGraph);
         // 後処理。
         if (animationEnable && this.isBoard) {
             clearArrowLayer();
@@ -313,7 +317,7 @@ class Search {
                     this.addLeashValue(leashValue);
                     this.arrayOfSourceSquares.push(currSq);
                     this.arrayOfLeashValues.push(leashValue);
-                    this.arrayOfPlayoffValues.push(sourcePlayoffValue);
+                    this.addPlayoffValue(sourcePlayoffValue);
                 }
 
                 switch (this.board[nextSq]) {
@@ -339,8 +343,9 @@ class Search {
         }
     }
 
-    async recordArrow(srcSq, classText, leashValue, sourcePlayoffValue) {
-        this.connectedGraph.push([srcSq, classText, leashValue, sourcePlayoffValue]);
+    async recordArrow(srcSq, classText, leashValue, playoffValueSource) {
+        let playoffValueWithWeight = Math.pow(playoffValueSource, this.connectedGraph.length + 1);
+        this.connectedGraph.push([srcSq, classText, leashValue, playoffValueSource, playoffValueWithWeight]);
         if (animationEnable && this.isBoard) {
             drawArrow(srcSq, classText);
             await sleep(INTERVAL_MSEC);
@@ -398,11 +403,16 @@ class Search {
     }
 
     addPlayoffValue(value) {
+        this.arrayOfPlayoffValuesSource.push(value);
+        this.arrayOfPlayoffValuesWithWeight.push(Math.pow(value, this.arrayOfPlayoffValuesWithWeight.length + 1));
+
+        /*
         // 既存の値を重くするために、８倍にします。
         for (let i = 0; i < this.arrayOfPlayoffValues.length; i++) {
             this.arrayOfPlayoffValues[i] = this.arrayOfPlayoffValues[i] * 8;
         }
         this.arrayOfPlayoffValues.push(value);
+        */
     }
 
     /**
