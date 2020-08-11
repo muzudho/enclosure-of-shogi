@@ -28,7 +28,7 @@ class BestPath {
     }
 
     update(leashValue, arrayOfSrcSquares, arrayOfDstLeashValues, arrayOfDstPlayoffValues, connectedGraph) {
-        let playoffValueWithWeight = this.sumPlayoffValueWithWeight();
+        let playoffValueWithWeight = this.sumPlayoffValueWithWeight(connectedGraph);
         if ((this.leashValue < leashValue) || (this.leashValue == leashValue && this.playoffValueWithWeight < playoffValueWithWeight)) {
             // ベスト更新
             this.leashValue = leashValue;
@@ -47,9 +47,7 @@ class BestPath {
     /**
      * 同点決勝点。
      */
-    sumPlayoffValueWithWeight() {
-        let bestConnectedGraph = this.createConnectedGraph();
-
+    sumPlayoffValueWithWeight(bestConnectedGraph) {
         let reversed = Array.from(bestConnectedGraph);
         reversed.reverse();
         let i = 1;
@@ -232,7 +230,6 @@ class Search {
         this.board = undefined;
         this.checkBoard = undefined;
         this.leashValue = undefined;
-        this.playoffValueWithWeight = undefined;
         this.isBoard = undefined;
         // Graph. 根元と行き先で別。
         this.arrayOfSrcSquares = undefined;
@@ -246,7 +243,6 @@ class Search {
         this.board = this.createBoard(input);
         this.checkBoard = this.createFalseBoard();
         this.leashValue = 0;
-        this.playoffValueWithWeight = 0;
         this.isBoard = isBoard;
         // Graph.
         this.arrayOfSrcSquares = [];
