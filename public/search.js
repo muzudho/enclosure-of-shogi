@@ -20,21 +20,21 @@ class BestPath {
         this.playoffValueWithWeight = 0;
         /** 根元と行き先で別。 */
         this.arrayOfSrcSquares = undefined;
-        this.arrayOfLeashValues = undefined;
+        this.arrayOfDstLeashValues = undefined;
         this.arrayOfPlayoffValues = undefined;
         this.allGraphSq = [];
         /** [[srcSq, classText, leashValue, sourcePlayoffBase, sourcePlayoffExp]] */
         this.connectedGraph = [];
     }
 
-    update(leashValue, arrayOfSrcSquares, arrayOfLeashValues, arrayOfPlayoffValues, connectedGraph) {
+    update(leashValue, arrayOfSrcSquares, arrayOfDstLeashValues, arrayOfPlayoffValues, connectedGraph) {
         let playoffValueWithWeight = this.sumPlayoffValueWithWeight();
         if ((this.leashValue < leashValue) || (this.leashValue == leashValue && this.playoffValueWithWeight < playoffValueWithWeight)) {
             // ベスト更新
             this.leashValue = leashValue;
             this.playoffValueWithWeight = playoffValueWithWeight;
             this.arrayOfSrcSquares = Array.from(arrayOfSrcSquares);
-            this.arrayOfLeashValues = Array.from(arrayOfLeashValues);
+            this.arrayOfDstLeashValues = Array.from(arrayOfDstLeashValues);
             this.arrayOfPlayoffValues = Array.from(arrayOfPlayoffValues);
             this.connectedGraph = Array.from(connectedGraph);
         }
@@ -253,7 +253,7 @@ class Search {
         this.isBoard = undefined;
         // Graph. 根元と行き先で別。
         this.arrayOfSrcSquares = undefined;
-        this.arrayOfLeashValues = undefined;
+        this.arrayOfDstLeashValues = undefined;
         this.arrayOfPlayoffValues = undefined;
         this.connectedGraph = undefined;
     }
@@ -267,13 +267,13 @@ class Search {
         this.isBoard = isBoard;
         // Graph.
         this.arrayOfSrcSquares = [];
-        this.arrayOfLeashValues = [];
+        this.arrayOfDstLeashValues = [];
         this.arrayOfPlayoffValues = [];
         this.connectedGraph = [];
         await this.node(0, undefined, this.find('K'), bestPath);
 
         // ベスト更新
-        bestPath.update(this.leashValue, this.arrayOfSrcSquares, this.arrayOfLeashValues, this.arrayOfPlayoffValues, this.connectedGraph);
+        bestPath.update(this.leashValue, this.arrayOfSrcSquares, this.arrayOfDstLeashValues, this.arrayOfPlayoffValues, this.connectedGraph);
         // 後処理。
         if (animationEnable && this.isBoard) {
             clearArrowLayer();
@@ -291,7 +291,6 @@ class Search {
         this.nodesCount++;
         this.checkBoard[currSq] = true;
         this.arrayOfSrcSquares.push(currSq);
-        this.arrayOfLeashValues.push(undefined); // leashValue
         this.addPlayoffValue(undefined); // sourcePlayoffValue
 
         // Animation
@@ -317,11 +316,12 @@ class Search {
             // Leaf
             // 「行き止まり」を追加。ただし、玉が葉のときを除く。
             if (leashValue != 4 && this.board[currSq] !== 'K') {
+                // 行き先
                 console.log(`add node: 315 行き先は行き止まり`);
                 let leafValue = 1;
                 let sourcePlayoffValue = 0;
                 this.addLeashValue(leafValue);
-                this.arrayOfLeashValues.push(leafValue);
+                this.arrayOfDstLeashValues.push(leafValue);
                 this.addPlayoffValue(sourcePlayoffValue);
 
                 let classText = createClassText(leafValue, 0);
@@ -341,7 +341,7 @@ class Search {
                     let leashValue = this.letLeashValue(currSq, nextSq);
                     let sourcePlayoffValue = this.letSourcePlayoffValue(currSq, nextSq);
                     this.addLeashValue(leashValue);
-                    this.arrayOfLeashValues.push(leashValue);
+                    this.arrayOfDstLeashValues.push(leashValue);
                     this.addPlayoffValue(sourcePlayoffValue);
                 }
 
