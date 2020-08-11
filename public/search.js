@@ -23,11 +23,12 @@ class BestPath {
         this.arrayOfLeashValues = undefined;
         this.arrayOfPlayoffValues = undefined;
         this.allGraphSq = [];
-        /** [[srcSq, classText, leashValue, playoffValue]] */
+        /** [[srcSq, classText, leashValue, sourcePlayoffValue]] */
         this.connectedGraph = [];
     }
 
-    update(leashValue, playoffValue, arrayOfSourceSquares, arrayOfLeashValues, arrayOfPlayoffValues, connectedGraph) {
+    update(leashValue, arrayOfSourceSquares, arrayOfLeashValues, arrayOfPlayoffValues, connectedGraph) {
+        let playoffValue = this.sumPlayoffValue();
         if ((this.leashValue < leashValue) || (this.leashValue == leashValue && this.playoffValue < playoffValue)) {
             // ベスト更新
             this.leashValue = leashValue;
@@ -41,6 +42,18 @@ class BestPath {
 
     createConnectedGraph() {
         return this.connectedGraph;
+    }
+
+    sumPlayoffValue() {
+        let sum = 0;
+        if (this.arrayOfPlayoffValues) {
+            for (let value of this.arrayOfPlayoffValues) {
+                if (value) {
+                    sum += value;
+                }
+            }
+        }
+        return sum;
     }
 }
 
@@ -233,7 +246,7 @@ class Search {
         await this.node(0, undefined, this.find('K'), bestPath);
 
         // ベスト更新
-        bestPath.update(this.leashValue, this.playoffValue, this.arrayOfSourceSquares, this.arrayOfLeashValues, this.arrayOfPlayoffValues, this.connectedGraph);
+        bestPath.update(this.leashValue, this.arrayOfSourceSquares, this.arrayOfLeashValues, this.arrayOfPlayoffValues, this.connectedGraph);
         // 後処理。
         if (animationEnable && this.isBoard) {
             clearArrowLayer();
@@ -245,12 +258,12 @@ class Search {
     async node(depth, prevSq, currSq, bestPath) {
         // 直前の点数計算
         let leashValue = this.letLeashValue(prevSq, currSq);
-        let playoffValue = this.letPlayoffValue(prevSq, currSq);
+        let sourcePlayoffValue = this.letSourcePlayoffValue(prevSq, currSq);
         this.nodesCount++;
         this.checkBoard[currSq] = true;
         this.arrayOfSourceSquares.push(currSq);
         this.arrayOfLeashValues.push(leashValue);
-        this.arrayOfPlayoffValues.push(playoffValue);
+        this.addPlayoffValue(sourcePlayoffValue);
 
         // Animation
         if (animationEnable) {
@@ -267,7 +280,7 @@ class Search {
         let sqDiff = currSq - prevSq;
         let srcSq = adjustSrcSq(prevSq, sqDiff);
         let classText = createClassText(leashValue, sqDiff);
-        await this.recordArrow(srcSq, classText, leashValue, playoffValue);
+        await this.recordArrow(srcSq, classText, leashValue, sourcePlayoffValue);
 
         let ways = this.genMove(currSq, bestPath);
         shuffle_array(ways);
@@ -276,15 +289,14 @@ class Search {
             // 「行き止まり」を追加。ただし、玉が葉のときを除く。
             if (leashValue != 4 && this.board[currSq] !== 'K') {
                 let leafValue = 1;
-                let playoffValue = 0;
+                let sourcePlayoffValue = 0;
                 this.addLeashValue(leafValue);
-                this.addPlayoffValue(playoffValue);
                 this.arrayOfSourceSquares.push(currSq);
                 this.arrayOfLeashValues.push(leafValue);
-                this.arrayOfPlayoffValues.push(playoffValue);
+                this.addPlayoffValue(sourcePlayoffValue);
 
                 let classText = createClassText(leafValue, 0);
-                await this.recordArrow(currSq, classText, leafValue, playoffValue);
+                await this.recordArrow(currSq, classText, leafValue, sourcePlayoffValue);
             }
             // Record graph.
             bestPath.allGraphSq.push(Array.from(this.arrayOfSourceSquares));
@@ -297,9 +309,11 @@ class Search {
                 // キングを除く
                 if (srcPc !== 'K') {
                     let leashValue = this.letLeashValue(currSq, nextSq);
-                    let playoffValue = this.letPlayoffValue(currSq, nextSq);
+                    let sourcePlayoffValue = this.letSourcePlayoffValue(currSq, nextSq);
                     this.addLeashValue(leashValue);
-                    this.addPlayoffValue(playoffValue);
+                    this.arrayOfSourceSquares.push(currSq);
+                    this.arrayOfLeashValues.push(leashValue);
+                    this.arrayOfPlayoffValues.push(sourcePlayoffValue);
                 }
 
                 switch (this.board[nextSq]) {
@@ -325,8 +339,8 @@ class Search {
         }
     }
 
-    async recordArrow(srcSq, classText, leashValue, playoffValue) {
-        this.connectedGraph.push([srcSq, classText, leashValue, playoffValue]);
+    async recordArrow(srcSq, classText, leashValue, sourcePlayoffValue) {
+        this.connectedGraph.push([srcSq, classText, leashValue, sourcePlayoffValue]);
         if (animationEnable && this.isBoard) {
             drawArrow(srcSq, classText);
             await sleep(INTERVAL_MSEC);
@@ -383,8 +397,12 @@ class Search {
         this.leashValue += offset;
     }
 
-    addPlayoffValue(offset) {
-        this.playoffValue += offset;
+    addPlayoffValue(value) {
+        // 既存の値を重くするために、８倍にします。
+        for (let i = 0; i < this.arrayOfPlayoffValues.length; i++) {
+            this.arrayOfPlayoffValues[i] = this.arrayOfPlayoffValues[i] * 8;
+        }
+        this.arrayOfPlayoffValues.push(value);
     }
 
     /**
@@ -392,7 +410,7 @@ class Search {
      * @param {*} currSq 
      * @param {*} nextSq 
      */
-    letPlayoffValue(currSq, nextSq) {
+    letSourcePlayoffValue(currSq, nextSq) {
         let diff = nextSq - currSq;
         let value;
         // 9, -1, -11
