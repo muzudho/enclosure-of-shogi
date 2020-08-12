@@ -49,10 +49,10 @@
 
             // ベストの連結グラフ表示
             // Note: ランダムなので、同じ点数の別の木構造が出てくることがあります。
-            let bestArrayOfEdge = bestPath.getArrayOfEdge();
+            let bestPropertiesEdges = bestPath.getPropertiesEdges();
             clearArrowLayer();
             clearUiLayer();
-            for (edge of bestArrayOfEdge) {
+            for (edge of bestPropertiesEdges) {
                 drawArrow(edge[0], edge[1]);
                 if (animationEnable) {
                     await sleep(INTERVAL_MSEC);

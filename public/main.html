@@ -51,10 +51,10 @@
 
             // 探索開始
             let bestPath = await playoutAll(input, false);
-            let bestArrayOfEdge = bestPath.getArrayOfEdge();
+            let bestPropertiesEdges = bestPath.getPropertiesEdges();
 
             // 囲いっぽさ
-            let reversed = Array.from(bestArrayOfEdge);
+            let reversed = Array.from(bestPropertiesEdges);
             reversed.reverse();
             let i = 1;
             for (entry of reversed) {
@@ -78,7 +78,7 @@
                 }
                 i++;
             }
-            document.getElementById("po0_tx").innerHTML = `${bestPath.sumPlayoffValueWithWeight(bestPath.getArrayOfEdge())}`;
+            document.getElementById("po0_tx").innerHTML = `${bestPath.sumPlayoffValueWithWeight(bestPath.getPropertiesEdges())}`;
         }
     </script>
 </head>

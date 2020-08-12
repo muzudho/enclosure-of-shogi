@@ -8,11 +8,11 @@ class ConnectedGraph {
         this.dstPlayoffOfEdges = undefined;
         this.allGraphSq = [];
         /** [[srcSq, classText, leashValue, sourcePlayoff]] */
-        this.arrayOfEdge = [];
+        this.propertiesOfEdges = [];
     }
 
-    update(leashValue, srcSquareOfEdges, dstLeashOfEdges, dstPlayoffOfEdges, arrayOfEdge) {
-        let playoffValueWithWeight = this.sumPlayoffValueWithWeight(arrayOfEdge);
+    update(leashValue, srcSquareOfEdges, dstLeashOfEdges, dstPlayoffOfEdges, propertiesOfEdges) {
+        let playoffValueWithWeight = this.sumPlayoffValueWithWeight(propertiesOfEdges);
         if ((this.leashValue < leashValue) || (this.leashValue == leashValue && this.playoffValueWithWeight < playoffValueWithWeight)) {
             // ベスト更新
             this.leashValue = leashValue;
@@ -20,12 +20,12 @@ class ConnectedGraph {
             this.srcSquareOfEdges = Array.from(srcSquareOfEdges);
             this.dstLeashOfEdges = Array.from(dstLeashOfEdges);
             this.dstPlayoffOfEdges = Array.from(dstPlayoffOfEdges);
-            this.arrayOfEdge = Array.from(arrayOfEdge);
+            this.propertiesOfEdges = Array.from(propertiesOfEdges);
         }
     }
 
-    getArrayOfEdge() {
-        return this.arrayOfEdge;
+    getPropertiesEdges() {
+        return this.propertiesOfEdges;
     }
 
     /**
