@@ -4,14 +4,14 @@
  * @param {*} isBoard 
  */
 async function playoutAll(input, isBoard) {
-    let bestPath = new ConnectedGraph();
+    let bestConnectedGraph = new ConnectedGraph();
 
     for (let i = 0; i < 100; i++) {
         let search = new Search();
-        await search.search(input, isBoard, bestPath);
+        await search.search(input, isBoard, bestConnectedGraph);
     }
 
-    return bestPath;
+    return bestConnectedGraph;
 }
 
 function playoutValueToClassText(playoutValue) {
@@ -189,7 +189,7 @@ class Search {
         this.connectedGraphIdentifier = undefined;
     }
 
-    async search(input, isBoard, bestPath) {
+    async search(input, isBoard, bestConnectedGraph) {
         this.nodesCount = 0;
         this.board = this.createBoard(input);
         this.checkBoard = this.createFalseBoard();
@@ -201,10 +201,10 @@ class Search {
         this.dstPlayoffOfEdges = [];
         this.propertiesOfEdges = [];
         this.connectedGraphIdentifier = "";
-        await this.node(0, undefined, this.find('K'), bestPath);
+        await this.node(0, undefined, this.find('K'), bestConnectedGraph);
 
         // ベスト更新
-        bestPath.update(this.leashValue, this.srcSquareOfEdges, this.dstLeashOfEdges, this.dstPlayoffOfEdges, this.propertiesOfEdges);
+        bestConnectedGraph.update(this.leashValue, this.srcSquareOfEdges, this.dstLeashOfEdges, this.dstPlayoffOfEdges, this.propertiesOfEdges);
         // 後処理。
         if (animationEnable && this.isBoard) {
             clearArrowLayer();
@@ -213,7 +213,7 @@ class Search {
         }
     }
 
-    async node(depth, prevSq, currSq, bestPath) {
+    async node(depth, prevSq, currSq, bestConnectedGraph) {
         // Animation
         if (animationEnable) {
             if (this.isBoard) {
@@ -237,7 +237,7 @@ class Search {
         let classText = createClassText(leashValue, sqDiff);
         await this.recordEdge(srcSq, classText, leashValue, sourcePlayoffValue);
 
-        let ways = this.genMove(currSq, bestPath);
+        let ways = this.genMove(currSq, bestConnectedGraph);
         shuffle_array(ways);
         if (ways.length === 0) {
             // Turn. (Leaf)
@@ -251,17 +251,17 @@ class Search {
 
                 switch (this.board[nextSq]) {
                     case 'G':
-                        await this.node(depth + 1, currSq, nextSq, bestPath);
+                        await this.node(depth + 1, currSq, nextSq, bestConnectedGraph);
                         break;
                     case 'S':
-                        await this.node(depth + 1, currSq, nextSq, bestPath);
+                        await this.node(depth + 1, currSq, nextSq, bestConnectedGraph);
                         break;
                     default:
                         break;
                 }
 
                 // Undo.
-                this.onUndo();
+                this.onUndo(currSq, nextSq);
             }
         }
 
@@ -284,6 +284,7 @@ class Search {
         this.srcSquareOfEdges.push(currSq);
     }
     async onDo(currSq, nextSq) {
+        this.connectedGraphIdentifier += `${this.letAngle(currSq, nextSq)}`;
         // 点数加算
         let srcPc = this.board[currSq];
         // キングを除く。
@@ -298,6 +299,7 @@ class Search {
         }
     }
     async onTurn(prevSq, currSq) {
+        this.connectedGraphIdentifier += '0';
         let leashValue = this.letLeashValue(prevSq, currSq);
         // 「行き止まり」を追加。ただし、玉が葉のときを除く。
         if (leashValue != 4 && this.board[currSq] !== 'K') {
@@ -313,8 +315,10 @@ class Search {
             await this.recordEdge(currSq, classText, leafValue, sourcePlayoffValue);
         }
     }
-    async onUndo() {
-
+    async onUndo(currSq, nextSq) {
+        // TODO 単項演算子、二項演算子、三項演算子の区別は☆（＾～＾）？
+        this.connectedGraphIdentifier += this.board[nextSq].toLowerCase();
+        this.connectedGraphIdentifier += `${this.letAngle(nextSq, currSq)}`;
     }
     async onExit() {
 
@@ -331,34 +335,34 @@ class Search {
     /**
      * Generation move.
      */
-    genMove(currSq, bestPath) {
+    genMove(currSq, bestConnectedGraph) {
         let ways = [];
 
         switch (this.board[currSq]) {
             case 'K':
-                this.pushWay(- 10, ways, currSq, bestPath);
-                this.pushWay(- 11, ways, currSq, bestPath);
-                this.pushWay(- 1, ways, currSq, bestPath);
-                this.pushWay(9, ways, currSq, bestPath);
-                this.pushWay(10, ways, currSq, bestPath);
-                this.pushWay(11, ways, currSq, bestPath);
-                this.pushWay(1, ways, currSq, bestPath);
-                this.pushWay(- 9, ways, currSq, bestPath);
+                this.pushWay(- 10, ways, currSq);
+                this.pushWay(- 11, ways, currSq);
+                this.pushWay(- 1, ways, currSq);
+                this.pushWay(9, ways, currSq);
+                this.pushWay(10, ways, currSq);
+                this.pushWay(11, ways, currSq);
+                this.pushWay(1, ways, currSq);
+                this.pushWay(- 9, ways, currSq);
                 break;
             case 'G':
-                this.pushWay(- 10, ways, currSq, bestPath);
-                this.pushWay(- 11, ways, currSq, bestPath);
-                this.pushWay(- 1, ways, currSq, bestPath);
-                this.pushWay(9, ways, currSq, bestPath);
-                this.pushWay(10, ways, currSq, bestPath);
-                this.pushWay(1, ways, currSq, bestPath);
+                this.pushWay(- 10, ways, currSq);
+                this.pushWay(- 11, ways, currSq);
+                this.pushWay(- 1, ways, currSq);
+                this.pushWay(9, ways, currSq);
+                this.pushWay(10, ways, currSq);
+                this.pushWay(1, ways, currSq);
                 break;
             case 'S':
-                this.pushWay(- 11, ways, currSq, bestPath);
-                this.pushWay(- 1, ways, currSq, bestPath);
-                this.pushWay(9, ways, currSq, bestPath);
-                this.pushWay(11, ways, currSq, bestPath);
-                this.pushWay(- 9, ways, currSq, bestPath);
+                this.pushWay(- 11, ways, currSq);
+                this.pushWay(- 1, ways, currSq);
+                this.pushWay(9, ways, currSq);
+                this.pushWay(11, ways, currSq);
+                this.pushWay(- 9, ways, currSq);
                 break;
             default:
                 break;
@@ -366,7 +370,7 @@ class Search {
         return ways;
     }
 
-    pushWay(offset, ways, currSq, bestPath) {
+    pushWay(offset, ways, currSq) {
         let nextSq = currSq + offset;
         let dstPc = this.board[nextSq];
         if (!this.checkBoard[nextSq] && (dstPc === 'G' || dstPc === 'S')) {

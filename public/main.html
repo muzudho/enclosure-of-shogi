@@ -51,6 +51,7 @@
 
             // 探索開始
             let bestPath = await playoutAll(input, false);
+            document.getElementById("enclosureId").innerHTML = bestPath.connectedGraphIdentifier;
             let bestPropertiesEdges = bestPath.getPropertiesEdges();
 
             // 囲いっぽさ
@@ -93,6 +94,7 @@
         <span style="font-size:36px; color:rgb(51, 153, 204); line-height:90%;">（</span>
         <span id="enclosureName"></span>
         <span style="font-size:36px; color:rgb(51, 153, 204); line-height:90%;">）</span>
+        <span id="enclosureId"></span>
     </div>
     <!-- 将棋盤
         ヨコ5   なら width:364px;
