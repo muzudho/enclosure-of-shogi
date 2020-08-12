@@ -212,8 +212,7 @@ class Search {
     }
 
     async node(depth, prevSq, currSq, bestPath) {
-        // 直前の点数計算
-        // エッジの根元。キングしかないとき、行き先のないキングになる。
+        // Enter.
         // console.log(`add node: 284 根元`);
         let leashValue = this.letLeashValue(prevSq, currSq);
         let sourcePlayoffValue = this.letSourcePlayoffValue(prevSq, currSq);
@@ -244,6 +243,7 @@ class Search {
             // Leaf
             // 「行き止まり」を追加。ただし、玉が葉のときを除く。
             if (leashValue != 4 && this.board[currSq] !== 'K') {
+                // Turn.
                 // 行き先
                 // console.log(`add node: 315 行き先は行き止まり`);
                 let leafValue = 1;
@@ -255,14 +255,13 @@ class Search {
                 let classText = createClassText(leafValue, 0);
                 await this.recordEdge(currSq, classText, leafValue, sourcePlayoffValue);
             }
-            // Record graph.
-            bestPath.allGraphSq.push(Array.from(this.srcSquareOfEdges));
         }
         for (let nextSq of ways) {
             // ループ中に状態が変わってるので再チェック
             if (!this.checkBoard[nextSq]) {
                 // 点数加算
                 let srcPc = this.board[currSq];
+                // Do.
                 // キングを除く。
                 if (srcPc !== 'K') {
                     // 行き先
@@ -284,6 +283,8 @@ class Search {
                     default:
                         break;
                 }
+
+                // Undo.
             }
         }
 
@@ -295,6 +296,8 @@ class Search {
             }
             document.getElementById(`ui${currSq}`).setAttribute('class', 's');
         }
+
+        // Exit.
     }
 
     async recordEdge(srcSq, classText, leashValue, playoffValueSource) {

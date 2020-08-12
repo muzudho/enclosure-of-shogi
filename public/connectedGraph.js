@@ -6,7 +6,6 @@ class ConnectedGraph {
         this.srcSquareOfEdges = undefined;
         this.dstLeashOfEdges = undefined;
         this.dstPlayoffOfEdges = undefined;
-        this.allGraphSq = [];
         /** [[srcSq, classText, leashValue, sourcePlayoff]] */
         this.propertiesOfEdges = [];
     }
