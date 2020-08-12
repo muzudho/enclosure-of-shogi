@@ -1,7 +1,6 @@
 class ConnectedGraph {
     constructor() {
         this.leashValue = 0;
-        this.playoffValueWithWeight = 0;
         /** 根元と行き先で別。 */
         this.srcSquareOfEdges = undefined;
         this.dstLeashOfEdges = undefined;
@@ -12,12 +11,29 @@ class ConnectedGraph {
     }
 
     update(leashValue, srcSquareOfEdges, dstLeashOfEdges, dstPlayoffOfEdges, propertiesOfEdges, connectedGraphIdentifier) {
-        let playoffValueWithWeight = this.sumPlayoffValueWithWeight(propertiesOfEdges);
-        if ((this.leashValue < leashValue) || (this.leashValue == leashValue && this.playoffValueWithWeight < playoffValueWithWeight)) {
+        let update = false;
+        if (this.leashValue < leashValue) {
+            // 更新確定。
+            // console.log(`更新確定 new=${connectedGraphIdentifier} ${this.leashValue} < ${leashValue}`);
+            update = true;
+        } else if (this.leashValue === leashValue) {
+            // 同点決勝。
+            if (this.connectedGraphIdentifier === connectedGraphIdentifier) {
+                // console.log(`重複無視 ${this.connectedGraphIdentifier}`);
+            } else {
+                let compareConnectedGraphIdentifier = this.compareConnectedGraphIdentifier(connectedGraphIdentifier);
+                if (compareConnectedGraphIdentifier) {
+                    // console.log(`同点更新 ${connectedGraphIdentifier} < ${this.connectedGraphIdentifier} => ${compareConnectedGraphIdentifier}`);
+                    update = true;
+                } else {
+                    // console.log(`同点決勝敗退 ${connectedGraphIdentifier} < ${this.connectedGraphIdentifier} => ${compareConnectedGraphIdentifier}`);
+                }
+            }
+        }
+        if (update) {
             // ベスト更新
             this.connectedGraphIdentifier = connectedGraphIdentifier;
             this.leashValue = leashValue;
-            this.playoffValueWithWeight = playoffValueWithWeight;
             this.srcSquareOfEdges = Array.from(srcSquareOfEdges);
             this.dstLeashOfEdges = Array.from(dstLeashOfEdges);
             this.dstPlayoffOfEdges = Array.from(dstPlayoffOfEdges);
@@ -43,23 +59,13 @@ class ConnectedGraph {
     }
 
     /**
-     * 同点決勝点。
+     * 同点決勝判定。
      */
-    sumPlayoffValueWithWeight(propertiesOfEdges) {
-        const maxDepth = this.getMaxDepth(propertiesOfEdges);
-        let reversed = Array.from(propertiesOfEdges);
-        reversed.reverse();
-        let i = 1;
-
-        let sum = 0;
-        for (let entry of reversed) {
-            if (entry[1]) {
-                const exp = maxDepth - entry[4] + 1;
-                sum += entry[3] * Math.pow(10, exp) * i;
-            }
-            i++;
+    compareConnectedGraphIdentifier(connectedGraphIdentifier) {
+        if (!this.connectedGraphIdentifier) {
+            return true;
         }
-
-        return sum;
+        // console.log(`${connectedGraphIdentifier} < ${this.connectedGraphIdentifier} => ${connectedGraphIdentifier < this.connectedGraphIdentifier}`);
+        return connectedGraphIdentifier < this.connectedGraphIdentifier
     }
 }

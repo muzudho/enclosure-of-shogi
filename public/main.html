@@ -67,22 +67,6 @@
                 i++;
             }
             document.getElementById("sc0_tx").innerHTML = `${bestConnectedGraph.leashValue}`;
-
-            // 同点決勝
-            i = 1;
-            for (entry of reversed) {
-                if (entry[1]) {
-                    // console.log(`同点決勝点 |${entry[0]}|${entry[1]}|${entry[2]}|${entry[3]}|`);
-                    document.getElementById(`po${i}_im`).setAttribute('class', playoutValueToClassText(entry[3]));
-                    const exp = maxDepth - entry[4] + 1;
-                    const scoreStr = `${entry[3] * Math.pow(10, exp) * i}`.padStart(8).replace(/ /g, '_');
-                    document.getElementById(`po${i}_tx`).innerHTML = `${entry[3]} * (10＾${exp}) * ${i} = ${scoreStr} 点`;
-                } else {
-                    // console.log(`同点決勝点 |${entry[1]}|`);
-                }
-                i++;
-            }
-            document.getElementById("po0_tx").innerHTML = `${bestConnectedGraph.sumPlayoffValueWithWeight(bestConnectedGraph.getPropertiesEdges())}`;
         }
     </script>
 </head>
@@ -147,46 +131,6 @@
         </ruby><br>
     </div>
     <div style="position:absolute; top:311px; left:666px;">
-        <span style="position:absolute; top:440px; font-size:48px; font-weight:bold;">＋</span><br>
-        <span style="position:absolute; top:501px; font-size:24px; font-weight:bold;">━━━━━━━━</span><br>
-    </div>
-    <!-- 同点決勝(play-off)
-        left を + 250
-    -->
-    <div style="position:absolute; top:51px; left:916px;">
-        <span style="margin-left:77px;"></span><img id="po12_im" src="img/map.png" class="s"><span id="po12_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="po11_im" src="img/map.png" class="s"><span id="po11_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="po10_im" src="img/map.png" class="s"><span id="po10_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="po9_im" src="img/map.png" class="s"><span id="po9_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="po8_im" src="img/map.png" class="s"><span id="po8_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="po7_im" src="img/map.png" class="s"><span id="po7_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="po6_im" src="img/map.png" class="s"><span id="po6_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="po5_im" src="img/map.png" class="s"><span id="po5_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="po4_im" src="img/map.png" class="s"><span id="po4_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="po3_im" src="img/map.png" class="s"><span id="po3_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="po2_im" src="img/map.png" class="s"><span id="po2_tx"
-            style="font-size:24px;"></span><br>
-        <span style="margin-left:77px;"></span><img id="po1_im" src="img/map.png" class="s"><span id="po1_tx"
-            style="font-size:24px;"></span><br>
-        <br>
-        <span style="font-size:24px; font-weight:bold; line-height:90%;"><ruby>同点決勝<rt
-                    style="font-size:18px; font-weight:bold;">Play-off</rt>
-            </ruby></span><span id="po0_tx" style="font-size:24px; margin-left:20px; line-height:90%;"></span>
-        <ruby style="font-size:24px; margin-left:10px; line-height:90%;">
-            点<rt style="font-size:18px;">pts.</rt>
-        </ruby><br>
-    </div>
-    <div style="position:absolute; top:311px; left:916px;">
         <span style="position:absolute; top:440px; font-size:48px; font-weight:bold;">＋</span><br>
         <span style="position:absolute; top:501px; font-size:24px; font-weight:bold;">━━━━━━━━</span><br>
     </div>
