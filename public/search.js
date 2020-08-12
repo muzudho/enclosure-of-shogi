@@ -186,6 +186,7 @@ class Search {
         this.dstLeashOfEdges = undefined;
         this.dstPlayoffOfEdges = undefined;
         this.propertiesOfEdges = undefined;
+        this.connectedGraphIdentifier = undefined;
     }
 
     async search(input, isBoard, bestPath) {
@@ -199,6 +200,7 @@ class Search {
         this.dstLeashOfEdges = [];
         this.dstPlayoffOfEdges = [];
         this.propertiesOfEdges = [];
+        this.connectedGraphIdentifier = "";
         await this.node(0, undefined, this.find('K'), bestPath);
 
         // ベスト更新
@@ -212,14 +214,6 @@ class Search {
     }
 
     async node(depth, prevSq, currSq, bestPath) {
-        // Enter.
-        // console.log(`add node: 284 根元`);
-        let leashValue = this.letLeashValue(prevSq, currSq);
-        let sourcePlayoffValue = this.letSourcePlayoffValue(prevSq, currSq);
-        this.nodesCount++;
-        this.checkBoard[currSq] = true;
-        this.srcSquareOfEdges.push(currSq);
-
         // Animation
         if (animationEnable) {
             if (this.isBoard) {
@@ -231,6 +225,12 @@ class Search {
             }
         }
 
+        // Enter.
+        this.onEnter(currSq);
+        // console.log(`add node: 284 根元`);
+        let leashValue = this.letLeashValue(prevSq, currSq);
+        let sourcePlayoffValue = this.letSourcePlayoffValue(prevSq, currSq);
+
         // Record
         let sqDiff = currSq - prevSq;
         let srcSq = adjustSrcSq(prevSq, sqDiff);
@@ -240,38 +240,14 @@ class Search {
         let ways = this.genMove(currSq, bestPath);
         shuffle_array(ways);
         if (ways.length === 0) {
-            // Leaf
-            // 「行き止まり」を追加。ただし、玉が葉のときを除く。
-            if (leashValue != 4 && this.board[currSq] !== 'K') {
-                // Turn.
-                // 行き先
-                // console.log(`add node: 315 行き先は行き止まり`);
-                let leafValue = 1;
-                let sourcePlayoffValue = 0;
-                this.addLeashValue(leafValue);
-                this.dstLeashOfEdges.push(leafValue);
-                this.dstPlayoffOfEdges.push(sourcePlayoffValue);
-
-                let classText = createClassText(leafValue, 0);
-                await this.recordEdge(currSq, classText, leafValue, sourcePlayoffValue);
-            }
+            // Turn. (Leaf)
+            this.onTurn(prevSq, currSq);
         }
         for (let nextSq of ways) {
             // ループ中に状態が変わってるので再チェック
             if (!this.checkBoard[nextSq]) {
-                // 点数加算
-                let srcPc = this.board[currSq];
                 // Do.
-                // キングを除く。
-                if (srcPc !== 'K') {
-                    // 行き先
-                    // console.log(`add node: 335 行き先`);
-                    let leashValue = this.letLeashValue(currSq, nextSq);
-                    let sourcePlayoffValue = this.letSourcePlayoffValue(currSq, nextSq);
-                    this.addLeashValue(leashValue);
-                    this.dstLeashOfEdges.push(leashValue);
-                    this.dstPlayoffOfEdges.push(sourcePlayoffValue);
-                }
+                this.onDo(currSq, nextSq);
 
                 switch (this.board[nextSq]) {
                     case 'G':
@@ -285,6 +261,7 @@ class Search {
                 }
 
                 // Undo.
+                this.onUndo();
             }
         }
 
@@ -298,6 +275,49 @@ class Search {
         }
 
         // Exit.
+        this.onExit();
+    }
+
+    async onEnter(currSq) {
+        this.nodesCount++;
+        this.checkBoard[currSq] = true;
+        this.srcSquareOfEdges.push(currSq);
+    }
+    async onDo(currSq, nextSq) {
+        // 点数加算
+        let srcPc = this.board[currSq];
+        // キングを除く。
+        if (srcPc !== 'K') {
+            // 行き先
+            // console.log(`add node: 335 行き先`);
+            let leashValue = this.letLeashValue(currSq, nextSq);
+            let sourcePlayoffValue = this.letSourcePlayoffValue(currSq, nextSq);
+            this.addLeashValue(leashValue);
+            this.dstLeashOfEdges.push(leashValue);
+            this.dstPlayoffOfEdges.push(sourcePlayoffValue);
+        }
+    }
+    async onTurn(prevSq, currSq) {
+        let leashValue = this.letLeashValue(prevSq, currSq);
+        // 「行き止まり」を追加。ただし、玉が葉のときを除く。
+        if (leashValue != 4 && this.board[currSq] !== 'K') {
+            // 行き先
+            // console.log(`add node: 315 行き先は行き止まり`);
+            let leafValue = 1;
+            let sourcePlayoffValue = 0;
+            this.addLeashValue(leafValue);
+            this.dstLeashOfEdges.push(leafValue);
+            this.dstPlayoffOfEdges.push(sourcePlayoffValue);
+
+            let classText = createClassText(leafValue, 0);
+            await this.recordEdge(currSq, classText, leafValue, sourcePlayoffValue);
+        }
+    }
+    async onUndo() {
+
+    }
+    async onExit() {
+
     }
 
     async recordEdge(srcSq, classText, leashValue, playoffValueSource) {
@@ -400,6 +420,50 @@ class Search {
 
         return value;
     }
+
+    /**
+     * 
+     * @param {*} currSq 
+     * @param {*} nextSq 
+     */
+    letAngle(currSq, nextSq) {
+        let diff = nextSq - currSq;
+        let value;
+        // 9, -1, -11
+        // 10, 0, -10
+        // 11, 1, -9
+        switch (diff) {
+            case -10:
+                value = 1;
+                break;
+            case -11:
+                value = 2;
+                break;
+            case -1:
+                value = 3;
+                break;
+            case 9:
+                value = 4;
+                break;
+            case 10:
+                value = 5;
+                break;
+            case 11:
+                value = 6;
+                break;
+            case 1:
+                value = 7;
+                break;
+            case -9:
+                value = 8;
+                break;
+            default:
+                break;
+        }
+
+        return value;
+    }
+
     /**
      * 矢のleash点数算出
      */
