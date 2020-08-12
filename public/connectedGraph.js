@@ -28,9 +28,9 @@ class ConnectedGraph {
     /**
      * 最大の深さ。
      */
-    getMaxDepth() {
+    getMaxDepth(propertiesOfEdges) {
         let max = 0;
-        for (const properties of this.propertiesOfEdges) {
+        for (const properties of propertiesOfEdges) {
             if (max < properties[4]) {
                 max = properties[4];
             }
@@ -45,15 +45,17 @@ class ConnectedGraph {
     /**
      * 同点決勝点。
      */
-    sumPlayoffValueWithWeight(bestConnectedGraph) {
-        let reversed = Array.from(bestConnectedGraph);
+    sumPlayoffValueWithWeight(propertiesOfEdges) {
+        const maxDepth = this.getMaxDepth(propertiesOfEdges);
+        let reversed = Array.from(propertiesOfEdges);
         reversed.reverse();
         let i = 1;
 
         let sum = 0;
         for (let entry of reversed) {
             if (entry[1]) {
-                sum += entry[3] * Math.pow(8, i);
+                const exp = maxDepth - entry[4] + 1;
+                sum += entry[3] * Math.pow(10, exp) * i;
             }
             i++;
         }
