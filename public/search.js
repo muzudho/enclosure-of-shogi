@@ -182,9 +182,9 @@ class Search {
         this.leashValue = undefined;
         this.isBoard = undefined;
         // Graph. 根元と行き先で別。
-        this.arrayOfSrcSquares = undefined;
-        this.arrayOfDstLeashValues = undefined;
-        this.arrayOfDstPlayoffValues = undefined;
+        this.srcSquareOfEdges = undefined;
+        this.dstLeashOfEdges = undefined;
+        this.dstPlayoffOfEdges = undefined;
         this.arrayOfEdge = undefined;
     }
 
@@ -195,14 +195,14 @@ class Search {
         this.leashValue = 0;
         this.isBoard = isBoard;
         // Graph.
-        this.arrayOfSrcSquares = [];
-        this.arrayOfDstLeashValues = [];
-        this.arrayOfDstPlayoffValues = [];
+        this.srcSquareOfEdges = [];
+        this.dstLeashOfEdges = [];
+        this.dstPlayoffOfEdges = [];
         this.arrayOfEdge = [];
         await this.node(0, undefined, this.find('K'), bestPath);
 
         // ベスト更新
-        bestPath.update(this.leashValue, this.arrayOfSrcSquares, this.arrayOfDstLeashValues, this.arrayOfDstPlayoffValues, this.arrayOfEdge);
+        bestPath.update(this.leashValue, this.srcSquareOfEdges, this.dstLeashOfEdges, this.dstPlayoffOfEdges, this.arrayOfEdge);
         // 後処理。
         if (animationEnable && this.isBoard) {
             clearArrowLayer();
@@ -219,7 +219,7 @@ class Search {
         let sourcePlayoffValue = this.letSourcePlayoffValue(prevSq, currSq);
         this.nodesCount++;
         this.checkBoard[currSq] = true;
-        this.arrayOfSrcSquares.push(currSq);
+        this.srcSquareOfEdges.push(currSq);
 
         // Animation
         if (animationEnable) {
@@ -249,14 +249,14 @@ class Search {
                 let leafValue = 1;
                 let sourcePlayoffValue = 0;
                 this.addLeashValue(leafValue);
-                this.arrayOfDstLeashValues.push(leafValue);
-                this.arrayOfDstPlayoffValues.push(sourcePlayoffValue);
+                this.dstLeashOfEdges.push(leafValue);
+                this.dstPlayoffOfEdges.push(sourcePlayoffValue);
 
                 let classText = createClassText(leafValue, 0);
                 await this.recordArrow(currSq, classText, leafValue, sourcePlayoffValue);
             }
             // Record graph.
-            bestPath.allGraphSq.push(Array.from(this.arrayOfSrcSquares));
+            bestPath.allGraphSq.push(Array.from(this.srcSquareOfEdges));
         }
         for (let nextSq of ways) {
             // ループ中に状態が変わってるので再チェック
@@ -270,8 +270,8 @@ class Search {
                     let leashValue = this.letLeashValue(currSq, nextSq);
                     let sourcePlayoffValue = this.letSourcePlayoffValue(currSq, nextSq);
                     this.addLeashValue(leashValue);
-                    this.arrayOfDstLeashValues.push(leashValue);
-                    this.arrayOfDstPlayoffValues.push(sourcePlayoffValue);
+                    this.dstLeashOfEdges.push(leashValue);
+                    this.dstPlayoffOfEdges.push(sourcePlayoffValue);
                 }
 
                 switch (this.board[nextSq]) {

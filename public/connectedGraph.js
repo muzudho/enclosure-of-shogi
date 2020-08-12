@@ -3,23 +3,23 @@ class ConnectedGraph {
         this.leashValue = 0;
         this.playoffValueWithWeight = 0;
         /** 根元と行き先で別。 */
-        this.arrayOfSrcSquares = undefined;
-        this.arrayOfDstLeashValues = undefined;
-        this.arrayOfDstPlayoffValues = undefined;
+        this.srcSquareOfEdges = undefined;
+        this.dstLeashOfEdges = undefined;
+        this.dstPlayoffOfEdges = undefined;
         this.allGraphSq = [];
-        /** [[srcSq, classText, leashValue, sourcePlayoffBase, sourcePlayoffExp]] */
+        /** [[srcSq, classText, leashValue, sourcePlayoff]] */
         this.arrayOfEdge = [];
     }
 
-    update(leashValue, arrayOfSrcSquares, arrayOfDstLeashValues, arrayOfDstPlayoffValues, arrayOfEdge) {
+    update(leashValue, srcSquareOfEdges, dstLeashOfEdges, dstPlayoffOfEdges, arrayOfEdge) {
         let playoffValueWithWeight = this.sumPlayoffValueWithWeight(arrayOfEdge);
         if ((this.leashValue < leashValue) || (this.leashValue == leashValue && this.playoffValueWithWeight < playoffValueWithWeight)) {
             // ベスト更新
             this.leashValue = leashValue;
             this.playoffValueWithWeight = playoffValueWithWeight;
-            this.arrayOfSrcSquares = Array.from(arrayOfSrcSquares);
-            this.arrayOfDstLeashValues = Array.from(arrayOfDstLeashValues);
-            this.arrayOfDstPlayoffValues = Array.from(arrayOfDstPlayoffValues);
+            this.srcSquareOfEdges = Array.from(srcSquareOfEdges);
+            this.dstLeashOfEdges = Array.from(dstLeashOfEdges);
+            this.dstPlayoffOfEdges = Array.from(dstPlayoffOfEdges);
             this.arrayOfEdge = Array.from(arrayOfEdge);
         }
     }
