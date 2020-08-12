@@ -204,7 +204,7 @@ class Search {
         await this.node(0, undefined, this.find('K'), bestConnectedGraph);
 
         // ベスト更新
-        bestConnectedGraph.update(this.leashValue, this.srcSquareOfEdges, this.dstLeashOfEdges, this.dstPlayoffOfEdges, this.propertiesOfEdges);
+        bestConnectedGraph.update(this.leashValue, this.srcSquareOfEdges, this.dstLeashOfEdges, this.dstPlayoffOfEdges, this.propertiesOfEdges, this.connectedGraphIdentifier);
         // 後処理。
         if (animationEnable && this.isBoard) {
             clearArrowLayer();

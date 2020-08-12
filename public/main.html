@@ -50,9 +50,9 @@
             document.getElementById("enclosureName").innerHTML = nameHtml;
 
             // 探索開始
-            let bestPath = await playoutAll(input, false);
-            document.getElementById("enclosureId").innerHTML = bestPath.connectedGraphIdentifier;
-            let bestPropertiesEdges = bestPath.getPropertiesEdges();
+            let bestConnectedGraph = await playoutAll(input, false);
+            document.getElementById("enclosureId").innerHTML = bestConnectedGraph.connectedGraphIdentifier;
+            let bestPropertiesEdges = bestConnectedGraph.getPropertiesEdges();
 
             // 囲いっぽさ
             let reversed = Array.from(bestPropertiesEdges);
@@ -65,7 +65,7 @@
                 }
                 i++;
             }
-            document.getElementById("sc0_tx").innerHTML = `${bestPath.leashValue}`;
+            document.getElementById("sc0_tx").innerHTML = `${bestConnectedGraph.leashValue}`;
 
             // 同点決勝
             i = 1;
@@ -79,7 +79,7 @@
                 }
                 i++;
             }
-            document.getElementById("po0_tx").innerHTML = `${bestPath.sumPlayoffValueWithWeight(bestPath.getPropertiesEdges())}`;
+            document.getElementById("po0_tx").innerHTML = `${bestConnectedGraph.sumPlayoffValueWithWeight(bestConnectedGraph.getPropertiesEdges())}`;
         }
     </script>
 </head>

@@ -45,11 +45,11 @@
             }
 
             // 探索開始
-            let bestPath = await playoutAll(input, true);
+            let bestConnectedGraph = await playoutAll(input, true);
 
             // ベストの連結グラフ表示
             // Note: ランダムなので、同じ点数の別の木構造が出てくることがあります。
-            let bestPropertiesEdges = bestPath.getPropertiesEdges();
+            let bestPropertiesEdges = bestConnectedGraph.getPropertiesEdges();
             clearArrowLayer();
             clearUiLayer();
             for (edge of bestPropertiesEdges) {
