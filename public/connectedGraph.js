@@ -6,7 +6,7 @@ class ConnectedGraph {
         this.srcSquareOfEdges = undefined;
         this.dstLeashOfEdges = undefined;
         this.dstPlayoffOfEdges = undefined;
-        /** [[srcSq, classText, leashValue, sourcePlayoff]] */
+        /** [[srcSq, classText, leashValue, sourcePlayoff, depth]] */
         this.propertiesOfEdges = [];
         this.connectedGraphIdentifier = undefined;
     }
@@ -23,6 +23,19 @@ class ConnectedGraph {
             this.dstPlayoffOfEdges = Array.from(dstPlayoffOfEdges);
             this.propertiesOfEdges = Array.from(propertiesOfEdges);
         }
+    }
+
+    /**
+     * 最大の深さ。
+     */
+    getMaxDepth() {
+        let max = 0;
+        for (const properties of this.propertiesOfEdges) {
+            if (max < properties[4]) {
+                max = properties[4];
+            }
+        }
+        return max;
     }
 
     getPropertiesEdges() {

@@ -238,13 +238,13 @@ class Search {
         let sqDiff = currSq - prevSq;
         let srcSq = adjustSrcSq(prevSq, sqDiff);
         let classText = createClassText(leashValue, sqDiff);
-        await this.recordEdge(srcSq, classText, leashValue, sourcePlayoffValue);
+        await this.recordEdge(srcSq, classText, leashValue, sourcePlayoffValue, depth);
 
         let ways = this.genMove(currSq, bestConnectedGraph);
         shuffle_array(ways);
         if (ways.length === 0) {
             // Turn. (Leaf)
-            this.onTurn(prevSq, currSq);
+            this.onTurn(prevSq, currSq, depth);
         }
         for (let nextSq of ways) {
             // ループ中に状態が変わってるので再チェック
@@ -301,7 +301,7 @@ class Search {
             this.dstPlayoffOfEdges.push(sourcePlayoffValue);
         }
     }
-    async onTurn(prevSq, currSq) {
+    async onTurn(prevSq, currSq, depth) {
         // this.connectedGraphIdentifier += '0';
         let leashValue = this.letLeashValue(prevSq, currSq);
         // 「行き止まり」を追加。ただし、玉が葉のときを除く。
@@ -315,7 +315,7 @@ class Search {
             this.dstPlayoffOfEdges.push(sourcePlayoffValue);
 
             let classText = createClassText(leafValue, 0);
-            await this.recordEdge(currSq, classText, leafValue, sourcePlayoffValue);
+            await this.recordEdge(currSq, classText, leafValue, sourcePlayoffValue, depth);
         }
     }
     async onUndo(currSq, nextSq) {
@@ -328,8 +328,8 @@ class Search {
 
     }
 
-    async recordEdge(srcSq, classText, leashValue, playoffValueSource) {
-        this.propertiesOfEdges.push([srcSq, classText, leashValue, playoffValueSource]);
+    async recordEdge(srcSq, classText, leashValue, playoffValueSource, depth) {
+        this.propertiesOfEdges.push([srcSq, classText, leashValue, playoffValueSource, depth]);
         if (animationEnable && this.isBoard) {
             drawArrow(srcSq, classText);
             await sleep(INTERVAL_MSEC);
