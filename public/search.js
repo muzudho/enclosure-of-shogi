@@ -185,7 +185,7 @@ class Search {
         this.arrayOfSrcSquares = undefined;
         this.arrayOfDstLeashValues = undefined;
         this.arrayOfDstPlayoffValues = undefined;
-        this.connectedGraph = undefined;
+        this.arrayOfEdge = undefined;
     }
 
     async search(input, isBoard, bestPath) {
@@ -198,11 +198,11 @@ class Search {
         this.arrayOfSrcSquares = [];
         this.arrayOfDstLeashValues = [];
         this.arrayOfDstPlayoffValues = [];
-        this.connectedGraph = [];
+        this.arrayOfEdge = [];
         await this.node(0, undefined, this.find('K'), bestPath);
 
         // ベスト更新
-        bestPath.update(this.leashValue, this.arrayOfSrcSquares, this.arrayOfDstLeashValues, this.arrayOfDstPlayoffValues, this.connectedGraph);
+        bestPath.update(this.leashValue, this.arrayOfSrcSquares, this.arrayOfDstLeashValues, this.arrayOfDstPlayoffValues, this.arrayOfEdge);
         // 後処理。
         if (animationEnable && this.isBoard) {
             clearArrowLayer();
@@ -298,7 +298,7 @@ class Search {
     }
 
     async recordArrow(srcSq, classText, leashValue, playoffValueSource) {
-        this.connectedGraph.push([srcSq, classText, leashValue, playoffValueSource]);
+        this.arrayOfEdge.push([srcSq, classText, leashValue, playoffValueSource]);
         if (animationEnable && this.isBoard) {
             drawArrow(srcSq, classText);
             await sleep(INTERVAL_MSEC);
