@@ -43,9 +43,11 @@
                 document.getElementById(`sq${entry[0]}`).setAttribute('class', `pc_${entry[1].toLowerCase()}`);
             }
 
-            // 囲いっぽさの矢印
-            // Note: ランダムなので、同じ点数の別の木構造が出てくることがあります。
+            // 探索開始
             let bestPath = await playoutAll(input, true);
+
+            // ベストの連結グラフ表示
+            // Note: ランダムなので、同じ点数の別の木構造が出てくることがあります。
             let bestConnectedGraph = bestPath.createConnectedGraph();
             clearArrowLayer();
             clearUiLayer();
