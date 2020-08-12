@@ -1,5 +1,10 @@
 function get_data() {
     return {
+        "meta": {
+            id: "122S65S1G6G5",
+            king: "88K",
+            name: "fujimi-yagura"
+        },
         "english": "A wooden observatory with a view of Mount Fuji",
         "category": [
             ["矢", "Ya"],

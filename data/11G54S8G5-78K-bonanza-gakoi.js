@@ -1,15 +1,21 @@
 function get_data() {
     return {
-        "english": "Duck swim fence",
+        "meta": {
+            id: "11G54S8G5",
+            king: "78K",
+            name: "bonanza-gakoi"
+        },
+        "english": "Bonanza's fence",
         "category": [
             ["そ", "So"],
             ["の", "no"],
             ["他", "ta"]
         ],
         "formalName": [
-            ["あ", "A"],
-            ["ひ", "hi"],
-            ["る", "ru"],
+            ["ボ", "Bo"],
+            ["ナ", "na"],
+            ["ン", "n"],
+            ["ザ", "za"],
             ["囲", "G(k)ako"],
             ["い", "i"]
         ],
@@ -19,10 +25,10 @@ function get_data() {
             ".........",
             ".........",
             ".........",
-            ".........",
-            "..00000..",
-            "...SKS...",
-            "..G...G..",
+            "0.0......",
+            ".0S00....",
+            "..KGG....",
+            "00.......",
         ]
     };
 }

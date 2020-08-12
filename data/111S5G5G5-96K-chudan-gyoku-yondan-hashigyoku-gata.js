@@ -1,5 +1,10 @@
 function get_data() {
     return {
+        "meta": {
+            id: "111S5G5G5",
+            king: "96K",
+            name: "chudan-gyoku-yondan-hashigyoku-gata"
+        },
         "english": "The type of the king at the end of the fourth rank",
         "category": [
             ["中", "Chu"],

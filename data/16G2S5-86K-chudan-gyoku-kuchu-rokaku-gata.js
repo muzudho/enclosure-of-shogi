@@ -1,5 +1,10 @@
 function get_data() {
     return {
+        "meta": {
+            id: "16G2S5",
+            king: "86K",
+            name: "chudan-gyoku-kuchu-roukaku-gata"
+        },
         "english": "Skyscraper type",
         "category": [
             ["中", "Chu"],

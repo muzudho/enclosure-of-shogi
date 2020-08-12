@@ -1,6 +1,11 @@
 function get_data() {
     return {
-        "english": "Topknot fence",
+        "meta": {
+            id: "56G2S1",
+            king: "28K",
+            name: "bouzu-mino"
+        },
+        "english": "Monk head fence",
         "category": [
             ["美", "Mi"],
             ["濃", "no"],
@@ -8,10 +13,8 @@ function get_data() {
             ["い", "i"]
         ],
         "formalName": [
-            ["ちょ", "Cho"],
-            ["ん", "n"],
-            ["ま", "ma"],
-            ["げ", "ge"],
+            ["坊", "Bou"],
+            ["主", "z(sh)u"],
             ["美", "Mi"],
             ["濃", "no"]
         ],
@@ -21,7 +24,7 @@ function get_data() {
             ".........",
             ".........",
             ".........",
-            ".......0.",
+            ".........",
             "....000.0",
             "......SK.",
             ".....G.00",

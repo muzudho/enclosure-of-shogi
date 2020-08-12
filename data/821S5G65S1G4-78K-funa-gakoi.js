@@ -1,15 +1,18 @@
 function get_data() {
     return {
-        "english": "elmo's fence",
+        "meta": {
+            id: "821S5G65S1G4",
+            king: "78K",
+            name: "funa-gakoi"
+        },
+        "english": "Boat fence",
         "category": [
             ["そ", "So"],
             ["の", "no"],
             ["他", "ta"]
         ],
         "formalName": [
-            ["エ", "E"],
-            ["ル", "ru"],
-            ["モ", "mo"],
+            ["舟", "Funa(e)"],
             ["囲", "G(k)ako"],
             ["い", "i"]
         ],
@@ -19,10 +22,10 @@ function get_data() {
             ".........",
             ".........",
             ".........",
-            "..0.0....",
-            "00.0S....",
-            ".0KS.....",
-            "00G.G....",
+            "0.0.0....",
+            ".0.0.0...",
+            ".0K.GS...",
+            "00SG.....",
         ]
     };
 }

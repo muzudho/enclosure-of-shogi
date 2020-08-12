@@ -1,14 +1,20 @@
 function get_data() {
     return {
-        "english": "Flying geese fence",
+        "meta": {
+            id: "18G4S556G2S1",
+            king: "58K",
+            name: "ahiru-gakoi"
+        },
+        "english": "Duck swim fence",
         "category": [
             ["そ", "So"],
             ["の", "no"],
             ["他", "ta"]
         ],
         "formalName": [
-            ["雁", "Gan"],
-            ["木", "g(k)i"],
+            ["あ", "A"],
+            ["ひ", "hi"],
+            ["る", "ru"],
             ["囲", "G(k)ako"],
             ["い", "i"]
         ],
@@ -17,11 +23,11 @@ function get_data() {
             ".........",
             ".........",
             ".........",
-            ".......0.",
-            "0.000.0..",
-            ".00SS0...",
-            "..G.G....",
-            "00.K.....",
+            ".........",
+            ".........",
+            "..00000..",
+            "...SKS...",
+            "..G...G..",
         ]
     };
 }
