@@ -302,7 +302,7 @@ class Search {
         }
     }
     async onTurn(prevSq, currSq) {
-        this.connectedGraphIdentifier += '0';
+        // this.connectedGraphIdentifier += '0';
         let leashValue = this.letLeashValue(prevSq, currSq);
         // 「行き止まり」を追加。ただし、玉が葉のときを除く。
         if (leashValue != 4 && this.board[currSq] !== 'K') {
@@ -320,7 +320,8 @@ class Search {
     }
     async onUndo(currSq, nextSq) {
         // TODO 単項演算子、二項演算子、三項演算子の区別は☆（＾～＾）？
-        this.connectedGraphIdentifier += this.board[nextSq].toLowerCase();
+        this.connectedGraphIdentifier += this.board[nextSq];
+        // this.connectedGraphIdentifier += this.board[nextSq].toLowerCase();
         this.connectedGraphIdentifier += `${this.letAngle(nextSq, currSq)}`;
     }
     async onExit() {
