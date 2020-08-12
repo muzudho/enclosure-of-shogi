@@ -201,7 +201,10 @@ class Search {
         this.dstPlayoffOfEdges = [];
         this.propertiesOfEdges = [];
         this.connectedGraphIdentifier = "";
-        await this.node(0, undefined, this.find('K'), bestConnectedGraph);
+
+        const kingSq = this.find('K');
+        this.connectedGraphIdentifier = `${kingSq}K`;
+        await this.node(0, undefined, kingSq, bestConnectedGraph);
 
         // ベスト更新
         bestConnectedGraph.update(this.leashValue, this.srcSquareOfEdges, this.dstLeashOfEdges, this.dstPlayoffOfEdges, this.propertiesOfEdges, this.connectedGraphIdentifier);
