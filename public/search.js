@@ -236,7 +236,7 @@ class Search {
         let sqDiff = currSq - prevSq;
         let srcSq = adjustSrcSq(prevSq, sqDiff);
         let classText = createClassText(leashValue, sqDiff);
-        await this.recordArrow(srcSq, classText, leashValue, sourcePlayoffValue);
+        await this.recordEdge(srcSq, classText, leashValue, sourcePlayoffValue);
 
         let ways = this.genMove(currSq, bestPath);
         shuffle_array(ways);
@@ -253,7 +253,7 @@ class Search {
                 this.dstPlayoffOfEdges.push(sourcePlayoffValue);
 
                 let classText = createClassText(leafValue, 0);
-                await this.recordArrow(currSq, classText, leafValue, sourcePlayoffValue);
+                await this.recordEdge(currSq, classText, leafValue, sourcePlayoffValue);
             }
             // Record graph.
             bestPath.allGraphSq.push(Array.from(this.srcSquareOfEdges));
@@ -297,7 +297,7 @@ class Search {
         }
     }
 
-    async recordArrow(srcSq, classText, leashValue, playoffValueSource) {
+    async recordEdge(srcSq, classText, leashValue, playoffValueSource) {
         this.propertiesOfEdges.push([srcSq, classText, leashValue, playoffValueSource]);
         if (animationEnable && this.isBoard) {
             drawArrow(srcSq, classText);
