@@ -4,6 +4,8 @@
 
 ![Demo](./doc/demo.gif)
 
+![Explain1](./public/meta/explain1.png)
+
 ## How to use
 
 Please look the data directory.  
