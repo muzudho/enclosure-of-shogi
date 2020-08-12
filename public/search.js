@@ -55,7 +55,7 @@ class BestPath {
         let sum = 0;
         for (let entry of reversed) {
             if (entry[1]) {
-                sum += Math.pow(entry[3], i);
+                sum += entry[3] * Math.pow(8, i);
             }
             i++;
         }
