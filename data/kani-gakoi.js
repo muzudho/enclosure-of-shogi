@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "69K21S55S1G64G8",
+            name: "kani-gakoi"
+        },
         "english": "Crab scissors fence",
         "category": [
             ["そ", "So"],

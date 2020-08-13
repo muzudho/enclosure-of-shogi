@@ -2,9 +2,9 @@ function get_data() {
     return {
         "meta": {
             id: "28K56G2S1",
-            name: "kata-mino"
+            name: "chonmage-mino"
         },
-        "english": "Mino country half fence",
+        "english": "Topknot fence",
         "category": [
             ["美", "Mi"],
             ["濃", "no"],
@@ -12,7 +12,10 @@ function get_data() {
             ["い", "i"]
         ],
         "formalName": [
-            ["片", "Kata"],
+            ["ちょ", "Cho"],
+            ["ん", "n"],
+            ["ま", "ma"],
+            ["げ", "ge"],
             ["美", "Mi"],
             ["濃", "no"]
         ],
@@ -22,8 +25,8 @@ function get_data() {
             ".........",
             ".........",
             ".........",
-            "........0",
-            "....0000.",
+            ".......0.",
+            "....000.0",
             "......SK.",
             ".....G.00",
         ]

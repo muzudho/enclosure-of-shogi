@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "68K1G563G7S2",
+            name: "ichigo-gakoi"
+        },
         "english": "Strawberry fence",
         "category": [
             ["そ", "So"],

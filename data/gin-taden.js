@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "38K533S7S7G1",
+            name: "gin-taden"
+        },
         "link": [
             "http://shinolabo.com/kakoi/gin_taden.html"
         ],

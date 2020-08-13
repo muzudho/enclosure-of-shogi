@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "88K13S7G5",
+            name: "kaku-yagura"
+        },
         "english": "Bishop wooden observatory",
         "category": [
             ["矢", "Ya"],

@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "28K564G8G2S1",
+            name: "hon-mino"
+        },
         "english": "General Mino country",
         "category": [
             ["美", "Mi"],

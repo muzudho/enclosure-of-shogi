@@ -1,18 +1,18 @@
 function get_data() {
     return {
         "meta": {
-            id: "821S5G65S1G4",
-            king: "78K",
-            name: "funa-gakoi"
+            id: "69K23S746G2S8G6",
+            name: "gangi-gakoi"
         },
-        "english": "Boat fence",
+        "english": "Flying geese fence",
         "category": [
             ["そ", "So"],
             ["の", "no"],
             ["他", "ta"]
         ],
         "formalName": [
-            ["舟", "Funa(e)"],
+            ["雁", "Gan"],
+            ["木", "g(k)i"],
             ["囲", "G(k)ako"],
             ["い", "i"]
         ],
@@ -21,11 +21,11 @@ function get_data() {
             ".........",
             ".........",
             ".........",
-            ".........",
-            "0.0.0....",
-            ".0.0.0...",
-            ".0K.GS...",
-            "00SG.....",
+            ".......0.",
+            "0.000.0..",
+            ".00SS0...",
+            "..G.G....",
+            "00.K.....",
         ]
     };
 }

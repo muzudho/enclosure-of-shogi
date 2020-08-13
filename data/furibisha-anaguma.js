@@ -1,8 +1,7 @@
 function get_data() {
     return {
         "meta": {
-            id: "463G7G2S8",
-            king: "19K",
+            id: "19K463G7G2S8",
             name: "furibisha-anaguma"
         },
         "english": "Castling as if a bear entered a nest",

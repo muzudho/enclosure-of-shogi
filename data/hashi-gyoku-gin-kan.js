@@ -1,11 +1,10 @@
 function get_data() {
     return {
         "meta": {
-            id: "56G2S1",
-            king: "28K",
-            name: "chonmage-mino"
+            id: "98K28G4S6",
+            name: "hashi-gyoku-gin-kan"
         },
-        "english": "Topknot fence",
+        "english": "Silver crown End of horizon king",
         "category": [
             ["美", "Mi"],
             ["濃", "no"],
@@ -13,12 +12,10 @@ function get_data() {
             ["い", "i"]
         ],
         "formalName": [
-            ["ちょ", "Cho"],
-            ["ん", "n"],
-            ["ま", "ma"],
-            ["げ", "ge"],
-            ["美", "Mi"],
-            ["濃", "no"]
+            ["端", "Hashi"],
+            ["玉", "gyoku"],
+            ["銀", "Gin"],
+            ["冠", "kan"]
         ],
         "board": [
             ".........",
@@ -26,10 +23,10 @@ function get_data() {
             ".........",
             ".........",
             ".........",
-            ".......0.",
-            "....000.0",
-            "......SK.",
-            ".....G.00",
+            ".00......",
+            "0S.00....",
+            "K0G......",
+            "00.......",
         ]
     };
 }

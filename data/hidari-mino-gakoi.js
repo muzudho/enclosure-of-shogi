@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "88K182G6G4S5",
+            name: "hidari-mino-gakoi"
+        },
         "english": "Mino country on the left",
         "category": [
             ["美", "Mi"],

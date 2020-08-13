@@ -1,21 +1,19 @@
 function get_data() {
     return {
         "meta": {
-            id: "11G54S8G5",
-            king: "78K",
-            name: "bonanza-gakoi"
+            id: "78K12S66G28G4S5",
+            name: "erumo-gakoi"
         },
-        "english": "Bonanza's fence",
+        "english": "elmo's fence",
         "category": [
             ["そ", "So"],
             ["の", "no"],
             ["他", "ta"]
         ],
         "formalName": [
-            ["ボ", "Bo"],
-            ["ナ", "na"],
-            ["ン", "n"],
-            ["ザ", "za"],
+            ["エ", "E"],
+            ["ル", "ru"],
+            ["モ", "mo"],
             ["囲", "G(k)ako"],
             ["い", "i"]
         ],
@@ -25,10 +23,10 @@ function get_data() {
             ".........",
             ".........",
             ".........",
-            "0.0......",
-            ".0S00....",
-            "..KGG....",
-            "00.......",
+            "..0.0....",
+            "00.0S....",
+            ".0KS.....",
+            "00G.G....",
         ]
     };
 }

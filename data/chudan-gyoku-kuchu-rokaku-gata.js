@@ -1,8 +1,7 @@
 function get_data() {
     return {
         "meta": {
-            id: "16G2S5",
-            king: "86K",
+            id: "86K16G2S5",
             name: "chudan-gyoku-kuchu-roukaku-gata"
         },
         "english": "Skyscraper type",

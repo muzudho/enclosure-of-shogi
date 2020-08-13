@@ -1,8 +1,7 @@
 function get_data() {
     return {
         "meta": {
-            id: "56G2S1",
-            king: "28K",
+            id: "28K56G2S1",
             name: "bouzu-mino"
         },
         "english": "Monk head fence",

@@ -1,8 +1,7 @@
 function get_data() {
     return {
         "meta": {
-            id: "22S614S8G5G6",
-            king: "99K",
+            id: "99K22S614S8G5G6",
             name: "biggu-foh"
         },
         "english": "Big four",

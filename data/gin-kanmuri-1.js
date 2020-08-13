@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "28K365G1G2S7",
+            name: "gin-kanmuri-1"
+        },
         "english": "Silver crown 1",
         "category": [
             ["美", "Mi"],

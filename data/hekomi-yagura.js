@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "88K114S8G5G5",
+            name: "hekomi-yagura"
+        },
         "english": "Dented wooden observatory",
         "category": [
             ["矢", "Ya"],

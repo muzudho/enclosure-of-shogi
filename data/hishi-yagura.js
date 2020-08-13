@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "88K132S6S72G6G5",
+            name: "hishi-yagura"
+        },
         "english": "Rhombus wooden observatory",
         "category": [
             ["矢", "Ya"],

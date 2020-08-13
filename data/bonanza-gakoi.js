@@ -1,19 +1,20 @@
 function get_data() {
     return {
         "meta": {
-            id: "23S746G2S8G6",
-            king: "69K",
-            name: "gangi-gakoi"
+            id: "78K11G54S8G5",
+            name: "bonanza-gakoi"
         },
-        "english": "Flying geese fence",
+        "english": "Bonanza's fence",
         "category": [
             ["そ", "So"],
             ["の", "no"],
             ["他", "ta"]
         ],
         "formalName": [
-            ["雁", "Gan"],
-            ["木", "g(k)i"],
+            ["ボ", "Bo"],
+            ["ナ", "na"],
+            ["ン", "n"],
+            ["ザ", "za"],
             ["囲", "G(k)ako"],
             ["い", "i"]
         ],
@@ -22,11 +23,11 @@ function get_data() {
             ".........",
             ".........",
             ".........",
-            ".......0.",
-            "0.000.0..",
-            ".00SS0...",
-            "..G.G....",
-            "00.K.....",
+            ".........",
+            "0.0......",
+            ".0S00....",
+            "..KGG....",
+            "00.......",
         ]
     };
 }

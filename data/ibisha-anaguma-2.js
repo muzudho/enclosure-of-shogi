@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "99K283G7G4S6",
+            name: "ibisha-anaguma-2"
+        },
         "english": "Bears enter the nest without castling type 2",
         "category": [
             ["穴", "Ana"],

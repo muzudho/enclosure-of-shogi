@@ -1,20 +1,17 @@
 function get_data() {
     return {
         "meta": {
-            id: "18G4S556G2S1",
-            king: "58K",
-            name: "ahiru-gakoi"
+            id: "78K821S5G65S1G4",
+            name: "funa-gakoi"
         },
-        "english": "Duck swim fence",
+        "english": "Boat fence",
         "category": [
             ["そ", "So"],
             ["の", "no"],
             ["他", "ta"]
         ],
         "formalName": [
-            ["あ", "A"],
-            ["ひ", "hi"],
-            ["る", "ru"],
+            ["舟", "Funa(e)"],
             ["囲", "G(k)ako"],
             ["い", "i"]
         ],
@@ -24,10 +21,10 @@ function get_data() {
             ".........",
             ".........",
             ".........",
-            ".........",
-            "..00000..",
-            "...SKS...",
-            "..G...G..",
+            "0.0.0....",
+            ".0.0.0...",
+            ".0K.GS...",
+            "00SG.....",
         ]
     };
 }

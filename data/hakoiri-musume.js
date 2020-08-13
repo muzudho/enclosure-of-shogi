@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "78K175S1G3G5",
+            name: "hakoiri-musume"
+        },
         "english": "Daughter who can't approach",
         "category": [
             ["そ", "So"],
