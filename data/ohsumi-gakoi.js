@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "38K74G8S3",
+            name: "ohsumi-gakoi"
+        },
         "english": "A very comfortable fence",
         "category": [
             ["そ", "So"],

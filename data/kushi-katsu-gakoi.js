@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "98K183G7G4S5",
+            name: "kushi-katsu-gakoi"
+        },
         "english": "Skewered cutlet fence",
         "category": [
             ["そ", "So"],

@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "88K13S72G6G5",
+            name: "kin-yagura"
+        },
         "english": "Gold wooden observatory",
         "category": [
             ["矢", "Ya"],

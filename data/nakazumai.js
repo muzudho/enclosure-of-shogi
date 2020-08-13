@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "58K1S5",
+            name: "nakazumai"
+        },
         "english": "Live in the center",
         "category": [
             ["そ", "So"],

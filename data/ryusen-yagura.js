@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "89K221S5G65S1G6",
+            name: "ryusen-yagura"
+        },
         "english": "Streamline observatory together",
         "category": [
             ["矢", "Ya"],

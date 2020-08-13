@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "88K121S5G6G5",
+            name: "nagare-yagura"
+        },
         "english": "Drifting wooden observatory",
         "category": [
             ["矢", "Ya"],

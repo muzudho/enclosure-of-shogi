@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "28K54S8G1",
+            name: "kimura-mino"
+        },
         "english": "Kimura Meijin's Mino country",
         "category": [
             ["美", "Mi"],

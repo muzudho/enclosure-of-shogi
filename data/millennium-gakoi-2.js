@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "89K14S832G6G7S5",
+            name: "millennium-gakoi-2"
+        },
         "english": "Millennium fence type 2",
         "category": [
             ["そ", "So"],

@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "88K121S55S1G6G5",
+            name: "sou-yagura"
+        },
         "english": "Wooden observatory together",
         "category": [
             ["矢", "Ya"],

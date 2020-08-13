@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "78K14S83G7G5",
+            name: "kata-yagura"
+        },
         "english": "Half-built wooden observatory",
         "category": [
             ["矢", "Ya"],

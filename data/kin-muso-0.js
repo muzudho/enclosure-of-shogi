@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "38K745G1G8S3",
+            name: "kin-muso-0"
+        },
         "link": [
             "https://ja.wikipedia.org/wiki/%E9%87%91%E7%84%A1%E5%8F%8C",
         ],

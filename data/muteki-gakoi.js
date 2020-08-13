@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "59K13S7G553S7G1",
+            name: "muteki-gakoi"
+        },
         "english": "Invincible fence",
         "category": [
             ["そ", "So"],

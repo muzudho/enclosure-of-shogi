@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "69K12S6G553G7S1",
+            name: "nakahara-gakoi"
+        },
         "english": "Nakahara Meijin's fence",
         "category": [
             ["そ", "So"],

@@ -1,6 +1,6 @@
 function get_data() {
     return {
-        "english": "Mino country half fence",
+        "english": "Tall Mino country",
         "category": [
             ["美", "Mi"],
             ["濃", "no"],
@@ -8,7 +8,7 @@ function get_data() {
             ["い", "i"]
         ],
         "formalName": [
-            ["片", "Kata"],
+            ["高", "Taka"],
             ["美", "Mi"],
             ["濃", "no"]
         ],
@@ -18,8 +18,8 @@ function get_data() {
             ".........",
             ".........",
             ".........",
-            "........0",
-            "....0000.",
+            ".....0..0",
+            "....0G00.",
             "......SK.",
             ".....G.00",
         ]

@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "89K12S64S83G7G5",
+            name: "millennium-gakoi-1"
+        },
         "link": [
             "https://www.shogi.or.jp/column/2018/09/post_429.html"
         ],
