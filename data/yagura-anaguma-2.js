@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "99K2S6",
+            name: "yagura-anaguma-2"
+        },
         "link": [
             "http://shinolabo.com/kakoi/yagura_kuma.html"
         ],

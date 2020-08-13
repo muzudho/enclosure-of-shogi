@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "87K882G6G4S4",
+            name: "tensyukaku-mino"
+        },
         "english": "Mino country castle top floor",
         "category": [
             ["美", "Mi"],

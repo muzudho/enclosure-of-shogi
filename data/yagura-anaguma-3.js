@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "99K227G3G6S6",
+            name: "yagura-anaguma-3"
+        },
         "link": [
             "https://www.shougi.jp/kakoi/yagura/yagura_anaguma.html"
         ],

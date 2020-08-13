@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "87K83S72G68G4S4",
+            name: "yonmai-mino-2"
+        },
         "link": [
             "https://www.shougi.jp/kakoi/l-mino/yonmai_mino.html"
         ],

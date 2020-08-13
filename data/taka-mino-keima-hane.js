@@ -1,5 +1,9 @@
 function get_data() {
     return {
+        "meta": {
+            id: "28K54G86G2S1",
+            name: "taka-mino-keima-hane"
+        },
         "english": "Country of tall Mino where knight advanced",
         "category": [
             ["美", "Mi"],
