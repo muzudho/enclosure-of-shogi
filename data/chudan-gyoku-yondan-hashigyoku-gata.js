@@ -1,7 +1,7 @@
 function get_data() {
     return {
         "meta": {
-            id: "111S5G5G5",
+            id: "[96K]1G1G1S[555]",
             king: "96K",
             name: "chudan-gyoku-yondan-hashigyoku-gata"
         },

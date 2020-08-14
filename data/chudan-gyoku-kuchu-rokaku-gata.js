@@ -1,7 +1,7 @@
 function get_data() {
     return {
         "meta": {
-            id: "86K16G2S5",
+            id: "[86K]1S6G[25]",
             name: "chudan-gyoku-kuchu-roukaku-gata"
         },
         "english": "Skyscraper type",

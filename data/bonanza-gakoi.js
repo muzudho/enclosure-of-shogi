@@ -1,7 +1,7 @@
 function get_data() {
     return {
         "meta": {
-            id: "78K11G54S8G5",
+            id: "[78K]3S8G1G[547]",
             name: "bonanza-gakoi"
         },
         "english": "Bonanza's fence",

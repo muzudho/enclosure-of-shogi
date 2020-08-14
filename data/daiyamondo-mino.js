@@ -1,7 +1,7 @@
 function get_data() {
     return {
         "meta": {
-            id: "28K546G2S86G2S1",
+            id: "[28K]5S4S6G[28]6G[21]",
             name: "daiyamondo-mino"
         },
         "english": "Mino country like a diamond",

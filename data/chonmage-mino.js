@@ -1,7 +1,7 @@
 function get_data() {
     return {
         "meta": {
-            id: "28K56G2S1",
+            id: "[28K]5S6G[21]",
             name: "chonmage-mino"
         },
         "english": "Topknot fence",
