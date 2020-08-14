@@ -4,7 +4,11 @@
 
 ![Demo](./doc/demo.gif)
 
-![Explain1](./public/meta/explain1.png)
+![Explain-1](./meta/explain-1.png)  
+↑ 経路違いの同じ点数の場合、 （１）ID が短い方、 （２）ID を辞書順で比較して小さい方 の順で優先してください。  
+
+![Explain-2](./meta/explain-2.png)  
+↑ 玉が連続して動くときは、動き出す前の位置に ゴースト玉(X) を置いてください。  
 
 ## How to use
 
