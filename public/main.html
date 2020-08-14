@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="board.css">
     <script src="./common.js"></script>
     <script src="./connectedGraph.js"></script>
+    <script src="./identifier.js"></script>
     <script src="./input.js"></script>
     <script src="./search.js"></script>
     <script>
@@ -52,7 +53,7 @@
             // 探索開始
             let bestConnectedGraph = await playoutAll(input, false);
             const maxDepth = bestConnectedGraph.getMaxDepth(bestConnectedGraph.propertiesOfEdges);
-            document.getElementById("enclosureId").innerHTML = bestConnectedGraph.connectedGraphIdentifier;
+            document.getElementById("enclosureId").innerHTML = id_to_html(bestConnectedGraph.connectedGraphIdentifier);
             let bestPropertiesEdges = bestConnectedGraph.getPropertiesEdges();
 
             // 囲いっぽさ
