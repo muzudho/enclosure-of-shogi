@@ -217,19 +217,8 @@ class Search {
     }
 
     async node(depth, prevSq, currSq, bestConnectedGraph) {
-        // Animation
-        if (animationEnable) {
-            if (this.isBoard) {
-                await sleep(INTERVAL_MSEC);
-                if (prevSq) {
-                    document.getElementById(`ui${prevSq}`).setAttribute('class', 's');
-                }
-                document.getElementById(`ui${currSq}`).setAttribute('class', 'green_cursor');
-            }
-        }
-
         // Enter.
-        this.onEnter(currSq);
+        this.onEnter(prevSq, currSq);
         // console.log(`add node: 284 根元`);
         let leashValue = this.letLeashValue(prevSq, currSq);
         let sourcePlayoffValue = this.letSourcePlayoffValue(prevSq, currSq);
@@ -240,7 +229,7 @@ class Search {
         let classText = createClassText(leashValue, sqDiff);
         await this.recordEdge(srcSq, classText, leashValue, sourcePlayoffValue, depth);
 
-        let ways = this.genMove(currSq, bestConnectedGraph);
+        let ways = this.genMove(currSq);
         shuffle_array(ways);
         if (ways.length === 0) {
             // Turn. (Leaf)
@@ -253,10 +242,9 @@ class Search {
                 this.onDo(currSq, nextSq);
 
                 switch (this.board[nextSq]) {
-                    case 'G':
-                        await this.node(depth + 1, currSq, nextSq, bestConnectedGraph);
-                        break;
-                    case 'S':
+                    case 'G': // thru
+                    case 'S': // thru
+                    case 'X': // Ghost king
                         await this.node(depth + 1, currSq, nextSq, bestConnectedGraph);
                         break;
                     default:
@@ -281,7 +269,18 @@ class Search {
         this.onExit();
     }
 
-    async onEnter(currSq) {
+    async onEnter(prevSq, currSq) {
+        // Animation
+        if (animationEnable) {
+            if (this.isBoard) {
+                await sleep(INTERVAL_MSEC);
+                if (prevSq) {
+                    document.getElementById(`ui${prevSq}`).setAttribute('class', 's');
+                }
+                document.getElementById(`ui${currSq}`).setAttribute('class', 'green_cursor');
+            }
+        }
+
         this.nodesCount++;
         this.checkBoard[currSq] = true;
         this.srcSquareOfEdges.push(currSq);
@@ -339,11 +338,12 @@ class Search {
     /**
      * Generation move.
      */
-    genMove(currSq, bestConnectedGraph) {
+    genMove(currSq) {
         let ways = [];
 
         switch (this.board[currSq]) {
-            case 'K':
+            case 'K': // thru
+            case 'X': // Ghost king
                 this.pushWay(- 10, ways, currSq);
                 this.pushWay(- 11, ways, currSq);
                 this.pushWay(- 1, ways, currSq);
@@ -597,6 +597,7 @@ class Search {
                 case 'K': // thru
                 case 'G': // thru
                 case 'S':
+                case 'X':
                     board[entry[0]] = entry[1];
                     break;
                 default:
