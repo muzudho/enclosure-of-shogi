@@ -218,6 +218,13 @@ img.pc_k {
     height: 64px;
 }
 
+img.pc_x { /* Ghost king */
+    object-fit: none;
+    object-position: 0px -384px;
+    width: 64px;
+    height: 64px;
+}
+
 img.pc_g {
     object-fit: none;
     object-position: -64px -320px;

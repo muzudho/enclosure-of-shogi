@@ -86,9 +86,11 @@ function board_to_array(input) {
                 case 'G':
                 case 'S':
                 case 'K':
+                case 'X': // Ghost king.
                     array.push([file * 10 + rank, piece]);
                     break;
                 default:
+                    // R, B, N, L, P, etc...
                     array.push([file * 10 + rank, '0']);
                     break;
             }
