@@ -256,17 +256,8 @@ class Search {
             }
         }
 
-        // Animation
-        if (animationEnable && this.isBoard) {
-            await sleep(INTERVAL_MSEC);
-            if (prevSq) {
-                document.getElementById(`ui${prevSq}`).setAttribute('class', 'red_cursor');
-            }
-            document.getElementById(`ui${currSq}`).setAttribute('class', 's');
-        }
-
         // Exit.
-        this.onExit();
+        this.onExit(prevSq, currSq);
     }
 
     async onEnter(prevSq, currSq) {
@@ -303,8 +294,8 @@ class Search {
     async onTurn(prevSq, currSq, depth) {
         // this.connectedGraphIdentifier += '0';
         let leashValue = this.letLeashValue(prevSq, currSq);
-        // 「行き止まり」を追加。ただし、玉が葉のときを除く。
-        if (leashValue != 4 && this.board[currSq] !== 'K') {
+        // 「行き止まり」を追加。ただし、葉が 玉、ゴースト玉 のときを除く。
+        if (leashValue != 4 && this.board[currSq] !== 'K' && this.board[currSq] !== 'X') {
             // 行き先
             // console.log(`add node: 315 行き先は行き止まり`);
             let leafValue = 1;
@@ -318,13 +309,18 @@ class Search {
         }
     }
     async onUndo(currSq, nextSq) {
-        // TODO 単項演算子、二項演算子、三項演算子の区別は☆（＾～＾）？
         this.connectedGraphIdentifier += this.board[nextSq];
-        // this.connectedGraphIdentifier += this.board[nextSq].toLowerCase();
         this.connectedGraphIdentifier += `${this.letAngle(nextSq, currSq)}`;
     }
-    async onExit() {
-
+    async onExit(prevSq, currSq) {
+        // Animation
+        if (animationEnable && this.isBoard) {
+            await sleep(INTERVAL_MSEC);
+            if (prevSq) {
+                document.getElementById(`ui${prevSq}`).setAttribute('class', 'red_cursor');
+            }
+            document.getElementById(`ui${currSq}`).setAttribute('class', 's');
+        }
     }
 
     async recordEdge(srcSq, classText, leashValue, playoffValueSource, depth) {
@@ -375,9 +371,12 @@ class Search {
     }
 
     pushWay(offset, ways, currSq) {
+        // 次のマス
         let nextSq = currSq + offset;
+        // 次のマスの駒
         let dstPc = this.board[nextSq];
-        if (!this.checkBoard[nextSq] && (dstPc === 'G' || dstPc === 'S')) {
+        // 次のマスの駒が 金、銀、ゴースト玉 なら。
+        if (!this.checkBoard[nextSq] && (dstPc === 'G' || dstPc === 'S' || dstPc === 'X')) {
             ways.push(nextSq);
         }
     }
