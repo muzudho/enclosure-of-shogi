@@ -1,7 +1,7 @@
 function get_data() {
     return {
         "meta": {
-            id: "58K18G4S556G2S1",
+            id: "[58K]1S8G[45]5S6G[21]",
             name: "ahiru-gakoi"
         },
         "english": "Duck swim fence",

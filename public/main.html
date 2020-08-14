@@ -53,6 +53,7 @@
             // 探索開始
             let bestConnectedGraph = await playoutAll(input, false);
             const maxDepth = bestConnectedGraph.getMaxDepth(bestConnectedGraph.propertiesOfEdges);
+            document.getElementById("enclosureIdTextbox").value = bestConnectedGraph.connectedGraphIdentifier;
             document.getElementById("enclosureId").innerHTML = id_to_html(bestConnectedGraph.connectedGraphIdentifier);
             let bestPropertiesEdges = bestConnectedGraph.getPropertiesEdges();
 
@@ -135,5 +136,9 @@
         <span style="position:absolute; top:440px; font-size:48px; font-weight:bold;">＋</span><br>
         <span style="position:absolute; top:501px; font-size:24px; font-weight:bold;">━━━━━━━━</span><br>
     </div>
+
+    <form>
+        <input id="enclosureIdTextbox" type="text" onfocus="this.select(); document.execCommand('copy');">
+    </form>
 
 </html>
