@@ -203,8 +203,9 @@ class Search {
         this.connectedGraphIdentifier = "";
 
         const kingSq = this.find('K');
-        this.connectedGraphIdentifier = `${kingSq}K`;
+        this.connectedGraphIdentifier = `[${kingSq}K]`;
         await this.node(0, undefined, kingSq, bestConnectedGraph);
+        this.connectedGraphIdentifier += ']';
 
         // ベスト更新
         bestConnectedGraph.update(this.leashValue, this.srcSquareOfEdges, this.dstLeashOfEdges, this.dstPlayoffOfEdges, this.propertiesOfEdges, this.connectedGraphIdentifier);
@@ -235,9 +236,14 @@ class Search {
             // Turn. (Leaf)
             this.onTurn(prevSq, currSq, depth);
         }
+        let index = 0;
         for (let nextSq of ways) {
             // ループ中に状態が変わってるので再チェック
             if (!this.checkBoard[nextSq]) {
+                // Next.
+                if (0 < index) {
+                    this.onNext();
+                }
                 // Do.
                 this.onDo(currSq, nextSq);
 
@@ -253,6 +259,7 @@ class Search {
 
                 // Undo.
                 this.onUndo(currSq, nextSq);
+                index++;
             }
         }
 
@@ -276,6 +283,9 @@ class Search {
         this.checkBoard[currSq] = true;
         this.srcSquareOfEdges.push(currSq);
     }
+    async onNext() {
+        this.connectedGraphIdentifier += `]`;
+    }
     async onDo(currSq, nextSq) {
         this.connectedGraphIdentifier += `${this.letAngle(currSq, nextSq)}`;
         // 点数加算
@@ -292,7 +302,7 @@ class Search {
         }
     }
     async onTurn(prevSq, currSq, depth) {
-        // this.connectedGraphIdentifier += '0';
+        this.connectedGraphIdentifier += `[`;
         let leashValue = this.letLeashValue(prevSq, currSq);
         // 「行き止まり」を追加。ただし、葉が 玉、ゴースト玉 のときを除く。
         if (leashValue != 4 && this.board[currSq] !== 'K' && this.board[currSq] !== 'X') {
