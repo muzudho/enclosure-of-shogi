@@ -62,10 +62,17 @@ class ConnectedGraph {
      * 同点決勝判定。
      */
     compareConnectedGraphIdentifier(connectedGraphIdentifier) {
+        // ベストが undefined なら、更新。
         if (!this.connectedGraphIdentifier) {
             return true;
         }
-        // console.log(`${connectedGraphIdentifier} < ${this.connectedGraphIdentifier} => ${connectedGraphIdentifier < this.connectedGraphIdentifier}`);
+
+        // 文字数が短ければ、更新。
+        if (connectedGraphIdentifier.length < this.connectedGraphIdentifier.length) {
+            return true;
+        }
+
+        // 辞書順ソートで小さければ、更新。
         return connectedGraphIdentifier < this.connectedGraphIdentifier
     }
 }
