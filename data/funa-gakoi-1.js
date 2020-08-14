@@ -1,7 +1,7 @@
 function get_data() {
     return {
         "meta": {
-            id: "59K13S7G555S1G1",
+            id: "[59K]1G3S[75]5G5S[11]",
             name: "funa-gakoi-1"
         },
         "english": "Boat fence",
