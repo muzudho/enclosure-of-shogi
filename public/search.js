@@ -288,6 +288,7 @@ class Search {
     }
     async onDo(currSq, nextSq) {
         this.connectedGraphIdentifier += `${this.letAngle(currSq, nextSq)}`;
+        this.connectedGraphIdentifier += this.board[nextSq];
         // 点数加算
         let srcPc = this.board[currSq];
         // キングを除く。
@@ -319,7 +320,6 @@ class Search {
         }
     }
     async onUndo(currSq, nextSq) {
-        this.connectedGraphIdentifier += this.board[nextSq];
         this.connectedGraphIdentifier += `${this.letAngle(nextSq, currSq)}`;
     }
     async onExit(prevSq, currSq) {
